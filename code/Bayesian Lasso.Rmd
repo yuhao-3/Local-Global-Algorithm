@@ -1,0 +1,117 @@
+---
+title: "Bayesian Lasso Gibbs Sampler"
+author: "Yuhao Li"
+output: html_notebook
+---
+
+
+
+# load data
+
+
+```{r}
+library(lars)
+library("Matrix")
+data("diabetes")
+```
+
+# Q1 Simulate dataset
+```{r}
+# Set initial parameter
+sample_size=100
+p = 5
+proportion_sparse = 0.5
+sigma = 1
+mean = 0
+
+# Create Simulated y value
+simulate = function(X,beta,mean,sigma,sample_size) 
+{
+  y = X %*% beta + rnorm(sample_size,mean,sigma^2)
+  return(y)
+}
+  
+# Create a Sparse Vector for beta
+createSparseVector = function(proportion_sparse,size,sigma)
+{
+  vec = rep(0,size)
+  non_zero_num = proportion_sparse*size
+  non_zero_value = rnorm(proportion_sparse*size,mean,sigma)
+  non_zero_entry = sample(1:size,non_zero_num)
+  vec[non_zero_entry] = non_zero_value
+  return(vec)
+}
+# Without Intercept
+X = matrix(rnorm(sample_size*p), ncol=p)
+# scale X
+X = scale(X)
+# Create a random generated sparse vector
+beta = createSparseVector(proportion_sparse,p,sigma)
+y = simulate(X,beta,mean,sigma,sample_size)
+
+```
+
+
+
+## Question 2 Fit dataset with lasso regression
+```{r}
+library(glmnet)
+lasso_regression = function(lambda)
+{
+  lasso_model <- glmnet(X,y, alpha = 0.001, lambda = lambda)
+  return(lasso_model)
+}
+
+lasso_model = lasso_regression(lambda)
+lasso_model$beta[,1]
+```
+
+
+## Choose lambda that some of regression coefficients are fitted to be 0
+## Larger lambda will have larger chance to get 0
+```{r}
+lambda = 0.01
+current_beta = c()
+while(is.element(0,current_beta) == FALSE)
+{
+  lasso_model = lasso_regression(lambda)
+  current_beta = lasso_model$beta[,1]
+  lambda = lambda * 10
+}
+current_beta
+lambda
+
+```
+
+
+## Question 3 and 4 Gibbs for Bayesian Lasso
+
+$$
+p(\textbf{y},\beta,\sigma^2,\textbf{a}) = \prod_{i=1}^{n}p(y_j|\beta,\sigma^2,\textbf{a}) \prod_{j=1}^{p}p(\beta_j|\sigma^2,a_j)p(a_j|\sigma^2)p(\sigma^2)\\
+=\prod_{i=1}^{n}p(y_j|\beta,\sigma^2,\textbf{a}) \prod_{j=1}^{p}p(\beta_j|\sigma^2,a_j)p(a_j)p(\sigma^2)\\
+\propto
+$$
+
+
+
+```{r}
+library(LaplacesDemon)
+lambda = 2
+a_gamma_param = c(1,2)
+
+a_1 = rep(1,n)
+sigma_2_1 = 1
+
+sigma2 = rinvgamma(a,b)
+beta_posterior = 
+sigma_posterior = 
+for(j in 1:p)
+{
+  dynamicVariableName <- paste0("a_", i)
+  assign(dynamicVariableName, )
+}
+
+```
+
+
+
