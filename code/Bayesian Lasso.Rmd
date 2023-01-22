@@ -445,33 +445,6 @@ calculate_uni_lasso_param(1,2,3)
 
 ```
 
-# Test case a =1, b = 2, c = 3
-Exact case
-$\mu_1 = -1$, $\mu_2 = -5, sigma2 = 1$
-$$
-Z = 1 * [\frac{pnorm(-1)}{dnorm(-1)} +\frac{pnorm(-5)}{dnorm(-5)}] = 0.8484876
-$$
-$$
-E[X] = \frac{1}{Z} * [\frac{pnorm(-1)}{dnorm(-1)}E[A] +\frac{pnorm(-5)}{dnorm(-5)}E[B]]
-$$
-
-$$
-E[A] = -1 + \frac{dnorm(-1)}{pnorm(-1)} = 0.52513\space53\\
-E[B] = -5 + \frac{dnorm(-5)}{pnorm(-5)} = 0.186504\\
-
-E[X] = 1/0.8484876 *(pnorm(-1)/dnorm(-1)*0.5251353 - pnorm(-5)/dnorm(-5)*0.186504)= 0.3634243
-$$
-
-$$
-E[A^2] = 1*(1+xsi_2(-1)) + 0.52513 53^2 = 0.4748647\\
-E[B^2] = 1*(1+xsi_2(-5)) + 0.186504^2 = 0.06748018 \\
-xsi2(-1) = 1*xsi_1(-1) - (xsi_1(-1))^2 = -0.8009023\\
-xsi2(-5) = 5*xsi_1(-5) - (xsi_1(-5))^2 = -0.9673036\\
-
-E[X^2] = 1/0.8484876 *(pnorm(-1)/dnorm(-1)*0.4748647 + pnorm(-5)/dnorm(-5)*0.06748018)= 0.3822917
-
-Var(X) = 0.2502145
-$$
 ### Using Integrate function to test
 ```{r}
 f = function(x)
@@ -482,7 +455,7 @@ f = function(x)
   return(exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
 
-exp = function(x)
+expect = function(x)
 { 
   a=1
   b=2
@@ -500,7 +473,15 @@ sec_mom = function(x)
 ```
 
 ```{r}
-integrate(sec_mom,-100,100)
+Z = integrate(f,-10,10)$value
+exp = integrate(expect,-10,10)$value / Z
+sec_mom = integrate(sec_mom,-10,10)$value / Z
+var = sec_mom - exp^2
+
+Z
+exp
+var
+
 ```
 
 
