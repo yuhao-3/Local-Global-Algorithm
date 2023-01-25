@@ -107,5 +107,15 @@ $$
 
 
 
-### Question 1.17
+
+
+### Question 1.24
+
+1 Q4: Product of one multivariate normal and an univariate normal, not sure its posterior
+
+​	Problem: CURRENT RESULT ADDING ONLY WORK when dimension of theta1 and theta2 are equal!
+
+2 Log trick meet negative value
+
+
 

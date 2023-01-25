@@ -389,16 +389,17 @@ norm_const_lasso <- function(mu1,mu2,sigma)
 # Calculate expectation of lasso distribution
 mean_uni_lasso <- function(mu1,mu2,sigma,Z)
 {
-  part1 = pnorm(mu1/sigma)/dnorm(mu1/sigma)*pos_tru_exp(mu1,sigma)
-  part2 = pnorm(mu2/sigma)/dnorm(mu2/sigma)*pos_tru_exp(mu2,sigma)
+  part1 = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))*pos_tru_exp(mu1,sigma)
+  part2 = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))*pos_tru_exp(mu2,sigma)
   mean = sigma/Z *(part1 - part2 )
   return(mean)
 }
+
 # Calculate second moment of lasso distribution
 second_mom_uni_lasso = function(mu1,mu2,sigma,Z)
 {
-  part1 = pnorm(mu1/sigma)/dnorm(mu1/sigma)*pos_tru_sec_mom(mu1,sigma)
-  part2 = pnorm(mu2/sigma)/dnorm(mu2/sigma)*pos_tru_sec_mom(mu2,sigma)
+  part1 = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))*pos_tru_sec_mom(mu1,sigma)
+  part2 = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))*pos_tru_sec_mom(mu2,sigma)
   
   sec_mom = sigma/Z *(part1 + part2 ) 
   return(sec_mom)
@@ -429,7 +430,8 @@ pos_tru_sec_mom <- function(mu,sigma)
 # xsi 1 function
 xsi_1<- function(t)
 {
-  return(dnorm(t)/pnorm(t))
+  
+  return(exp(dnorm(t,log = TRUE)- pnorm(t,log.p = TRUE)))
 }
 
 # xsi 2 function
@@ -437,6 +439,8 @@ xsi_2<- function(t)
 {
   return(-t*xsi_1(t) - xsi_1(t)^2)
 }
+
+
 ```
 # Integrate function in R to check
 
@@ -496,10 +500,10 @@ Local and Global Algorithm
 # Params: Parameter output from MFVB
 
 ```{r}
-## INPUT:
-## OUTPUT:
+## INPUT: y, mX, lambda, param
+## OUTPUT: Global adjust mean, Global adjust covariance
 
-local_global_algorithm_1 <- function(vy, mX, beta, lambda, params)
+local_global_algorithm_1 <- function(vy, mX, lambda, beta, params)
 {
   ## Initialization
   MAXITER <- 500
@@ -517,55 +521,58 @@ local_global_algorithm_1 <- function(vy, mX, beta, lambda, params)
   
   
   # Initial value for a,b,c, Local parameters
-  va = rep(0,p)
-  vb = rep(0,p)
-  vc = rep(0,p)
+  a = 0
+  b = 0
+  c = 0
 
   # Stop if global parameter converge
-  vtheta <- c(vmu_adjust, mSigma_adjust)
-  
+  vtheta <- c(vmu_adjust)
   
   for (ITER in 1:MAXITER)
   {
-  
+    ## Problem, some matrix can be 1*1 or p*p, can't be multipied
+    
     ## Local Update
     for (j in 1:p)
     {
-      ## Get conditional distribution update: q(beta_j | D) for each beta_j
       
-      ## vmu_adjust, mSigma_adjust
-      vs = vmu_til[-j] - mSigma_til[-j,j] %*% solve(mSigma_til)[j,j] %*% vmu_til[j]
-      mt = mSigma_til[-j,j] %*% solve(mSigma_til)[j,j]
-      va[j] = a_tilde/b_tilde*(t(X[,j]) %*% X[,j] + t(X[,j])%*%X[,-j]%*%mt)
-      vb[j] = a_tilde/b_tilde*t(X[,j])%*%(vy-X[,-j]%*%vs)
-      vc[j] = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b))
-      local_mean = calculate_lasso_param(a,b,c)$mu
-      local_var = calculate_lasso_param(a,b,c)$var
+      ## Local Update
+      vs = vmu_adjust[-j] - mSigma_adjust[-j,j] %*% solve(mSigma_adjust)[j,j] %*% vmu_adjust[j]
+      mt = mSigma_adjust[-j,j] %*% solve(mSigma_adjust)[j,j]
+      a = a_til/b_til*(t(mX[,j]) %*% mX[,j] + t(mX[,j])%*%mX[,-j]%*%mt)
+      b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
+      c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
       
-      # Current Conditional Param
-      vcond_mean = vmu_til[-j]+mSigma_til[-j,j]%*%solve(mSigma_til)()
-      mcond_covariance = 
+      # Calculate Local parameter 
+      vlocal_mean = calculate_uni_lasso_param(a,b,c)$mu
+      mlocal_var = calculate_uni_lasso_param(a,b,c)$var
     
-      ##  Cond param + local update = Global Update    
-      vmu_adjust= cond mean + local mean
-      mSigma_adjust = cond covariance + local covariance     
+      ##  Global Update
+      ##  Update Mean
+      vmu_adjust[j] = vlocal_mean
+      vmu_adjust[-j] = vmu_adjust[-j] + mSigma_adjust[-j,j] %*% solve(mSigma_adjust[-j,-j])%*%(vlocal_mean[j] - vmu_adjust[j])
+      
+      ##  Update Covariance
+      mSigna_minus_jj_inv = solve(mSigma_adjust[-j,-j])
+      mSigma_adjust[j,j] = mlocal_var
+      mSigma_adjust[j,-j] = mlocal_var %*% mSigna_minus_jj_inv %*% mSigma_adjust[j,-j]
+      mSigma_adjust[-j,j] = t(mSigma_adjust[j,-j])
+      mSigma_adjust[-j,-j] = mSigma_adjust[j,j] + mSigma_adjust[j,-j] %*% mSigna_minus_jj_inv
+      (mlocal_var - mSigma_adjust[-j,-j]) %*% mSigna_minus_jj_inv %*% mSigma[-j,j]
     }
 
-    
-  
     err <- max(abs(vtheta - vtheta_old))
     cat("ITER=",ITER,"err=",err,"\n")
     if (err < TOL) {
       break;
     }
-
   }
   
   # Return Local and Global parameter
-  # Local p (mu, Sigma)
-  # Global 1 (mu, Sigma)
-  return(list())
+  return(list(vmu_adjust,mSigma_adjust))
 }
+
+local_global_algorithm_1(y,X,lambda = 10,params)
 
 ```
 
