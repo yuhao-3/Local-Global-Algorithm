@@ -502,9 +502,9 @@ calculate_multi_lasso_param <- function(mA,vb,cc)
   mu3 = A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1)
   mu4 = A_inv %*%(b + c)
   Sigma = A_inv
-  Z = norm_const_lasso(mu1,mu2,sqrt(sigma2))
-  mu = mean_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
-  var = var_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
+  Z = multi_norm_const_lasso(mu1,mu2,mu3,mu4,Sigma)
+  mu = mean_multi_lasso(mu1,mu2,mu3,mu4,Sigma,Z)
+  var = var_multi_lasso(mu1,mu2,mu3,mu4,Sigma,Z)
   return(list(mu = mu,var = var, Z = Z))
 }
 ```
@@ -513,15 +513,20 @@ calculate_multi_lasso_param <- function(mA,vb,cc)
 ## Verify multivariate lasso
 
 ```{r}
-library(cubature) # load the package "cubature"
-A = matrix(c(2,1,1,2),2,2)
-b = c(2,2)
-c = 3
-f <- function(x, A,b,c) 
+library(pracma)
+fun <- function(x,y) 
 {
-  -0.5*t(x)%*%A%*%x + t(b)*x - c*norm(x,1) 
-} # "x" is vector
-adaptIntegrate(f(A,b,c), lowerLimit = c(-inf, -inf), upperLimit = c(inf,inf))
+  A = matrix(c(2,0,0,3),2,2)
+  b = matrix(c(-2,1),2,1)
+  c = 3
+  vx = matrix(c(x,y),2,1)
+  return(exp((-0.5*t(vx)%*%A%*%vx + t(b)%*%vx-  c*norm(vx,"1"))[1]))
+}
+xmin <- -10; xmax <- 10
+ymin <- -10; ymax <- 10
+
+# Normalizing constant
+integral2(fun, xmin, xmax, ymin, ymax)
 
 ```
 
