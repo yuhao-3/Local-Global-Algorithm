@@ -119,3 +119,15 @@ $$
 
 
 
+### Question 1.31
+
+1. Posterior density plot remark
+
+2. Code check
+
+3. Next step
+
+   
+
+   
+

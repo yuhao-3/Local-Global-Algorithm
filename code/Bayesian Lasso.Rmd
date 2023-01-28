@@ -351,7 +351,7 @@ bayesian_lasso_mfvb <- function(vy, mX, lambda, sigma2_hat)
   return(list(vmu_til=vmu_til, mSigma_til=mSigma_til, a_til=a_til, b_til=b_til, vd=vd))
 }
 
-params = bayesian_lasso_mfvb(y,X,lambda = 10,sigma2_hat = 1)
+params = bayesian_lasso_mfvb(y,X,lambda = 0.1,sigma2_hat = 1)
 params
 ```
 
@@ -367,6 +367,12 @@ UTILS
 ```{r}
 
 ###################  UNIVARIATE LASSO DISTRIBUTION ###############################
+
+lasso_f <- function(x,a,b,c)
+{
+  return(x^2*exp(-0.5*a*x^2+b*x-c*abs(x)))
+}
+# Note: a>0,c>0,b in R
 calculate_uni_lasso_param <- function(a,b,c)
 {
   mu1 = (b-c)/a
@@ -445,38 +451,33 @@ xsi_2<- function(t)
 # Integrate function in R to check
 
 ```{r}
-calculate_uni_lasso_param(1,2,3)
-
+calculate_uni_lasso_param(2,3,4)
 ```
-
 ### Using Integrate function to test
 ```{r}
 f = function(x)
 { 
-  a=1
-  b=2
-  c=3
+  a=2
+  b=3
+  c=4
   return(exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
 
 expect = function(x)
 { 
-  a=1
-  b=2
-  c=3
+  a=2
+  b=3
+  c=4
   return(x*exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
 
 sec_mom = function(x)
 { 
-  a=1
-  b=2
-  c=3
+  a=2
+  b=3
+  c=4
   return(x^2*exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
-```
-
-```{r}
 Z = integrate(f,-10,10)$value
 exp = integrate(expect,-10,10)$value / Z
 sec_mom = integrate(sec_mom,-10,10)$value / Z
@@ -485,6 +486,42 @@ var = sec_mom - exp^2
 Z
 exp
 var
+```
+
+
+Multivariate Lasso Distribution
+```{r}
+###################  MULTIVARIATE LASSO DISTRIBUTION ###############################
+
+# Note: mA: positive definite,c vb in R2, cc>0, 
+calculate_multi_lasso_param <- function(mA,vb,cc)
+{
+  A_inv = solve(mA)
+  mu1 = A_inv %*%(b - c)
+  mu2 = A_inv %*% matrix(c(b[1]-c,-b[2]-c),2,1)
+  mu3 = A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1)
+  mu4 = A_inv %*%(b + c)
+  Sigma = A_inv
+  Z = norm_const_lasso(mu1,mu2,sqrt(sigma2))
+  mu = mean_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
+  var = var_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
+  return(list(mu = mu,var = var, Z = Z))
+}
+```
+
+
+## Verify multivariate lasso
+
+```{r}
+library(cubature) # load the package "cubature"
+A = matrix(c(2,1,1,2),2,2)
+b = c(2,2)
+c = 3
+f <- function(x, A,b,c) 
+{
+  -0.5*t(x)%*%A%*%x + t(b)*x - c*norm(x,1) 
+} # "x" is vector
+adaptIntegrate(f(A,b,c), lowerLimit = c(-inf, -inf), upperLimit = c(inf,inf))
 
 ```
 
@@ -503,11 +540,14 @@ Local and Global Algorithm
 ## INPUT: y, mX, lambda, param
 ## OUTPUT: Global adjust mean, Global adjust covariance
 
-local_global_algorithm_1 <- function(vy, mX, lambda, beta, params)
+## If there is a scalar output, change it to 1*1 matrix output, otherwise remain same
+
+
+local_global_algorithm_1 <- function(vy, mX, lambda, params)
 {
   ## Initialization
   MAXITER <- 500
-  TOL <- 1.0E-8
+  TOL <- 1.0E-7
   n <- nrow(mX)
   p <- ncol(mX)
   
@@ -519,68 +559,113 @@ local_global_algorithm_1 <- function(vy, mX, lambda, beta, params)
   a_til = params$a_til
   b_til = params$b_til
   
+  # Record the local parameter
+  va = c()
+  vb = c()
+  vZ = c()
   
-  # Initial value for a,b,c, Local parameters
-  a = 0
-  b = 0
-  c = 0
-
-  # Stop if global parameter converge
+  # Initial value Local parameters
   vtheta <- c(vmu_adjust)
   
   for (ITER in 1:MAXITER)
   {
-    ## Problem, some matrix can be 1*1 or p*p, can't be multipied
-    
     ## Local Update
     for (j in 1:p)
     {
+      # Local Update
+      vs = matrix(vmu_adjust[-j]) - matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust)[j,j]) %*% matrix(vmu_adjust[j])
+      mt = matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust)[j,j])
       
-      ## Local Update
-      vs = vmu_adjust[-j] - mSigma_adjust[-j,j] %*% solve(mSigma_adjust)[j,j] %*% vmu_adjust[j]
-      mt = mSigma_adjust[-j,j] %*% solve(mSigma_adjust)[j,j]
+      ## Update local parameter
       a = a_til/b_til*(t(mX[,j]) %*% mX[,j] + t(mX[,j])%*%mX[,-j]%*%mt)
       b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
       c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
       
-      # Calculate Local parameter 
+      ## Calculate Local mean and variance
       vlocal_mean = calculate_uni_lasso_param(a,b,c)$mu
       mlocal_var = calculate_uni_lasso_param(a,b,c)$var
-    
-      ##  Global Update
-      ##  Update Mean
+      
+      # Record local parameter distribution
+      va[j] = a
+      vb[j] = b
+      vZ[j] = calculate_uni_lasso_param(a,b,c)$Z
+      
+      # Global Update
+      ## Update Mean
       vmu_adjust[j] = vlocal_mean
-      vmu_adjust[-j] = vmu_adjust[-j] + mSigma_adjust[-j,j] %*% solve(mSigma_adjust[-j,-j])%*%(vlocal_mean[j] - vmu_adjust[j])
+      vmu_adjust[-j] = matrix(vmu_adjust[-j]) + matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust)[j,j]) %*% matrix(vlocal_mean - vmu_adjust[j])
       
       ##  Update Covariance
-      mSigna_minus_jj_inv = solve(mSigma_adjust[-j,-j])
+      j_len = length(vlocal_mean)
+      mSigma_jj_inv = matrix(solve(mSigma_adjust)[j,j],j_len,j_len)
+      
       mSigma_adjust[j,j] = mlocal_var
-      mSigma_adjust[j,-j] = mlocal_var %*% mSigna_minus_jj_inv %*% mSigma_adjust[j,-j]
+      mSigma_adjust[j,-j] = mlocal_var %*% mSigma_jj_inv %*% t(matrix(mSigma_adjust[j,-j]))
       mSigma_adjust[-j,j] = t(mSigma_adjust[j,-j])
-      mSigma_adjust[-j,-j] = mSigma_adjust[j,j] + mSigma_adjust[j,-j] %*% mSigna_minus_jj_inv
-      (mlocal_var - mSigma_adjust[-j,-j]) %*% mSigna_minus_jj_inv %*% mSigma[-j,j]
+      mSigma_adjust[-j,-j] = matrix(mSigma_adjust[-j,-j],p-j_len,p-j_len) + matrix(mSigma_adjust[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_adjust[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_adjust[j,-j]))
+      
     }
 
+    # Update Theta
+    vtheta_old <- vtheta
+    vtheta <- c(vmu_adjust)
+    
+    ## Check stopping criterion    
     err <- max(abs(vtheta - vtheta_old))
     cat("ITER=",ITER,"err=",err,"\n")
     if (err < TOL) {
       break;
     }
   }
-  
   # Return Local and Global parameter
-  return(list(vmu_adjust,mSigma_adjust))
+  return(list("mu" = vmu_adjust,"Sigma" = mSigma_adjust, "a" = va,"b" = vb,"c"= c ,"Z" = vZ))
 }
 
-local_global_algorithm_1(y,X,lambda = 10,params)
+output1 = local_global_algorithm_1(y,X,lambda = 0.1,params)
+output1
+```
+Compare density, MCMC, local density and global density
+```{r}
+# Initialization
+va = output1$a
+vb = output1$b
+cc = output1$c
+vZ = output1$Z
+global_mu = output1$mu
+global_Sigma = output1$Sigma
 
+# Drawing
+par(mfrow=c(2,3))
+for (j in 1:p)
+{
+   # returns the density of MCMC samples
+	 mcmc = density(Samples$beta[,j][-1], from = -2, to = 2)
+	 plot(mcmc,main=paste0("Density of beta",j),col="blue")
+
+	 # draw local parameter distribution
+	 a = va[j]
+	 b = vb[j]
+	 c = cc
+	 Z = vZ[j]
+	 lasso = curve(exp(-0.5*a*x^2+b*x-c*abs(x))/Z,add = TRUE,from = - 2, to = 2,col="green")
+	 
+
+	 # # draw global parameter distribution
+	 global = curve(dnorm(x, mean = global_mu[j],sd = global_Sigma[j,j]), add = TRUE,from = -2, to = 2,col="red")
+
+   
+}
 ```
 
 
+
+
 ## Update two variable at a time(Expected more accurate but less speed)
+## Update for each pair of variables
 ```{r}
-local_global_algorithm_2 <- function(vy, mX, lambda, sigma2_hat)
+local_global_algorithm_2 <- function(vy, mX, lambda, params)
 {
+  
   
   
   
@@ -597,5 +682,7 @@ local_global_algorithm_3 <- function(X,y,beta.init,sigma2.init,epsilon = 1e-3,ma
   
 }
 ```
+
+
 
 
