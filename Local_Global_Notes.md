@@ -125,7 +125,9 @@ $$
 
 2. Code check
 
-3. Next step
+3. Multivariate Lasso: Standardization
+
+4. Next step
 
    
 

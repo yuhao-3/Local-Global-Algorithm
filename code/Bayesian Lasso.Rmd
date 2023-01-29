@@ -100,7 +100,6 @@ while(is.element(0,current_beta) == FALSE)
 }
 current_beta
 lambda
-lasso_model$lambda
 
 ```
 
@@ -351,7 +350,7 @@ bayesian_lasso_mfvb <- function(vy, mX, lambda, sigma2_hat)
   return(list(vmu_til=vmu_til, mSigma_til=mSigma_til, a_til=a_til, b_til=b_til, vd=vd))
 }
 
-params = bayesian_lasso_mfvb(y,X,lambda = 0.1,sigma2_hat = 1)
+params = bayesian_lasso_mfvb(y,X,lambda = 1,sigma2_hat = 1)
 params
 ```
 
@@ -367,11 +366,6 @@ UTILS
 ```{r}
 
 ###################  UNIVARIATE LASSO DISTRIBUTION ###############################
-
-lasso_f <- function(x,a,b,c)
-{
-  return(x^2*exp(-0.5*a*x^2+b*x-c*abs(x)))
-}
 # Note: a>0,c>0,b in R
 calculate_uni_lasso_param <- function(a,b,c)
 {
@@ -388,7 +382,9 @@ calculate_uni_lasso_param <- function(a,b,c)
 norm_const_lasso <- function(mu1,mu2,sigma)
 {
   # Log trick
-  Z = sigma*(pnorm(mu1/sigma)/dnorm(mu1/sigma) + pnorm(mu2/sigma)/dnorm(mu2/sigma))
+  PartI = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))
+  PartII = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))
+  Z = sigma*(PartI + PartII)
   return(Z)
 }
 
@@ -419,7 +415,7 @@ var_uni_lasso <- function(mu1,mu2,sigma,Z)
 }
 
 
-#################################  Positive Truncated Norm ##################################
+#################################  Positive Truncated Norm ############################
 
 # Calculate expectation of truncated normal distribution
 pos_tru_exp <- function(mu,sigma)
@@ -436,7 +432,6 @@ pos_tru_sec_mom <- function(mu,sigma)
 # xsi 1 function
 xsi_1<- function(t)
 {
-  
   return(exp(dnorm(t,log = TRUE)- pnorm(t,log.p = TRUE)))
 }
 
@@ -445,15 +440,12 @@ xsi_2<- function(t)
 {
   return(-t*xsi_1(t) - xsi_1(t)^2)
 }
-
-
 ```
 # Integrate function in R to check
-
 ```{r}
 calculate_uni_lasso_param(2,3,4)
 ```
-### Using Integrate function to test
+
 ```{r}
 f = function(x)
 { 
@@ -462,7 +454,6 @@ f = function(x)
   c=4
   return(exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
-
 expect = function(x)
 { 
   a=2
@@ -470,7 +461,6 @@ expect = function(x)
   c=4
   return(x*exp(-0.5*a*x^2+b*x-c*abs(x)))
 }
-
 sec_mom = function(x)
 { 
   a=2
@@ -482,31 +472,75 @@ Z = integrate(f,-10,10)$value
 exp = integrate(expect,-10,10)$value / Z
 sec_mom = integrate(sec_mom,-10,10)$value / Z
 var = sec_mom - exp^2
-
-Z
 exp
 var
+Z
 ```
+
+
 
 
 Multivariate Lasso Distribution
 ```{r}
 ###################  MULTIVARIATE LASSO DISTRIBUTION ###############################
-
+library(MASS)
 # Note: mA: positive definite,c vb in R2, cc>0, 
 calculate_multi_lasso_param <- function(mA,vb,cc)
 {
+  # Get parameter
   A_inv = solve(mA)
-  mu1 = A_inv %*%(b - c)
-  mu2 = A_inv %*% matrix(c(b[1]-c,-b[2]-c),2,1)
-  mu3 = A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1)
-  mu4 = A_inv %*%(b + c)
+  mu1 = as.vector(A_inv %*%(b - c))
+  mu2 = as.vector(A_inv %*% matrix(c(b[1]-c,-b[2]-c),2,1))
+  mu3 = as.vector(A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1))
+  mu4 = as.vector(A_inv %*%(b + c))
   Sigma = A_inv
-  Z = multi_norm_const_lasso(mu1,mu2,mu3,mu4,Sigma)
-  mu = mean_multi_lasso(mu1,mu2,mu3,mu4,Sigma,Z)
-  var = var_multi_lasso(mu1,mu2,mu3,mu4,Sigma,Z)
+  
+  
+  ## TODO: MTVN formula
+  
+  
+  # Get 4 parts of equation separately
+  
+
+  PartI = exp(log(pmvnorm(mean = mu1, sigma =Sigma))-log(dmvnorm(as.vector(A%*%mu1),sigma = Sigma)))
+  PartII = exp(log(pmvnorm(mu2, sigma =Sigma))-log(dmvnorm(as.vector(A%*%mu2),sigma = Sigma)))
+  PartIII = exp(log(pmvnorm(mu3, sigma = Sigma))-log(dmvnorm(as.vector(A%*%mu3),sigma = Sigma)))
+  PartIV = exp(log(pmvnorm(mu4, sigma=Sigma))-log(dmvnorm(as.vector(A%*%mu4),sigma = Sigma)))
+  
+  # Calculation
+  Z = multi_norm_const_lasso(PartI, PartII, PartIII,PartIV)
+  # mu = mean_multi_lasso(PartI, PartII, PartIII,PartIV, Z)
+  print(Z)
+  # var = var_multi_lasso(PartI, PartII, PartIII,PartIV, Z)
   return(list(mu = mu,var = var, Z = Z))
 }
+
+multi_norm_const_lasso <- function(PartI, PartII, PartIII,PartIV)
+{
+  # Log trick
+  return(PartI+PartII+PartIII+PartIV)
+}
+
+# Calculate expectation of lasso distribution
+mean_multi_lasso <- function(PartI, PartII, PartIII, PartIV, Z)
+{
+  mean = (PartI*multi_pos_tru_mean(mu1,sigma) + PartII*pos_tru_xxt(mu1,sigma) + PartIII + PartIV)/Z
+  
+  return(mean)
+}
+
+# Calculate convariance matrix of multivariate lasso distribution
+var_multi_lassol = function(PartI, PartII, PartIII, PartIV, Z)
+{
+  Sigma =  (PartI*multi_pos_tru_mean(mu1,sigma) + PartII*pos_tru_xxt(mu1,sigma) + PartIII + PartIV)/Z
+  return(Sigma)
+}
+
+A = matrix(c(2,0,0,3),2,2)
+b = matrix(c(-2,1),2,1)
+c = 3
+calculate_multi_lasso_param(A,b,c)
+
 ```
 
 
@@ -533,6 +567,12 @@ integral2(fun, xmin, xmax, ymin, ymax)
 
 
 
+
+
+
+
+
+
 Local and Global Algorithm
 ## Update one variable at a time (expected fast but less accurate result)
 # vy: vector of y variable
@@ -552,7 +592,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
 {
   ## Initialization
   MAXITER <- 500
-  TOL <- 1.0E-7
+  TOL <- 1.0E-4
   n <- nrow(mX)
   p <- ncol(mX)
   
@@ -578,19 +618,20 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
     for (j in 1:p)
     {
       # Local Update
-      vs = matrix(vmu_adjust[-j]) - matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust)[j,j]) %*% matrix(vmu_adjust[j])
       mt = matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust)[j,j])
+      vs = matrix(vmu_adjust[-j]) - mt %*% matrix(vmu_adjust[j])
       
       ## Update local parameter
       a = a_til/b_til*(t(mX[,j]) %*% mX[,j] + t(mX[,j])%*%mX[,-j]%*%mt)
       b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
       c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
       
+      
       ## Calculate Local mean and variance
       vlocal_mean = calculate_uni_lasso_param(a,b,c)$mu
       mlocal_var = calculate_uni_lasso_param(a,b,c)$var
       
-      # Record local parameter distribution
+      # Record local parameter
       va[j] = a
       vb[j] = b
       vZ[j] = calculate_uni_lasso_param(a,b,c)$Z
@@ -609,6 +650,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       mSigma_adjust[-j,j] = t(mSigma_adjust[j,-j])
       mSigma_adjust[-j,-j] = matrix(mSigma_adjust[-j,-j],p-j_len,p-j_len) + matrix(mSigma_adjust[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_adjust[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_adjust[j,-j]))
       
+      
     }
 
     # Update Theta
@@ -626,7 +668,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   return(list("mu" = vmu_adjust,"Sigma" = mSigma_adjust, "a" = va,"b" = vb,"c"= c ,"Z" = vZ))
 }
 
-output1 = local_global_algorithm_1(y,X,lambda = 0.1,params)
+output1 = local_global_algorithm_1(y,X,lambda = 1,params)
 output1
 ```
 Compare density, MCMC, local density and global density
@@ -644,7 +686,7 @@ par(mfrow=c(2,3))
 for (j in 1:p)
 {
    # returns the density of MCMC samples
-	 mcmc = density(Samples$beta[,j][-1], from = -2, to = 2)
+	 mcmc = density(Samples$beta[,j][-1], from = -1.5, to = 1.5)
 	 plot(mcmc,main=paste0("Density of beta",j),col="blue")
 
 	 # draw local parameter distribution
@@ -652,14 +694,19 @@ for (j in 1:p)
 	 b = vb[j]
 	 c = cc
 	 Z = vZ[j]
-	 lasso = curve(exp(-0.5*a*x^2+b*x-c*abs(x))/Z,add = TRUE,from = - 2, to = 2,col="green")
+	 lasso = curve(exp(-0.5*a*x^2+b*x-c*abs(x))/Z,add = TRUE,from = - 1.5, to = 1.5,col="green")
 	 
 
-	 # # draw global parameter distribution
-	 global = curve(dnorm(x, mean = global_mu[j],sd = global_Sigma[j,j]), add = TRUE,from = -2, to = 2,col="red")
-
+	 # draw global parameter distribution
+	 global = curve(dnorm(x, mean = global_mu[j],sd = sqrt(global_Sigma[j,j])), add = TRUE,from = -1.5, to = 1.5,col="red")
+	 
+   legend("topleft", legend=c("MCMC","Local","Global"),
+       col=c("blue", "green", "red"), lty=1:2, cex=0.4,
+       title="Density types", text.font=4, bg='lightblue',plot = TRUE)
    
 }
+# 
+# jpeg(file="Comparison of Posterior Density.jpeg")
 ```
 
 
