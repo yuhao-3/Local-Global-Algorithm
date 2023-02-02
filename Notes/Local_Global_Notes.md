@@ -122,14 +122,13 @@ $$
 ### Question 1.31
 
 1. Posterior density plot remark
-
 2. Code check
-
 3. Multivariate Lasso: Standardization
-
 4. Next step
 
-   
 
-   
+
+Figure out the issue of why a is negative
+
+
 
