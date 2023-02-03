@@ -373,23 +373,42 @@ calculate_uni_lasso_param <- function(a,b,c)
   mu1 = (b-c)/a
   mu2 = -(c+b)/a
   sigma2 = 1/a
+  
   Z = norm_const_lasso(mu1,mu2,sqrt(sigma2))
   mu = mean_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
   var = var_uni_lasso(mu1,mu2,sqrt(sigma2),Z)
   return(list(mu = mu,var = var, Z = Z))
 }
-
 # Calculate normalizing constant
 norm_const_lasso <- function(mu1,mu2,sigma)
 {
   # Log trick
-  PartI = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))
-  PartII = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))
-  Z = sigma*(PartI + PartII)
+  PartI = pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE)
+  PartII = pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE)
+  
+  # Avoid Overflow
+  M = max(c(PartI,PartII))
+  log_val = M + log(exp(PartI-M) + exp(PartII-M))
+
+  # Avoid Underflow
+  Z = exp(log(sigma)+log_val)
   return(Z)
 }
 
 # Calculate expectation of lasso distribution
+mean_uni_lasso <- function(mu1,mu2,sigma,Z)
+{
+  PartI = (pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE) + log(pos_tru_exp(mu1,sigma)))
+  PartII = (pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE) + log(pos_tru_exp(mu2,sigma)))
+  
+  log_val = PartI - PartII
+  
+  # Avoid Underflow
+  mean = exp(log(sigma) -log(Z) + log_val)
+  return(mean)
+}
+
+
 mean_uni_lasso <- function(mu1,mu2,sigma,Z)
 {
   part1 = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))*pos_tru_exp(mu1,sigma)
@@ -401,10 +420,15 @@ mean_uni_lasso <- function(mu1,mu2,sigma,Z)
 # Calculate second moment of lasso distribution
 second_mom_uni_lasso = function(mu1,mu2,sigma,Z)
 {
-  part1 = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))*pos_tru_sec_mom(mu1,sigma)
-  part2 = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))*pos_tru_sec_mom(mu2,sigma)
+  PartI = (pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE) + log(pos_tru_sec_mom(mu1,sigma)))
+  PartII = (pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE) +log(pos_tru_sec_mom(mu2,sigma)))
   
-  sec_mom = sigma/Z *(part1 + part2 ) 
+  # Avoid Overflow
+  M = max(c(PartI,PartII))  
+  log_val = M + log(exp(PartI-M) + exp(PartII-M))
+  
+  # Avoid Underflow
+  sec_mom = exp(log(sigma) -log(Z) + log_val)
   return(sec_mom)
 }
 
@@ -414,16 +438,12 @@ var_uni_lasso <- function(mu1,mu2,sigma,Z)
   var = second_mom_uni_lasso(mu1,mu2,sigma,Z) -(mean_uni_lasso(mu1,mu2,sigma,Z))^2
   return(var)
 }
-
-
 #################################  Positive Truncated Norm ############################
-
 # Calculate expectation of truncated normal distribution
 pos_tru_exp <- function(mu,sigma)
 {
   return(mu + sigma*xsi_1(mu/sigma))
 }
-
 # Calculate second moment of truncated normal distribution
 pos_tru_sec_mom <- function(mu,sigma)
 {
@@ -435,7 +455,6 @@ xsi_1<- function(t)
 {
   return(exp(dnorm(t,log = TRUE)- pnorm(t,log.p = TRUE)))
 }
-
 # xsi 2 function
 xsi_2<- function(t)
 {
@@ -577,7 +596,7 @@ Local and Global Algorithm
 ## OUTPUT: Global adjust mean, Global adjust covariance
 
 ## If there is a scalar output, change it to 1*1 matrix output, otherwise remain same
-
+## Add damping
 
 local_global_algorithm_1 <- function(vy, mX, lambda, params)
 {
@@ -586,6 +605,8 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   TOL <- 1.0E-8
   n <- nrow(mX)
   p <- ncol(mX)
+  XTX = t(mX)%*%mX
+  rho = 0.8
   
   ## Initial Global Mean and Global Covariance From MFVB
   vmu_adjust = params$vmu_til
@@ -614,7 +635,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       vs = matrix(vmu_adjust[-j]) - mt %*% matrix(vmu_adjust[j])
       
       ## Update local parameter
-      a = a_til/b_til*(t(mX[,j]) %*% mX[,j] + t(mX[,j])%*%mX[,-j]%*%mt)
+      a = a_til/b_til*(matrix(XTX[j,j]) + t(mX[,j])%*%mX[,-j]%*%mt)
       b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
       
       ## Calculate Local mean and variance
@@ -635,11 +656,16 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       j_len = length(vlocal_mean)
       mSigma_jj_inv = matrix(solve(mSigma_adjust[j,j]),j_len,j_len)
       
+      # Store sigma value from previous iteration
+      mSigma_old = mSigma_adjust
+      
       mSigma_adjust[j,j] = mlocal_var
       mSigma_adjust[j,-j] = mlocal_var %*% mSigma_jj_inv %*% t(matrix(mSigma_adjust[j,-j]))
       mSigma_adjust[-j,j] = t(mSigma_adjust[j,-j])
       mSigma_adjust[-j,-j] = matrix(mSigma_adjust[-j,-j],p-j_len,p-j_len) + matrix(mSigma_adjust[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_adjust[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_adjust[j,-j]))
       
+      # Damping
+      mSigma_adjust = rho* mSigma_adjust + (1-rho)*mSigma_old
     }
 
     # Update Theta
@@ -657,9 +683,17 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   return(list("mu" = vmu_adjust,"Sigma" = mSigma_adjust, "a" = va,"b" = vb,"c"= c ,"Z" = vZ))
 }
 
+```
+
+Run algorithm 1
+```{r}
 result_LG = local_global_algorithm_1(y,X,lambda,params)
 result_LG
 ```
+```
+
+
+
 Compare density, MCMC, local density and global density
 ```{r}
 # Initialization
@@ -695,7 +729,6 @@ for (j in 1:p)
    
 }
 # 
-save.image(here("results",paste("densityresults.Rdata",sep="")))
 ```
 
 
