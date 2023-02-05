@@ -1,0 +1,89 @@
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{inputenc}
+\usepackage{xfrac} % for the slanted fraction command
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{array} % for alignment of tabular when fixing col width
+\usepackage{multirow} % multirows in tabular
+\usepackage{titling, titlesec} % for titling options / sections etc.
+
+
+
+% Hyperlinks for TOCs, and general link settings
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor={blue},
+    filecolor=black,
+    linkcolor=blue,
+    urlcolor={blue}
+}
+
+% put text above symbols
+\usepackage{mathtools}
+\newcommand\myeq{\stackrel{\mathclap{\normalfont\mbox{s}}}{~}}
+\newcommand{\widesim}[2][1.5]{
+  \mathrel{\overset{#2}{\scalebox{#1}[1]{$\sim$}}}
+}
+
+
+\usepackage[margin=1in]{geometry} % changing document margins
+%\usepackage{hyperref} % hyperlinks for URLs
+ 
+%\setlength\parindent{0pt} % For no indenting
+\linespread{1.6}
+
+% -------- Title page
+
+\numberwithin{equation}{chapter}
+\numberwithin{section}{chapter}
+%\numberwithin{subsection}{chapter}
+
+
+%References
+% \usepackage[numbers]{natbib}
+% \bibliographystyle{unsrtnat}   
+% \usepackage[nottoc]{tocbibind}
+
+
+%Page Formatting
+\usepackage[titletoc]{appendix}
+\usepackage[english]{babel}
+%\usepackage[none]{hyphenat}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,242.5mm},
+ left=22mm,
+ top=25mm,
+ }
+
+\titleformat{\chapter}[display]{\normalfont\huge\bfseries\centering}   {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing{\chapter}{0pt}{-32pt}{1cm}
+
+\titleformat*{\section}{\normalfont \fontsize{16}{19.2} \bfseries}  
+
+% array package and thick rules for tables
+\usepackage{array}
+
+% create "+" rule type for thick vertical lines
+\newcolumntype{+}{!{\vrule width 2pt}}
+
+% create \thickcline for thick horizontal lines of variable length
+\newlength\savedwidth
+\newcommand\thickcline[1]{%
+  \noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+  \cline{#1}%
+  \noalign{\vskip\arrayrulewidth}%
+  \noalign{\global\arrayrulewidth\savedwidth}%
+}
+
+% \thickhline command for thick horizontal lines that span the table
+\newcommand\thickhline{\noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+\hline
+\noalign{\global\arrayrulewidth\savedwidth}}
