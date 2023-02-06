@@ -1,0 +1,34 @@
+"0","library(ISLR)"
+"0","library(glmnet)"
+"2","Loading required package: Matrix
+"
+"2","Loaded glmnet 4.1-4
+"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(tidyr)"
+"2","
+Attaching package: ‘tidyr’
+
+"
+"2","The following objects are masked from ‘package:Matrix’:
+
+    expand, pack, unpack
+
+"
+"0","library(here)"
+"2","here() starts at C:/Users/jormerod/Desktop/Yuhao Papers/code
+"
