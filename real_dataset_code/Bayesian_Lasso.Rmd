@@ -202,8 +202,6 @@ time_bem <- system.time({
 ### Fit standard Lasso regression
 
 ```{r}
-
-
 res_lm <- lm(vy~-1+mX)
 
 vbeta_lm <- matrix(res_lm$coef,p,1)
@@ -233,18 +231,16 @@ library(profvis)
 
 if(file.exists(paste("res_gibbs",dataset_name,".Rdata",sep="")))
 {
-  data = load(paste("res_gibbs",dataset_name,".Rdata",sep=""))
+  load(paste("res_gibbs",dataset_name,".Rdata",sep=""))
+}else
+{
+  time_gibbs2 <- system.time({
+  res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
+  })
+  save.image(paste("res_gibbs",dataset_name,".Rdata",sep=""))
 }
 
 
-# Run GIBBS
-
-#profvis({
-#time_gibbs2 <- system.time({
-  res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
-#})
-
-save.image(paste("res_gibbs",dataset_name,".Rdata",sep=""))
 ```
 
 
@@ -419,10 +415,17 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
     ## Local Update
     for (j in 1:p)
     {
-      # Local Update
-      mt = matrix(mSigma_adjust[-j,j]) %*% matrix(solve(mSigma_adjust[j,j]))
+      # Store parameter for previous iteration
+      vmu_old = vmu_adjust
+      mSigma_old = mSigma_adjust
+      
+      # Define some constant
+      j_len = length(vmu_adjust[j])
+      mSigma_jj_inv = matrix(solve(mSigma_adjust[j,j]),j_len,j_len)
+      mt = matrix(mSigma_adjust[-j,j]) %*% mSigma_jj_inv
       vs = matrix(vmu_adjust[-j]) - mt %*% matrix(vmu_adjust[j])
       
+      # Local Update
       ## Update local parameter
       a = a_til/b_til*(matrix(XTX[j,j]) + t(XTX[j,-j]%*%mt))
       b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
@@ -434,23 +437,16 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       # Record local parameter
       va[j] = a
       vb[j] = b
-      vZ[j] = calculate_uni_lasso_param(a,b,c)$Z
+      vZ[j] = zlasso(a,b,c)
       
       
       # Global Update
-      j_len = length(vlocal_mean)
-      vmu_old = vmu_adjust
-      mSigma_jj_inv = matrix(solve(mSigma_adjust[j,j]),j_len,j_len)
-      
       ## Update Mean
       vmu_adjust[j] = vlocal_mean
       vmu_adjust[-j] = matrix(vmu_adjust[-j]) + matrix(mSigma_adjust[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
       
-      
-      # Store sigma value from previous iteration
-      mSigma_old = mSigma_adjust
-      
-      ##  Update Covariance
+    
+      ## Update Covariance
       mSigma_adjust[j,j] = mlocal_var
       mSigma_adjust[j,-j] = mlocal_var %*% mSigma_jj_inv %*%  t(matrix(mSigma_old[j,-j]))
       mSigma_adjust[-j,j] = t(mSigma_adjust[j,-j])
@@ -489,13 +485,14 @@ time_LG <- system.time({
 Compare the time
 ```{r}
 cat("BEM running time = ",time_bem[3],"s")
+cat("\nMCMC running time = ",time_gibbs2[3],"s")
 cat("\nMCVB running time = ",time_mcvb[3],"s")
 cat("\nMFVB running time = ",time_mfvb[3],"s")
 cat("\nLG running time =",time_LG[3],"s")
 ```
 
 ```{r}
-save.image(here("results",paste("results",dataset_name,".Rdata",sep="")))
+# save.image(here("results",paste("results",dataset_name,".Rdata",sep="")))
 #load(here("results",paste("results",dataset_name,".Rdata",sep="")))
 ```
 
