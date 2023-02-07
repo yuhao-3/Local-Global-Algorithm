@@ -138,6 +138,7 @@ data(eyedata)
 dataset_name <- "eyedata"
 ```
  
+ 
 ```{r, eval=FALSE}
 source(here("code","normalize.R"))
  
@@ -439,13 +440,11 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       vb[j] = b
       vZ[j] = zlasso(a,b,c)
       
-      
       # Global Update
       ## Update Mean
       vmu_adjust[j] = vlocal_mean
       vmu_adjust[-j] = matrix(vmu_adjust[-j]) + matrix(mSigma_adjust[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
       
-    
       ## Update Covariance
       mSigma_adjust[j,j] = mlocal_var
       mSigma_adjust[j,-j] = mlocal_var %*% mSigma_jj_inv %*%  t(matrix(mSigma_old[j,-j]))

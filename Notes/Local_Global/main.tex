@@ -1,0 +1,646 @@
+\documentclass[12pt]{article}
+
+\input{preamble}
+\usepackage{rotating}
+
+\def\grad{\nabla}
+
+\title{Local Global Approximations (working title)}
+
+\author{John T. Ormerod}
+\date{\today}
+
+
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=1in,bmargin=1.0in,lmargin=1in,rmargin=1in}
+
+\usepackage{atkinson}
+ 
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+We will continue to work on the Lasso becuse that is a good place to start.
+
+ 
+
+\section{The Lasso Distribution}
+
+If $x \sim \mbox{Lasso}(a,b,c)$ with then it has density given by
+$$
+p(x,a,b,c) = Z^{-1}\exp\left( -\tfrac{1}{2}ax^2 + bx - c|x| \right)
+$$
+
+\noindent where $x\in\bR$, $a>0$, $b\in\bR$, $c>0$, and $Z$ is the normalizing constant. Then
+$$
+\begin{array}{rl}
+Z(a,b,c)
+& \ds = \int_{-\infty}^\infty \exp\left[ -\tfrac{1}{2}ax^2 + bx - c|x| \right] dx
+\\ [2ex]
+& \ds 
+= \int_0^\infty    \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
++ \int_{-\infty}^0 \exp\left[ -\tfrac{1}{2}ax^2 + (b + c)x \right] dx
+\\ [2ex]
+& \ds 
+= \int_0^\infty \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
++ \int_0^\infty \exp\left[ -\tfrac{1}{2}ay^2 - (b + c)y \right] dy
+\\ [2ex]
+& \ds 
+= \int_0^\infty \exp\left[ - \frac{(x - \mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2} \right] dx
++ \int_0^\infty \exp\left[ - \frac{(x - \mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2} \right] dy
+\\ [2ex]
+& \ds 
+= \sqrt{2\pi\sigma^2}
+\left[  \exp\left\{  \frac{\mu_1^2}{2\sigma^2} \right\} \int_0^\infty \phi(x;\mu_1,\sigma^2) dx
++       \exp\left\{  \frac{\mu_2^2}{2\sigma^2} \right\} \int_0^\infty \phi(y;\mu_2,\sigma^2) dy
+\right] 
+\\ [2ex]
+& \ds 
+= \sqrt{2\pi\sigma^2}
+\left[  \exp\left\{  \frac{\mu_1^2}{2\sigma^2} \right\} \left\{ 1 - \Phi(-\mu_1/\sigma) \right\} 
++       \exp\left\{  \frac{\mu_2^2}{2\sigma^2} \right\} \left\{ 1 - \Phi(-\mu_2/\sigma) \right\} 
+\right] 
+\\ [2ex]
+& \ds 
+= \sqrt{2\pi\sigma^2}
+\left[  \exp\left(  \frac{\mu_1^2}{2\sigma^2} \right) \Phi\left(\frac{\mu_1}{\sigma} \right) 
++       \exp\left(  \frac{\mu_2^2}{2\sigma^2} \right) \Phi\left( \frac{\mu_2}{\sigma} \right)  
+\right] 
+
+
+\\ [2ex]
+& \ds 
+= 
+  \sigma \left[ \frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)}
++ \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \right] 
+
+
+ 
+\end{array} 
+$$
+
+\noindent where $\mu_1 = (b-c)/a$, $\mu_2 = -(c + b)/a$ and $\sigma^2 = 1/a$. Care should be taken when evaluating $Z$ (which is prone to overflow and divide by zero problems) and is a function of the Mills ratio. 
+
+\subsection{The Moment Generating function and Moments}
+
+
+\noindent The moment generating function requires almost identical calculations with $b$ replaced with $b+t$.
+$$
+M(t) = \frac{Z(a,b+t,c)}{Z(a,b,c) }
+$$
+
+\noindent While this is true it doesn't look useful for calculating moments.
+
+\subsection{Moments}
+
+The moments of the Lasso distribution are:
+$$
+\begin{array}{rl}
+E(x^r)
+& \ds = Z^{-1} \int_{-\infty}^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + bx - c|x| \right] dx
+\\ [2ex]
+& \ds 
+= Z^{-1}  \int_0^\infty   x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
++ \int_{-\infty}^0 x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b + c)x \right] dx
+\\ [2ex]
+& \ds 
+=  Z^{-1}  \int_0^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
++ (-1)^r\int_0^\infty y^r \exp\left[ -\tfrac{1}{2}ay^2 - (b + c)y \right] dy
+\\ [2ex]
+& \ds 
+= Z^{-1}  \sqrt{2\pi\sigma^2}
+ \exp\left(  \frac{\mu_1^2}{2\sigma^2} \right) \int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx
+\\ [2ex]
+& \ds \qquad + (-1)^r    \sqrt{2\pi\sigma^2}   \exp\left(  \frac{\mu_2^2}{2\sigma^2} \right) \int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy
+
+\\ [2ex]
+& \ds 
+= \frac{\sigma}{Z} \left[  
+ \frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} \frac{\int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx}{\Phi(\mu_1/\sigma)}
++ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \frac{\int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy}{\Phi(\mu_2/\sigma)}
+\right] 
+
+\\ [4ex]
+& \ds 
+= \frac{\sigma}{Z} \left[  
+ \frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} 
+ \bE( A^r )
++ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \bE( B^r )
+\right] 
+\end{array} 
+$$
+
+\noindent where $A\sim TN_+(\mu_1,\sigma^2)$, $B\sim TN_+(\mu_2,\sigma^2)$ and $TN_+$ is denotes the positively truncated normal distribution.
+Note that
+$$
+\bE(A) = \mu_1 + \frac{\sigma \phi(\mu_1/\sigma)}{\Phi(\mu_1/\sigma)} = \mu_1 + \sigma \zeta_1(\mu_1/\sigma)
+$$
+
+\noindent and
+$$
+\bV(A) = \sigma^2  \left[ 1 + \zeta_2(\mu_1/\sigma) \right] 
+$$
+
+\noindent where $\zeta_k(x) = d^k \log \Phi(x)/dx^k$,
+$\zeta_1(t) = \phi(t)/\Phi(t)$, $\zeta_2(t) = -t\,\zeta_1(t) - \zeta_1(t)^2$.
+Here
+$\zeta_1(x)$ is the inverse Mills ratio which too needs to be treated with care.
+Hence,
+$$
+\bE(A^2) = \bV(A) + \bE(A)^2 = \sigma^2  \left[ 1 + \zeta_2(\mu_1/\sigma) \right] + \left[\mu_1 + \sigma \zeta_1(\mu_1/\sigma) \right]^2
+$$
+
+\noindent We now have sufficient information to calculate the moments of the Lasso distribution.
+We also have sufficient information to implement a VB approximation.
+
+\subsection{CDF}
+
+
+
+\noindent 
+Similarly if
+$z\le 0$ the CDF is given by
+$$
+\begin{array}{rl} 
+P(Z < z) 
+& \ds = Z^{-1} \int_{-\infty}^z \exp\left[ -\tfrac{1}{2}ax^2 + (b + c)x \right] dx 
+\\ [2ex]
+& \ds = Z^{-1} \sqrt{2\pi\sigma^2} \exp\left( \frac{\mu_2^2}{2\sigma^2} \right) \int_{-\infty}^z \phi(x;-\mu_2,\sigma^2)
+\\ [2ex]
+& \ds = Z^{-1} \sqrt{2\pi\sigma^2} \exp\left( \frac{\mu_2^2}{2\sigma^2} \right) \Phi\left( \frac{z + \mu_2}{\sigma} \right)
+\\ [2ex]
+& \ds =  \frac{\sigma}{Z}\frac{\ds \Phi\left( \frac{z + \mu_2}{\sigma} \right)}{\phi(\mu_2/\sigma)}
+\end{array} 
+$$
+
+\noindent and if $z>0$ we have
+$$
+\begin{array}{rl}
+P(Z < z)
+& \ds = Z^{-1}\int_{-\infty}^z \exp\left( -\tfrac{1}{2}ax^2 + bx - c|x| \right) dx
+\\ [2ex]
+& \ds 
+= Z^{-1} \sqrt{2\pi\sigma^2}
+\left[  \exp\left(  \frac{\mu_1^2}{2\sigma^2} \right) \int_0^z \phi(x;\mu_1,\sigma^2) dx
++      \exp\left(  \frac{\mu_2^2}{2\sigma^2} \right) \Phi\left( \frac{\mu_2}{\sigma} \right)  
+\right] 
+\\ [2ex]
+& \ds = \frac{\sigma}{Z} 
+\left[  \frac{ 
+\Phi\left( \frac{z - \mu_1}{\sigma} \right) - \Phi\left( \frac{ - \mu_1}{\sigma} \right)}{\phi(\mu_1/\sigma)}
++       \frac{\Phi\left( \mu_2/\sigma \right)}{\phi(\mu_2/\sigma)}  
+\right] 
+
+\end{array} 
+$$
+
+
+\subsection{Inverse CDF}
+
+\noindent For the inverse CDF we again have two cases. Let $u = P(Z<z)$. When 
+$$
+u \le \frac{\sigma}{Z}  \frac{\ds \Phi\left(   \mu_2/\sigma \right)}{\phi(\mu_2/\sigma)}
+$$ 
+
+\noindent we solve
+$$
+u = \frac{\ds \sigma \Phi\left( \frac{z + \mu_2}{\sigma} \right)}{Z \phi(\mu_2/\sigma)}
+$$
+
+\noindent for $z$ to obtain
+$$
+z = \mu_2 + \sigma \,\Phi^{-1}\left[ (Z/\sigma) \phi_\sigma(\mu_2/\sigma) u \right]
+$$
+
+\noindent 
+When 
+$$
+u > \frac{\sigma}{Z}  \frac{\ds \Phi\left(   \mu_2/\sigma \right)}{\phi(\mu_2/\sigma)}
+$$ 
+
+\noindent 
+we need to solve
+$$
+u = \frac{\sigma}{Z} 
+\left[  \frac{ 
+\Phi\left( \frac{z - \mu_1}{\sigma} \right) - \Phi\left( \frac{ - \mu_1}{\sigma} \right)}{\phi(\mu_1/\sigma)}
++       \frac{\Phi\left( \mu_2/\sigma \right)}{\phi(\mu_2/\sigma)}  
+\right] 
+$$
+
+\noindent for $z$ to obtain
+$$
+z = \mu_1 + \sigma\, \Phi^{-1}\left[ \phi(\mu_1/\sigma) \left\{ \frac{Z u}{\sigma} 
+-       \frac{\Phi\left( \mu_2/\sigma \right)}{\phi(\mu_2/\sigma)} \right\} 
++ \Phi\left( \frac{ - \mu_1}{\sigma} \right) \right] 
+$$
+
+\noindent which also involves the Mills ratio.
+
+
+
+\newpage 
+
+\section{Tasks}
+
+Suppose that conformably we have
+$$
+\vmu = \left[ \begin{array}{c} 
+\vmu_1 \\
+\vmu_2 
+\end{array} \right] \qquad \mbox{and} \qquad 
+\mSigma = \left[ \begin{array}{cc} 
+\mSigma_{11} & \mSigma_{12} \\
+\mSigma_{21} & \mSigma_{22}
+\end{array} \right]
+$$
+    
+\noindent and $\vtheta = (\vtheta_1,\vtheta_2)$ and
+$q(\vtheta)\sim N(\vmu,\mSigma)$ approximates $p(\vtheta\mid\sD)$. 
+    
+
+
+\begin{enumerate}
+    \item Verify the algebra in Section 2 above for the Lasso distribution.
+    
+        
+    \item Show that
+    $$
+    p(\vtheta_1\mid\sD) = \int p(\vtheta_1\mid\sD,\vtheta_2)p(\vtheta_2\mid\sD) d\vtheta_2
+    $$
+    
+    \item Find $q(\vtheta_2\mid\vtheta_1)$.
+    
+        
+    {\bf Solution:} The conditional distribution of $\vtheta_1|\vtheta_2$ is
+    $$
+    \phi\left(
+    \vtheta_2;
+\boldsymbol\mu_2 + \boldsymbol\Sigma_{21} \boldsymbol\Sigma_{11}^{-1}
+\left(
+ \vtheta_1 - \boldsymbol\mu_1
+\right),
+{\boldsymbol {\Sigma }}_{22}-{\boldsymbol {\Sigma }}_{21}{\boldsymbol {\Sigma }}_{11}^{-1}{\boldsymbol {\Sigma }}_{12}\right)
+    $$
+    
+    \item Suppose that we approximate $p(\vtheta_2\mid\sD)$ by $q(\vtheta_2) = N(\vmu_2,\mSigma_{22})$. Suppose we use this to approximate 
+    $p(\vtheta_1\mid\sD)$ by
+    $$
+    q^*(\vtheta_1) = \int p(\vtheta_1\mid\sD,\vtheta_2)q(\vtheta_2)  d\vtheta_2
+    $$
+    
+    \noindent Suppose that the mean of $q^*(\vtheta_1)$ is $\vmu_1^*$, covariance is $\mSigma_{11}^*$, and $q^*(\vtheta_1) \approx N(\vmu_1^*,\mSigma_{11}^*)$.
+    We update $q(\vtheta)$ via
+    $$
+    q^*(\vtheta) = q(\vtheta_2\mid\vtheta_1) \phi(\vtheta_1;\vmu_1^*,\mSigma_{11}^*)
+    $$
+    
+    \noindent Find $q^*(\vtheta)$.
+    
+    \newpage 
+    
+    {\bf Solution [The easy way]:} We know that $q(\vtheta_2|\vtheta_1)$ and $q(\vtheta_1)$ are Gaussian. Hence, their joint distribution will also be Gaussian. The marginal 
+    mean and variance of the joint distribution for $\vtheta_1$ will be $\vmu_1^*$
+    and $\mSigma_{11}^*$. Suppose the mean and covariance of the joint distribution
+    are $\widetilde{\vmu}$ and $\widetilde{\mSigma}$ respectively. Then
+    $\widetilde{\vmu}_1 = \vmu_1^*$, and $\widetilde{\mSigma}_{11} = \mSigma_{11}^*$.
+    All we need to do is determine $\widetilde{\vmu}_{2}$, $\widetilde{\mSigma}_{22}$
+    and $\widetilde{\mSigma}_{12}$.
+    
+    \bigskip 
+    \noindent We have
+    $$
+    \begin{array}{rl}
+    \bE(\vtheta_2) 
+    & \ds = \bE[\bE(\vtheta_2\mid\vtheta_1)] 
+    \\ [1ex]
+    & \ds = \mE[\vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}\left(\vtheta_1 - \vmu_1\right)]
+    \\ [1ex]
+    & \ds = \vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}\left(\vmu_1^* - \vmu_1\right).
+    \end{array} 
+    $$
+    
+    \noindent Similarly,
+    $$
+    \begin{array}{rl}
+    \mbox{Cov}(\vtheta_2) 
+    & \ds = \bE[\mbox{Cov}(\vtheta_2\mid\vtheta_1)] + \mbox{Cov}[\bE(\vtheta_2\mid\vtheta_1)] 
+    \\ [2ex]
+    & \ds = \bE(\mSigma_{22} - \mSigma_{21} \mSigma_{11}^{-1}\mSigma_{12}) + \mbox{Cov}[\vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}\left(\vtheta_1 - \vmu_1\right)] 
+    \\ [2ex]
+    & \ds = \mSigma_{22} - \mSigma_{21} \mSigma_{11}^{-1}\mSigma_{12}
+    + \mSigma_{21}\mSigma_{11}^{-1}  \mbox{Cov}(\vtheta_1) \mSigma_{11}^{-1}  \mSigma_{12}
+    \\ [2ex]
+    & \ds =  \mSigma_{22} 
+    + \mSigma_{21}(\mSigma_{11}^{-1}  \mSigma_{11}^* \mSigma_{11}^{-1} -\mSigma_{11}^{-1})  \mSigma_{12}.
+    \end{array} 
+    $$
+    
+    \noindent Lastly,
+    $$
+    \begin{array}{rl}
+    \mbox{Cov}(\vtheta_1,\vtheta_2) 
+    & \ds = \bE[(\vtheta_1 - \bE(\vtheta_1))(\vtheta_2 - \bE(\vtheta_2))^T] 
+    \\ [2ex]
+    & \ds = \bE\left[ \bE\left\{ (\vtheta_1 - \bE(\vtheta_1))(\vtheta_2 - \bE(\vtheta_2))^T \mid \vtheta_1 \right\} \right]     \\ [2ex]
+    & \ds = \bE\left[ \left(\vtheta_1 - \vmu_1^* \right)\left(  \mSigma_{21}\mSigma_{11}^{-1}(\vtheta_1 - \vmu_1^*)    \right)^T\right] 
+    \\ [2ex]
+    & \ds = \bE\left[ \left(\vtheta_1 - \vmu_1^* \right)\left(  \vtheta_1 - \vmu_1^* \right)^T\right] \mSigma_{11}^{-1}\mSigma_{12}
+    \\ [2ex]
+    & \ds = \mSigma_{11}^* \mSigma_{11}^{-1}\mSigma_{12}.
+    \end{array} 
+    $$
+    
+    \noindent Hence, $q^*(\vtheta) = N(\widetilde{\vmu},\widetilde{\mSigma})$ where
+    $$
+    \widetilde{\vmu} =
+    \left[ \begin{array}{c}
+    \vmu_1^* \\
+     \vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}\left(\vmu_1^* - \vmu_1\right)
+    \end{array} \right]
+    $$
+    
+    \noindent and
+    $$
+    \widetilde{\mSigma} = 
+    \left[ \begin{array}{cc}
+    \mSigma_{11}^* & \mSigma_{11}^* \mSigma_{11}^{-1}\mSigma_{12} \\
+    \mSigma_{21}  \mSigma_{11}^{-1}\mSigma_{11}^* & \mSigma_{22} 
+    + \mSigma_{21}\mSigma_{11}^{-1}  ( \mSigma_{11}^* -\mSigma_{11})  \mSigma_{11}^{-1} \mSigma_{12}
+    \end{array} \right].
+    $$
+    
+    \noindent Note that
+    $$
+    \widetilde{\mOmega} = \widetilde{\mSigma}^{-1} = \left[ \begin{array}{cc}
+    (\mSigma_{11}^*)^{-1}  + \mSigma_{11}^{-1} \mSigma_{12} \mQ \mSigma_{21} \mSigma_{11}^{-1}
+        & - \mQ \mSigma_{21}\mSigma_{11}^{-1} 
+    \\ 
+    - \mSigma_{11}^{-1} \mSigma_{12} \mQ
+    & \mQ
+    \end{array} \right] 
+    $$
+    
+    \noindent where
+    $$
+    \mQ =  (\mSigma_{22} - \mSigma_{21} \mSigma_{11}^{-1}\mSigma_{22})^{-1}.
+    $$
+    
+    \noindent Note that only the top right hand block of $\widetilde{\mOmega}$ changes when $\mSigma_{11}^*$ changes. This might be useful because $\widetilde{\mOmega}$ will be approximately sparse. This might be important for high dimensional problems.
+    
+    
+    
+    \noindent A matrix 
+    $\widetilde{\mSigma}$ is positive definite if and only if the upper left block and its Schur complement are positive definite (see Theorem 7.7.6  of Horn \& Johnson, 2012). The upper block is $\mSigma_{11}^*$ which we will assume is positive definite. The Schur complement is given by
+    $$
+    \begin{array}{l}
+    \mSigma_{22} + \mSigma_{21}\mSigma_{11}^{-1}  ( \mSigma_{11}^* -\mSigma_{11})  \mSigma_{11}^{-1} \mSigma_{12} - \mSigma_{21}  \mSigma_{11}^{-1}\mSigma_{11}^* (\mSigma_{11}^*)^{-1} \mSigma_{11}^* \mSigma_{11}^{-1}\mSigma_{12}
+    \\ [2ex]
+    \qquad \ds  = \mSigma_{22} + \mSigma_{21}\mSigma_{11}^{-1}  ( \mSigma_{11}^* -\mSigma_{11})  \mSigma_{11}^{-1} \mSigma_{12} - \mSigma_{21}  \mSigma_{11}^{-1}\mSigma_{11}^*  \mSigma_{11}^{-1}\mSigma_{12}
+    \\ [2ex]
+    \qquad  \ds = \mSigma_{22} - \mSigma_{21}\mSigma_{11}^{-1} \mSigma_{12}  
+    \end{array} 
+    $$
+    
+    \noindent which is positive definite since it is the Schur complement of a positive definite matrix.
+    
+    \newpage 
+    
+    {\bf Solution [The hard way]:}
+    \noindent Consider,
+    $$
+    \begin{array}{l}
+    q(\vtheta_2\mid\vtheta_1) \phi(\vtheta_1;\vmu_1^*,\mSigma_{11}^*)
+    \\ [2ex] 
+    \quad \ds \propto \exp\left[ 
+    -\tfrac{1}{2}\left(
+    \vtheta_2 - \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\left(\vtheta_1 - \vmu_1\right)\right)^T \mQ
+    \left( \vtheta_2 - \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\left(\vtheta_1 - \vmu_1\right)
+    \right)
+    \right]
+    \\ [2ex]
+    \quad  \ds \quad \times 
+    \exp\left[ 
+    -\tfrac{1}{2} (\vtheta_1 - \vmu_1^*)^T(\mSigma_{11}^*)^{-1}(\vtheta_1 - \vmu_1^*)
+    \right] 
+    
+    
+    
+    \\ [2ex]
+    
+    
+    
+    \quad \ds = \exp\left[ 
+    -\tfrac{1}{2}
+    \vtheta_2^T \mQ \vtheta_2 +\left( \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right)^T  \mQ\vtheta_2
+    
+    \right]
+    \\ [2ex]
+    \quad \ds  \quad \times \exp\left[ 
+    -\tfrac{1}{2}\vtheta_1^T\left( (\mSigma_{11}^*)^{-1}  + \mSigma_{11}^{-1} \mSigma_{12} \mQ\mSigma_{21}\mSigma_{11}^{-1} \right)\vtheta_1  
+    \right]
+    \\ [2ex]
+    \quad \ds  \quad \times  \exp\left[ 
+    \left( (\mSigma_{11}^*)^{-1} \vmu_1^* + \mSigma_{11}^{-1}\mSigma_{12}\mQ \left(  
+    \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right)  \right)^T\vtheta_1
+    \right]
+    \\ [2ex]
+    \quad \ds  \quad \times  \exp\left[
+    \vtheta_2^T \mQ \mSigma_{21}\mSigma_{11}^{-1}\vtheta_1
+    \right]
+    
+    \end{array} 
+    $$
+    
+    \noindent where $\mQ = (\mSigma_{22} - \mSigma_{21} \mSigma_{11}^{-1}\mSigma_{22})^{-1}$
+    
+    \noindent Now suppose that $q^*(\vtheta)= N(\widetilde{\vmu},\widetilde{\mSigma})$ then
+    $$
+    \begin{array}{rl}
+    q(\vtheta) 
+    & \ds \propto \exp\left[ 
+    - \frac{1}{2}\left( \left( \begin{array}{c} \vtheta_1 \\ \vtheta_2\end{array} \right) - \left( \begin{array}{c} \widetilde{\vmu}_1 \\ \vmu_2\end{array} \right)  \right)^T\left( \begin{array}{cc} \widetilde{\mQ}_{11} & \widetilde{\mQ}_{12} \\ \widetilde{\mQ}_{21} & \widetilde{\mQ}_{22}\end{array} \right)  \left( \left( \begin{array}{c} \vtheta_1 \\ \vtheta_2\end{array} \right) - \left( \begin{array}{c} \widetilde{\vmu}_1 \\ \widetilde{\vmu}_2\end{array} \right)  \right)
+    \right] 
+    \\ [3ex]
+    & \ds \propto 
+    \exp\left[ - \tfrac{1}{2}(\vtheta_1 - \widetilde{\vmu}_1)^T\widetilde{\mQ}_{11}(\vtheta_1 - \widetilde{\vmu}_1) \right]
+    \\ [2ex]
+    & \ds \qquad \times \exp\left[ - \tfrac{1}{2}(\vtheta_2 - \widetilde{\vmu}_2)^T\widetilde{\mQ}_{22}(\vtheta_2 - \widetilde{\vmu}_2) \right]
+        \\ [2ex]
+    & \ds \qquad \times \exp\left[ - (\vtheta_1 - \widetilde{\vmu}_1)^T\widetilde{\mQ}_{12}(\vtheta_2 - \widetilde{\vmu}_2)
+    \right] 
+    \\ [3ex]
+    & \ds \propto 
+    \exp\left[ - \tfrac{1}{2}\vtheta_1^T\widetilde{\mQ}_{11}\vtheta_1 
+    + \vtheta_1^T(\widetilde{\mQ}_{11}\widetilde{\vmu}_1 + \widetilde{\mQ}_{12}\widetilde{\vmu}_2) \right] 
+            \\ [2ex]
+    & \ds \qquad \times 
+    \exp\left[ - \tfrac{1}{2}\vtheta_2^T\widetilde{\mQ}_{22}\vtheta_2 + \vtheta_2^T(\widetilde{\mQ}_{22}\widetilde{\vmu}_2 + \widetilde{\mQ}_{21}\widetilde{\vmu}_1)
+    - \vtheta_2^T\widetilde{\mQ}_{21}\vtheta_1 \right] 
+    \end{array} 
+    $$
+    
+    \noindent where $\widetilde{\mQ} = \widetilde{\mSigma}^{-1}$. Matching term by term with the first expression above we find that
+    $$
+    \begin{array}{rl}
+    \widetilde{\mQ}_{21} & \ds = -\mQ\mSigma_{21}\mSigma_{11}^{-1}
+    \\ [2ex]
+    \widetilde{\mQ}_{11} & \ds =  (\mSigma_{11}^*)^{-1}  + \mSigma_{11}^{-1} \mSigma_{12} \mQ\mSigma_{21}\mSigma_{11}^{-1} 
+    \\ [2ex]
+    \widetilde{\mQ}_{22} & \ds = \mQ
+    \\ [2ex]
+    \widetilde{\mQ}_{11}\widetilde{\vmu}_1 + \widetilde{\mQ}_{12}\widetilde{\vmu}_2
+    & \ds =  
+     (\mSigma_{11}^*)^{-1} \vmu_1^* + \mSigma_{11}^{-1}\mSigma_{12}\mQ \left(  
+    \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right) 
+    \\ [2ex]
+    \widetilde{\mQ}_{22}\widetilde{\vmu}_2 + \widetilde{\mQ}_{21}\widetilde{\vmu}_1
+    & \ds = \mQ\left( \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right) 
+    \end{array} 
+    $$
+    
+    \noindent We need to solve this system of equations to find
+    $\widetilde{\mQ}_{11}$, $\widetilde{\mQ}_{12}$, $\widetilde{\mQ}_{22}$, $\widetilde{\vmu}_1$
+    and $\widetilde{\vmu}_2$. We then need to use 
+    $\widetilde{\mQ}_{11}$, $\widetilde{\mQ}_{12}$, and $\widetilde{\mQ}_{22}$
+    to find
+    $\widetilde{\mSigma}_{11}$, $\widetilde{\mSigma}_{12}$, $\widetilde{\mSigma}_{22}$.
+
+    
+    The block inverse formula states that the inverse of a real matrix can be written as
+		\begin{eqnarray}
+		\ds \left[ \begin{array}{cc}
+		\mA   & \mB \\
+		\mC & \mD
+		\end{array} \right]^{-1}
+		&  = &
+		\ds \left[ \begin{array}{cc}
+		\mI & \vzero \\
+		-\mD^{-1}\mC &  \mI
+		\end{array} \right]
+		\left[ \begin{array}{cc}
+		\widetilde{\mA} & \vzero \\
+		\vzero & \mD^{-1}
+		\end{array} \right]
+		\left[ \begin{array}{cc}
+		\mI    & -\mB\mD^{-1}\\
+		\vzero & \mI
+		\end{array} \right] \label{eq:blockdiag1}\\
+		&  = &
+		\ds\left[
+		\begin{array}{cc}
+		\widetilde{\mA}
+		& - \widetilde{\mA}\mB\mD^{-1} \\
+		-\mD^{-1}\mC\widetilde{\mA}
+		& \mD^{-1} + \mD^{-1}\mC\widetilde{\mA}\mB\mD^{-1},
+		\end{array}\right]\label{eq:blockdiag2}
+		\end{eqnarray}
+		
+		\noindent where $\widetilde{\mA} = \left(\mA-\mB\mD^{-1}\mC\right)^{-1}$,
+		provided all inverses in (\ref{eq:blockdiag1}) and
+		(\ref{eq:blockdiag2}) exist.
+    
+    \noindent Using the block inverse formula for the top left element of $\mSigma$ we have
+    $$
+    \begin{array}{rl}
+    \widetilde{\mSigma}_{11}  
+    & \ds = \left( \widetilde{\mQ}_{11} - \widetilde{\mQ}_{12}\widetilde{\mQ}_{22}^{-1} \widetilde{\mQ}_{21} \right)^{-1}
+    \\ [2ex]
+    & \ds = \left( 
+        (\mSigma_{11}^*)^{-1}  + \mSigma_{11}^{-1} \mSigma_{12} \mQ\mSigma_{21}\mSigma_{11}^{-1} 
+        - \mSigma_{11}^{-1}\mSigma_{12}\mQ 
+          \mQ^{-1} 
+          \mQ\mSigma_{21}\mSigma_{11}^{-1}
+    \right)^{-1}
+    \\ [2ex]
+    & \ds = \mSigma_{11}^* 
+    \end{array} 
+    $$
+    
+    \noindent as expected. Similarly, using the bottom right block inverse formula leads to
+    $$
+    \begin{array}{rl}
+    \widetilde{\mSigma}_{22}
+    & \ds = \mSigma_{22} + \mSigma_{21}(\mSigma_{11}^{-1}\mSigma_{11}^*\mSigma_{11}^{-1} - \mSigma_{11}^{-1}) \mSigma_{12}
+    \end{array} 
+    $$
+    
+    \noindent so that if $\mSigma_{11}^* = \mSigma_{11}$ then there will be no changes to $\mSigma_{22}$. 
+    Finally, using the top left block inverse formula leads to 
+    $$
+    \begin{array}{rl}
+    \widetilde{\mSigma}_{12} = \mSigma_{11}^*\mSigma_{11}^{-1} \mSigma_{12}
+    \end{array} 
+    $$
+    
+    \noindent Using the last equation in the system of equations to solve 
+    $$
+    \begin{array}{rl}
+    \widetilde{\vmu}_2
+    & \ds = \widetilde{\mQ}_{22}^{-1}\mQ\left( \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right)  - \widetilde{\mQ}_{22}^{-1}\widetilde{\mQ}_{21}\widetilde{\vmu}_1
+    \\ [2ex]
+    & \ds =  \vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}(\widetilde{\vmu}_1 -  \vmu_1   )
+    
+    \end{array} 
+    $$
+    
+    \noindent Using the 4th equation in the system of equations we have
+    $$
+    \begin{array}{rl}
+    \widetilde{\mQ}_{11}\widetilde{\vmu}_1
+    & \ds = (\mSigma_{11}^*)^{-1} \vmu_1^* + \mSigma_{11}^{-1}\mSigma_{12}\mQ \left(  
+    \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right)
+    -  \widetilde{\mQ}_{12}\widetilde{\vmu}_2
+    
+    \\ [2ex]
+    & \ds = (\mSigma_{11}^*)^{-1} \vmu_1^* + \mSigma_{11}^{-1}\mSigma_{12}\mQ \left(  
+    \vmu_2 - \mSigma_{21}\mSigma_{11}^{-1}\vmu_1\right)
+    - \mSigma_{11}^{-1}\mSigma_{12}  \mQ \left( \vmu_2 + \mSigma_{21}\mSigma_{11}^{-1}(\widetilde{\vmu}_1 -  \vmu_1   ) \right)
+
+
+    \\ [2ex]
+    & \ds = (\mSigma_{11}^*)^{-1} \vmu_1^*
+    - \mSigma_{11}^{-1}\mSigma_{12}  \mQ \mSigma_{21}\mSigma_{11}^{-1}\widetilde{\vmu}_1   
+    
+    
+    
+    \end{array} 
+    $$
+    
+    \noindent Using the 2nd of the system of equations leads to 
+    $$
+    \left[ (\mSigma_{11}^*)^{-1}  + \mSigma_{11}^{-1} \mSigma_{12} \mQ\mSigma_{21}\mSigma_{11}^{-1} \right] \widetilde{\vmu}_1 =  (\mSigma_{11}^*)^{-1} \vmu_1^*
+    - \mSigma_{11}^{-1}\mSigma_{12}  \mQ \mSigma_{21}\mSigma_{11}^{-1}\widetilde{\vmu}_1 
+    $$
+    
+    \noindent After some cancellation we have $\widetilde{\vmu}_1 = \vmu_1^*$.
+    
+    
+    \newpage 
+    
+
+    
+    
+    \item Consider the multivariate Lasso distribution
+    $$
+    p\left( \vx \right) \propto \exp\left(  -\tfrac{1}{2}\vx^T\mA\vx + \vb^T\vx - c\|\vx\|_1 \right)
+    $$
+    
+    \noindent where $\mA\in\sS_d^+$ is a positive definite matrix of dimension $d$, $\vb\in\bR^2$ and $c>0$ with $\|\vx\|_1 = \sum_{j=1}^d |x_j|$. For the case $d=2$ 
+    \begin{itemize}
+        \item Find the normalizing constant.
+        \item Find an expression for the expectation and the covariance.
+    \end{itemize}
+    
+
+
+    
+    
+\end{enumerate}
+
+
+\end{document}

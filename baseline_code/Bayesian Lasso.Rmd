@@ -413,8 +413,9 @@ mean_uni_lasso <- function(mu1,mu2,sigma,Z)
 {
   part1 = exp(pnorm(mu1/sigma,log.p = TRUE)- dnorm(mu1/sigma,log = TRUE))*pos_tru_exp(mu1,sigma)
   part2 = exp(pnorm(mu2/sigma,log.p = TRUE)- dnorm(mu2/sigma,log = TRUE))*pos_tru_exp(mu2,sigma)
-  mean = sigma/Z *(part1 - part2 )
+  mean = sigma/Z *(part1 - part2)
   return(mean)
+
 }
 
 # Calculate second moment of lasso distribution
@@ -520,7 +521,6 @@ calculate_multi_lasso_param <- function(mA,vb,cc)
   
   
   # Get 4 parts of equation separately
-  
   PartI = exp(log(pmvnorm(mean = mu1, sigma =Sigma))-log(dmvnorm(as.vector(A%*%mu1),sigma = Sigma)))
   PartII = exp(log(pmvnorm(mu2, sigma =Sigma))-log(dmvnorm(as.vector(A%*%mu2),sigma = Sigma)))
   PartIII = exp(log(pmvnorm(mu3, sigma = Sigma))-log(dmvnorm(as.vector(A%*%mu3),sigma = Sigma)))

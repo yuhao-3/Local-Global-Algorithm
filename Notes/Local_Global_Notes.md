@@ -26,15 +26,49 @@ Optimal Approximation:  $p(\theta_1|D)$ by $q^*(\theta_1) = \int p(\theta_1|D,\t
 
 
 
+$\theta$ multidimensional 
+
+
+
+$q(\theta_2|\theta_1): N(\mu_1+\Sigma_{21}\Sigma_{11}^{-1}(\theta_1-\mu_1), \Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12})$
+
+#### Approximate Global
+
+
+$$
+q^{\star}(\theta) = q(\theta_2|\theta_1)\phi(\theta_1;\mu_1^*,\Sigma_{11}^*)\\
+q^*(\theta) :  N_p(\mu_1 + \Sigma_{21}\Sigma_{11}^{-1}(\theta_1-\mu_1)+\mu_1^*, \Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}+\Sigma_{11}^*)
+$$
 
 
 
 
-## Derivation Result
-
-$Bivariate Normal$
 
 
+
+![Screen Shot 2023-01-17 at 15.07.47](assets/Screen Shot 2023-01-17 at 15.07.47.png)
+
+![›](assets/Screen Shot 2022-12-12 at 21.56.23.png)
+
+
+
+​		<img src="assets/Screen Shot 2022-12-12 at 21.57.02.png" alt="Screen Shot 2022-12-12 at 21.57.02" style="zoom:60%;" />
+
+
+
+
+
+## 1. Update Simga
+
+
+
+## 2. Parameter tuning
+
+
+
+
+
+## 3. Bivariate Lasso Result
 
 Normalizing constant of multivariate **B**ayesian lasso:
 $$
@@ -75,19 +109,6 @@ $$
 
 
 
-$\theta$ multidimensional 
-
-
-
-$q(\theta_2|\theta_1): N(\mu_1+\Sigma_{21}\Sigma_{11}^{-1}(\theta_1-\mu_1), \Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12})$
-
-#### Approximate Global
-
-
-$$
-q^{\star}(\theta) = q(\theta_2|\theta_1)\phi(\theta_1;\mu_1^*,\Sigma_{11}^*)\\
-q^*(\theta) :  N_p(\mu_1 + \Sigma_{21}\Sigma_{11}^{-1}(\theta_1-\mu_1)+\mu_1^*, \Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}+\Sigma_{11}^*)
-$$
 
 
 
@@ -95,13 +116,10 @@ $$
 
 
 
-![Screen Shot 2023-01-17 at 15.07.47](assets/Screen Shot 2023-01-17 at 15.07.47.png)
-
-![›](assets/Screen Shot 2022-12-12 at 21.56.23.png)
 
 
 
-​		<img src="assets/Screen Shot 2022-12-12 at 21.57.02.png" alt="Screen Shot 2022-12-12 at 21.57.02" style="zoom:60%;" />
+
 
 
 
