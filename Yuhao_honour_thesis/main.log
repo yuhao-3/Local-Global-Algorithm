@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2023.2.3)  6 FEB 2023 10:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2023.2.3)  8 FEB 2023 14:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -660,7 +660,7 @@ Package hyperref Info: Link coloring ON on input line 6.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=15, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=43, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 20.
@@ -696,6 +696,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--45
 
 ] (Chapter1.tex
 Chapter 1.
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <16> not available
+(Font)              size <17.28> substituted on input line 3.
+
 ) (Chapter2.tex
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
@@ -719,24 +723,34 @@ Package natbib Warning: Empty `thebibliography' environment on input line 15.
 ) [4
 
 ] (main.aux)
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 05B20D36D76998D9CD4048543BC56A35;327.
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 1.28pt have occurred.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 8E856CA1A92BF25D874B70AE44FD2483;1329
+(rerunfilecheck)             After:  70A29FBE230D95C178E76A50D20E5C4C;1502.
  ) 
 Here is how much of TeX's memory you used:
- 14657 strings out of 478296
- 252199 string characters out of 5839097
- 1853305 words of memory out of 5000000
- 34572 multiletter control sequences out of 15000+600000
- 514402 words of font info for 39 fonts, out of 8000000 for 9000
+ 14716 strings out of 478296
+ 252983 string characters out of 5839097
+ 1854305 words of memory out of 5000000
+ 34606 multiletter control sequences out of 15000+600000
+ 520283 words of font info for 59 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  80i,5n,79p,905b,528s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfon
 ts/cm/cmbx12.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type
 1/public/amsfonts/cm/cmr12.pfb></Library/Application Support/MiKTeX/texmfs/inst
 all/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on main.pdf (9 pages, 66239 bytes).
+Output written on main.pdf (9 pages, 73347 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 14 named destinations out of 1000 (max. 500000)
- 30 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 PDF objects out of 1000 (max. 8388607)
+ 22 named destinations out of 1000 (max. 500000)
+ 86 words of extra memory for PDF output out of 10000 (max. 10000000)
 
