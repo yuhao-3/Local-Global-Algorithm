@@ -14,14 +14,15 @@ dmlasso <- function(x,a,b,c,logarithm=FALSE)
   return(exp(log_pdf))
 }
 
+# Calculate normalizing constant for Multivariate Lasso 
 zmlasso <- function(A,b,c)
 {
   # Get parameter
   A_inv = solve(A)
   mu1 = as.vector(A_inv %*%(b - c))
-  mu2 = as.vector(A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1))
-  mu3 = as.vector(A_inv %*% matrix(c(b[1]-c,-b[2]-c),2,1))
-  mu4 = as.vector(A_inv %*%(b + c))
+  mu2 = as.vector(A_inv %*% matrix(c(b[1]-c,-b[2]-c),2,1))
+  mu3 = as.vector(A_inv %*% matrix(c(-b[1]-c,b[2]-c),2,1))
+  mu4 = as.vector(A_inv %*%(-b - c))
   Sigma = A_inv
   
   # Get 4 parts of equation separately
@@ -29,9 +30,10 @@ zmlasso <- function(A,b,c)
   PartII = pmvnorm(0,Inf,mean = mu2, sigma =Sigma)/dmvnorm(as.vector(A%*%mu2),sigma = A)
   PartIII = pmvnorm(0,Inf,mean = mu3, sigma = Sigma)/dmvnorm(as.vector(A%*%mu3),sigma = A)
   PartIV = pmvnorm(0,Inf,mean = mu4, sigma=Sigma)/dmvnorm(as.vector(A%*%mu4),sigma = A)
+    
+  print(PartIV[1]*det(Sigma))
   
-  
-  return((PartI+PartII+PartIII+PartIV)[1]*det(A))
+  return((PartI+PartII+PartIII+PartIV)[1]*det(Sigma))
 }
 
 # Calculate expectation of lasso distribution

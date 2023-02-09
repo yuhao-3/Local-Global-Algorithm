@@ -58,13 +58,13 @@ $$
 
 
 
-## 1. Update Simga
+## 1. Update Sigma
 
 
 
 ## 2. Parameter tuning
 
-
+Add lambda2 a Gamma prior
 
 
 
