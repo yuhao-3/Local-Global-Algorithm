@@ -1,4 +1,6 @@
 source(here("code","bayesian_lasso_gibbs.R")) 
+
+## Local and Global Algorithm One(Update one variable at a time)
 ## INPUT: y, mX, lambda, param
 ## OUTPUT: Global adjust mean, Global adjust covariance
 
@@ -91,3 +93,14 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   return(list("vmu_til" = vmu_adjust,"mSigma_til" = mSigma_adjust, "a" = va,"b" = vb,"c"= c ,"Z" = vZ))
   
 }
+
+
+## Local and Global Algorithm One(Update twp variables at a time)
+
+
+
+
+
+
+
+
