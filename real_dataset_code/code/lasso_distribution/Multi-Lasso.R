@@ -2,6 +2,12 @@
 library(MASS)
 library(mvtnorm)
 library(sn)
+library(matrixStats)
+# library(TruncatedNormal)
+# library(hpa)
+# library(truncnorm)
+library(mnormt)
+
 # Note: A: positive definite,c vb in R2, cc>0, 
 # Note: a>0, c>0
 dmlasso <- function(x,a,b,c,logarithm=FALSE) 
@@ -38,27 +44,86 @@ zmlasso <- function(A,b,c,logarithm=FALSE)
   log_Z2 =  log(det(Sigma1)) + logSumExp(c(PartI[1],PartIV[1]))
 
   if (logarithm) {
-    return(log_Z)
+    return(log(exp(log_Z1) + exp(log_Z2)))
   } 
   return(exp(log_Z1) + exp(log_Z2))
 }
 
 
 
-# Calculate expectation of lasso distribution
+# Calculate expectation of multivariate lasso distribution
 emlasso<- function(A,b,c)
 {
+  # Get parameter
+  lower = 0
+  upper = Inf
+  A_star = A * matrix(c(1,-1,-1,1),2,2)
+  Sigma1 = solve(A)
+  Sigma2 = solve(A_star)
+  mu1 = as.vector(Sigma1 %*%(b - c))
+  mu2 = as.vector(Sigma2 %*% matrix(c(b[1]-c,-b[2]-c),2,1))
+  mu3 = as.vector(Sigma2 %*% matrix(c(-b[1]-c,b[2]-c),2,1))
+  mu4 = as.vector(Sigma1 %*%(-b - c))
+  
+  
+  # Get normalizign constant
   Z = zmlasso(A,b,c)
-  mean = 
+  # Calculate expectation for each of the four parts
+  tn_mean1 = log(mom.mtruncnorm(powers = 1, mu1, Sigma1, rep(lower,2), rep(upper,2))$cum1)
+  tn_mean2 = log(mom.mtruncnorm(powers = 1, mu2, Sigma2, rep(lower,2), rep(upper,2))$cum1)
+  tn_mean3 = log(mom.mtruncnorm(powers = 1, mu3, Sigma2, rep(lower,2), rep(upper,2))$cum1)
+  tn_mean4 = log(mom.mtruncnorm(powers = 1, mu4, Sigma1, rep(lower,2), rep(upper,2))$cum1)
+
+  # Get 4 parts of equation separately
+  PartI = tn_mean1-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII = (tn_mean2-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))) * c(1,-1)
+  PartIII = (tn_mean3-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)) )* c(-1,1)
+  PartIV = (tn_mean4-log(dmvnorm(as.vector(A%*%mu4),sigma = A))) * c(-1,-1)
+  
+
+
+  # Log Sum Exp Trick to prevent overflow and underflow    
+  log_mean1 =  log(det(Sigma2)) + log(exp(PartII)+ exp(PartIII)) - log(Z)
+  log_mean2 =  log(det(Sigma1)) + log(exp(PartI)+ exp(PartIV)) - log(Z)
+
+  mean = exp(log_mean1)+ exp(log_mean2)
+  
+  # mean = det(Sigma1) * (exp(tn_mean1)/dmvnorm(as.vector(A%*%mu1),sigma = A) +exp(tn_mean4)/dmvnorm(as.vector(A%*%mu4),sigma = A))/Z +
+  #        det(Sigma2) *(exp(tn_mean2)/dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)+ exp(tn_mean3)/dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))/Z
+
   
   return(mean)
 }
 
 # Calculate convariance matrix of multivariate lasso distribution
-vmlasso = function(PartI, PartII, PartIII, PartIV, Z)
+vmlasso = function(A,b,c)
 {
-  Sigma =  (PartI*multi_pos_tru_mean(mu1,sigma) + PartII*pos_tru_xxt(mu1,sigma) + PartIII + PartIV)/Z
-  return(Sigma)
+  # Get parameter
+  A_star = A * matrix(c(1,-1,-1,1),2,2)
+  Sigma1 = solve(A)
+  Sigma2 = solve(A_star)
+  mu1 = as.vector(Sigma1 %*%(b - c))
+  mu2 = as.vector(Sigma2 %*% matrix(c(b[1]-c,-b[2]-c),2,1))
+  mu3 = as.vector(Sigma2 %*% matrix(c(-b[1]-c,b[2]-c),2,1))
+  mu4 = as.vector(Sigma1 %*%(-b - c))
+  
+  # Get 4 parts of equation separately
+  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1))-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma =Sigma2))-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
+  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2))-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma=Sigma1))-log(dmvnorm(as.vector(A%*%mu4),sigma = A))
+  
+  Z = zmlasso(A,b,c)
+  mu = elasso(A,b,c)
+  
+  # Calculate expectation for each of the four parts
+  tn_cov1 = mom.mtruncnorm(powers = 2, mu1, Sigma1, rep(lower,2), rep(upper,2))$order2$cum2
+  tn_cov2 = mom.mtruncnorm(powers = 2, mu2, Sigma2, rep(lower,2), rep(upper,2))$order2$cum2
+  tn_cov3 = mom.mtruncnorm(powers = 2, mu3, Sigma2, rep(lower,2), rep(upper,2))$order2$cum2
+  tn_cov4 = mom.mtruncnorm(powers = 2, mu4, Sigma1, rep(lower,2), rep(upper,2))$order2$cum2
+  
+  mean = PartI * tn_cov1 + PartII * tn_mean2*c(1,-1) + PartIII * tn_mean3*c(-1,1) - PartIV * tn_mean4  
+  
 }
 
 # A = matrix(c(2,0,0,3),2,2)

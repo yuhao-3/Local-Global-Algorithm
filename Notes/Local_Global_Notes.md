@@ -111,22 +111,6 @@ $$
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Question 1.24
 
 1 Q4: Product of one multivariate normal and an univariate normal, not sure its posterior
