@@ -58,9 +58,12 @@ mu1 = A_inv%*%(b-c)
 
 Sigma1 = A_inv
 mom.mtruncnorm(powers = 1, mu1, Sigma1, rep(lower,2), rep(upper,2))$cum1
+mom.mtruncnorm(powers = 2, mu1, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
 ```
 ```{r}
-mtmvnorm(mean=as.vector(mu1), sigma=Sigma1,lower=rep(lower,2), upper=rep(upper,2))
+res = mtmvnorm(mean=as.vector(mu1), sigma=Sigma1,lower=rep(lower,2), upper=rep(upper,2))
+print(res$tmean)
+res$tvar + res$tmean %*% t(res$tmean)
 ```
 
 
@@ -229,11 +232,64 @@ vx = c()
 vy = c()
 final1 = dblquad(actual_xfun, xmin, xmax, ymin, ymax)
 final2 = dblquad(actual_yfun, xmin, xmax, ymin, ymax)
+
+
 print(c(final1,final2)/Z)
 ```
 
 
 
+# Test result of Variance function
+
+My code
+```{r}
+A = matrix(c(2,0,0,3),2,2)
+b = matrix(c(-2,-1),2,1)
+c = 3
+source(here("code","lasso_distribution","Multi-Lasso.R")) 
+Z = zmlasso(A,b,c)
+vmlasso(A,b,c)
+```
 
 
+# R code
+```{r}
+xmin <- -Inf; xmax <- Inf
+ymin <- -Inf; ymax <- Inf
+
+actual_xfun <- function(x,y)
+{
+  A = matrix(c(2,0,0,3),2,2)
+  b = matrix(c(-2,-1),2,1)
+  c = 3
+  return(x^2*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
+}
+
+actual_yfun <- function(x,y)
+{
+  A = matrix(c(2,0,0,3),2,2)
+  b = matrix(c(-2,-1),2,1)
+  c = 3
+  return(y^2*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
+}
+
+actual_xyfun <- function(x,y)
+{
+  A = matrix(c(2,0,0,3),2,2)
+  b = matrix(c(-2,-1),2,1)
+  c = 3
+  return(x*y*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
+}
+
+# Expectation
+vx = c()
+vy = c()
+x2 = dblquad(actual_xfun, xmin, xmax, ymin, ymax)/Z
+y2 = dblquad(actual_yfun, xmin, xmax, ymin, ymax)/Z
+xy = dblquad(actual_xyfun, xmin, xmax, ymin, ymax)/Z
+
+ex2 = matrix(c(x2,xy,xy,y2),2,2)
+print(ex2)
+print(ex2 - emlasso(A,b,c) %*% t(emlasso(A,b,c)))
+```
 
