@@ -95,10 +95,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
 
 
 
-
-
 ###############################################################################
-
 
 ## Local and Global Algorithm Two(Update each pair of variables at a time) 
 ## Expect an more accurate but slow performance
@@ -151,7 +148,7 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       # Local Update
       ## Update local parameter
       A = a_til/b_til*(XTX[curr_pair,curr_pair] + XTX[curr_pair,-curr_pair]%*%mt)
-      b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
+      b = a_til/b_til*(t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs))
       
 
       ## Calculate Local mean and variance
