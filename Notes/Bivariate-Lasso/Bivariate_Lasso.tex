@@ -159,13 +159,13 @@ $$
 	+ [-1,1]^T   \frac{\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_3,\Sigma)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	& \qquad
-	=  Z^{-1}[|\Sigma_1|(\frac{E[A]\Phi_2(\frac{\mu_1}{\Sigma_1},\rho_1)}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	-  \frac{E[D]\Phi_2(\frac{\mu_4}{\Sigma_1},\rho_1)}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|(\frac{E[A]\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
+	-  \frac{E[D]\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
 	& \qquad
 	+ 
 	|\Sigma_2|(
-	[1,-1]^T \frac{E[B]\Phi_2(\frac{\mu_2}{\Sigma_2},\rho_2)}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
-	+ [-1,1]^T   \frac{E[C]\Phi_2(\frac{\mu_3}{\Sigma_2},\rho_2)}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	[1,-1]^T \frac{E[B]\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	+ [-1,1]^T   \frac{E[C]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	&
 	
@@ -176,7 +176,7 @@ $$
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
-\noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma)$, $B\sim MTN_+(\mu_2,\Sigma)$, $B\sim MTN_+(\mu_3,\Sigma)$, $D\sim MTN_+(\mu_4,\Sigma)$ is denotes the multivariate positively truncated normal distribution.
+\noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma_1)$, $B\sim MTN_+(\mu_2,\Sigma_)$, $C\sim MTN_+(\mu_3,\Sigma_2)$, $D\sim MTN_+(\mu_4,\Sigma_1)$ is denotes the multivariate positively truncated normal distribution.
 
 \section{Find Covariance Matrix}
 Follow similar steps as before
@@ -218,20 +218,21 @@ $$
 	-  \frac{\int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma))}]\\
 	\\
 	&
-	=  Z^{-1}|\Sigma|[ \frac{E[\textbf{A}\textbf{A}^T]}{\phi_2(A\mu_1,\Sigma))}
-	
-	+ $$
+	=  Z^{-1}[|\Sigma_1|(\frac{E[A]\Phi_2(\frac{\mu_1}{\Sigma_1},\rho_1)}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
+	-  \frac{E[D]\Phi_2(\frac{\mu_4}{\Sigma_1},\rho_1)}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	& \qquad
+	+ 
+	|\Sigma_2|(
 	\begin{bmatrix}
+	1 & -1\\
+	-1 & 1\\
+\end{bmatrix} \otimes \frac{E[B]\Phi_2(\frac{\mu_2}{\Sigma_2},\rho_2)}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+
+	+\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes  \frac{E[BB^T]}{\phi_2(A\mu_2,\Sigma))}
-	
-	+ 	\begin{bmatrix}
-		1 & -1\\
-		-1 & 1\\
-	\end{bmatrix} \otimes   \frac{E[CC^T]}{\phi_2(A\mu_3,\Sigma))}
-	
-	-  \frac{E[DD^T]}{\phi_2(A\mu_4,\Sigma))}]\\
+	\end{bmatrix} \otimes   \frac{E[C]\Phi_2(\frac{\mu_3}{\Sigma_2},\rho_2)}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	\\
 	
 	
 \end{array}
@@ -240,7 +241,7 @@ $$
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
-\noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma)$, $B\sim MTN_+(\mu_2,\Sigma)$, $B\sim MTN_+(\mu_3,\Sigma)$, $D\sim MTN_+(\mu_4,\Sigma)$ is denotes the multivariate positively truncated normal distribution.
+\noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma_1)$, $B\sim MTN_+(\mu_2,\Sigma_)$, $C\sim MTN_+(\mu_3,\Sigma_2)$, $D\sim MTN_+(\mu_4,\Sigma_1)$ is denotes the multivariate positively truncated normal distribution.
 
 $$
 E[AA^T] = Cov(A) - E[A]E[A]^T 

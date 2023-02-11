@@ -375,9 +375,8 @@ vb_phc_grad2 <- function(x, E_sigma2inv, E_sigmainv, vmu_til, mSigma_til, XTX, X
 
 
 
-## Test effectiveness of Local-Global Algorithm
+## Test effectiveness of Local-Global Algorithm 1
 ```{r}
-source(here("code","lasso_distribution","myLasso.R")) 
 source(here("code","local_global_algorithms.R")) 
 
 ```
@@ -385,18 +384,33 @@ source(here("code","local_global_algorithms.R"))
 
 # Testing
 ```{r}
-time_LG <- system.time({
-  res_LG = local_global_algorithm_1(vy, mX, lambda, res_mfvb) 
+time_LG1 <- system.time({
+  res_LG1 = local_global_algorithm_1(vy, mX, lambda, res_mfvb) 
 })
 ```
+
+## Test effectiveness of Local-Global ALgorithm 2
+
+```{r}
+source(here("code","local_global_algorithms.R")) 
+time_LG2 <- system.time({
+  res_LG2 = local_global_algorithm_2(vy, mX, lambda, res_mfvb) 
+})
+```
+
+
+
+
+
+
 
 Compare the time
 ```{r}
 cat("BEM running time = ",time_bem[3],"s")
 cat("\nMCMC running time = ",time_gibbs2[3],"s")
-cat("\nMCVB running time = ",time_mcvb[3],"s")
 cat("\nMFVB running time = ",time_mfvb[3],"s")
-cat("\nLG running time =",time_LG[3],"s")
+cat("\nLG1 running time =",time_LG1[3],"s")
+cat("\nLG 2running time =",time_LG2[3],"s")
 ```
 
 ```{r}
@@ -443,12 +457,12 @@ vsigma_bem <- res_bem$vse[-(p+1)]
 vmu_mfvb    <- res_mfvb$vmu_til
 vsigma_mfvb <- sqrt(diag(res_mfvb$mSigma_til))
 
-vmu_LG <- res_LG$vmu_til
-vsigma_LG <- sqrt(diag(res_LG$mSigma_til))
+vmu_LG <- res_LG1$vmu_til
+vsigma_LG <- sqrt(diag(res_LG1$mSigma_til))
 
-va = res_LG$a
-vb = res_LG$b
-cc = res_LG$c
+va = res_LG1$a
+vb = res_LG1$b
+cc = res_LG1$c
  
 
 pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
