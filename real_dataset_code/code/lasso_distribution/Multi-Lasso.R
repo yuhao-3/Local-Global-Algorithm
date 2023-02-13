@@ -120,36 +120,55 @@ vmlasso = function(A,b,c)
   mu = emlasso(A,b,c)
 
   
-  # Calculate expectation for each of the four parts
-  tn_cov1 = mom.mtruncnorm(powers = 2, mu1, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
-  tn_cov2 = mom.mtruncnorm(powers = 2, mu2, Sigma2, rep(lower,2), rep(upper,2))$order2$m2
-  tn_cov3 = mom.mtruncnorm(powers = 2, mu3, Sigma2, rep(lower,2), rep(upper,2))$order2$m2
-  tn_cov4 = mom.mtruncnorm(powers = 2, mu4, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
-  
-  PartI = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
-          - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
-  PartII = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
-                              - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
-  
-  PartIII = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
-                               - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
-  
-  PartIV = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
-                              - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
+  # Calculate E[XXT]
+  tn_xxt1 = mom.mtruncnorm(powers = 2, mu1, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
+  tn_xxt2 = mom.mtruncnorm(powers = 2, mu2, Sigma2, rep(lower,2), rep(upper,2))$order2$m2
+  tn_xxt3 = mom.mtruncnorm(powers = 2, mu3, Sigma2, rep(lower,2), rep(upper,2))$order2$m2
+  tn_xxt4 = mom.mtruncnorm(powers = 2, mu4, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
   
   
-  EX2 = det(Sigma1)/Z * (tn_cov1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
-                          /dmvnorm(as.vector(A%*%mu1),sigma = A)
-                          +tn_cov4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
-                          /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
-        det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_cov2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
-                    /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
-                    +matrix(c(1,-1,-1,1),2,2)*tn_cov3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
-                    /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + log(tn_xxt1) - log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)) + log(tn_xxt2) - log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
+  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)) + log(tn_xxt3) - log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)) 
+  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)) + log(tn_xxt4) - log(dmvnorm(as.vector(A%*%mu4),sigma = A))
   
   
-  # EX2 = exp(log(det(Sigma1)) - log(Z) + PartI + PartIV) + exp(log(det(Sigma2))-log(Z) + PartII + PartIII)  
-
+  
+  # Log Sum Exp Trick to prevent overflow and underflow    
+  # M = max(c(PartI,PartIV))
+  # log_val1 = M + log(exp(PartI-M) + exp(PartIV-M))
+  # 
+  # M = max(c(PartII,PartIII))
+  # log_val2 = M + log(exp(PartII-M) + exp(PartIII-M))
+  
+  
+  # EX2 = exp(log(det(Sigma1)) - log(Z) + log_val1) + 
+  #     exp(log(det(Sigma2)) - log(Z) + log_val2)
+  
+  
+  
+  # Log Sum Exp Trick to prevent overflow and underflow
+  log_mean1 =  log(det(Sigma1)) + PartI - log(Z) 
+  log_mean2 =  log(det(Sigma2)) + PartII - log(Z)
+  log_mean3 =  log(det(Sigma2)) + PartIII - log(Z) 
+  log_mean4 =  log(det(Sigma1)) + PartIV - log(Z)
+  
+  EX2 = exp(log_mean1)+ exp(log_mean2)*matrix(c(1,-1,-1,1),2,2) +
+         exp(log_mean3)*matrix(c(1,-1,-1,1),2,2) + exp(log_mean4) 
+  
+  
+  
+  # EX2 = det(Sigma1)/Z * (tn_xxt1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
+  #                         /dmvnorm(as.vector(A%*%mu1),sigma = A)
+  #                         +tn_xxt4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
+  #                         /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
+  #       det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_xxt2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
+  #                   /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
+  #                   +matrix(c(1,-1,-1,1),2,2)*tn_xxt3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
+  #                   /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  
+  
+  
 
   cov = EX2 - mu %*% t(mu)
   

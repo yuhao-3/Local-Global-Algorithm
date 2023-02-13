@@ -2,7 +2,7 @@
 \centering
 \topskip0pt
 \vspace*{\fill}
-\huge{\textbf{{\bf\Huge A faster and more accurate Approximate Bayesian Inference approach for bayesian lasso regression}}}\\
+\huge{\textbf{{\bf\Huge A fast and more accurate Approximate Bayesian Inference approach for Bayesian Lasso regression}}}\\
 
 
 %% A Statistical Model for Cell Reprogramming?
@@ -50,7 +50,9 @@ Yuhao Li
     \textbf{\large Abstract }\\
     \vspace{0.5cm}
 \end{center}
-Lasso penalized regression is a popular technique for simultaneous coefficient estimation and variable selection. Issues associated with this method include potential sensitivity of estimation and variable selection to the choice of tuning parameter, and calculating appropriate standard errors of the estimates. This paper will adopt a Bayesian approach and develop various fast Approximate Bayesian Inference (ABI) methods for this problem. ABI methods include Gaussian Variational Approximate inference, Moment Propagation, Approximate Posterior Statistic Matching, and Population Based Variational Bayes. A variety of model representations will also be considered. We compare these to much slower MCMC and frequentist methods to assess the accuracy of standard error estimates for ABI methods, as well as model selection accuracy.
+Variational Approximation: as a deterministic approximation algorithm for Approximate Bayesian Inference(ABI), has been used prevalently among the Bayesian Statistical community for fast Approximate Bayesian Inference(ABI). It is also a faster alternative to Monte Carlo methods such as Markov Chain and Monte Carlo(MCMC). Nevertheless, the Variational Approximation algorithm suffers from the loss of approximation accuracy under some special circumstances, such as underestimating the variance when the correlation of variables becomes large. \\
+In addition, the Lasso penalized regression could be estimated in the Bayesian paradigm to facilitate standard error estimates of coefficients and credible intervals.\\
+In this thesis, we develop two fast and more accurate variational approximation algorithms for the Bayesian Lasso regression problem. The main idea behind these methods involves using the information of local parameter estimates by accommodating the univariate and multivariate lasso distribution, which results in more accurate global parameter approximation by Gaussian Variational Approximation. Our experimental results on numerous real-world datasets suggest their high Variational approximation accuracy with a descent time efficiency, compared with the traditional Monte Carlo methods and Mean-Field Variational Bayes(MFVB).
 
 
 \newpage
@@ -59,7 +61,8 @@ Lasso penalized regression is a popular technique for simultaneous coefficient e
     \textbf{\large Acknowledgements}\\
     \vspace{0.5cm}
 \end{center}
- 
+   Thanks to Supervisor and family and myself
+   
    Finally, I would like to thank my friends   my family: my mother, father, brother, grandparents, and cousins. The last couple years has been full of adversity and I could not have overcome it without your support behind the scenes.
    
 \vfill

@@ -144,23 +144,22 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       
       
       # Define some constant
-      mSigma_jj_inv = solve(mSigma_adjust[curr_pair,curr_pair])
-      mt = mSigma_adjust[-curr_pair,curr_pair] %*% mSigma_jj_inv
-      vs = as.matrix(vmu_adjust[-curr_pair]) - mt %*% vmu_adjust[curr_pair]
+      mSigma_jj_inv = solve(mSigma_old[curr_pair,curr_pair])
+      
+      mt = mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv
+      vs = as.matrix(vmu_old[-curr_pair]) - mt %*% vmu_old[curr_pair]
       
       # Local Update
       ## Update local parameter
       A = a_til/b_til*(XTX[curr_pair,curr_pair] + XTX[curr_pair,-curr_pair]%*%mt)
       b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
       
-      print(A)
       
       ## Calculate Local mean and variance
       vlocal_mean = emlasso(A,b,c)
       mlocal_var = vmlasso(A,b,c)
       
       
-
       # Record local parameter
       va[[j]] = A
       vb[[j]] = b
@@ -173,17 +172,19 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       vmu_adjust[-curr_pair] = vmu_adjust[-curr_pair] + mSigma_adjust[-curr_pair,curr_pair] %*%  
                                mSigma_jj_inv  %*% (vlocal_mean - vmu_old[curr_pair])
       
+      
       ## Update Covariance
       mSigma_adjust[curr_pair,curr_pair] = mlocal_var
       mSigma_adjust[curr_pair,-curr_pair] = mlocal_var %*% mSigma_jj_inv %*%  mSigma_old[curr_pair,-curr_pair]
       mSigma_adjust[-curr_pair,curr_pair] = t(mSigma_adjust[curr_pair,-curr_pair])
-      mSigma_adjust[-curr_pair,-curr_pair] = as.matrix(mSigma_old[-curr_pair,-curr_pair]) + mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv %*% 
-                                            (mlocal_var - mSigma_old[curr_pair,curr_pair])  %*% mSigma_jj_inv %*%
+      mSigma_adjust[-curr_pair,-curr_pair] = as.matrix(mSigma_old[-curr_pair,-curr_pair]) + 
+                                            mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv %*% 
+                                            (mlocal_var - mSigma_old[curr_pair,curr_pair]) %*% mSigma_jj_inv %*%
                                             mSigma_old[curr_pair,-curr_pair]
-      
-      
       # Damping
       # mSigma_adjust = rho* mSigma_adjust + (1-rho)*mSigma_old
+      
+      
     }
     
     # Update Theta

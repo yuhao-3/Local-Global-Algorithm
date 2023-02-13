@@ -14,10 +14,10 @@ library(tmvtnorm)
 library(cubature)
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 
-# A = matrix(c(2,0,0,3),2,2)
-# b = matrix(c(-2,-1),2,1)
-# c = 3
-# Z = zmlasso(A,b,c)
+A = matrix(c(2,0,0,3),2,2)
+b = matrix(c(-2,-1),2,1)
+c = 3
+Z = zmlasso(A,b,c)
 Z
 ```
 
@@ -188,7 +188,7 @@ vy[4] = dblquad(actual_yfun, xmin, xmax, ymin, ymax)
 print(c(vx[4],vy[4]))
 ```
 ```{r}
-print(c(sum(vx), sum(vy)))
+print(c(sum(vx), sum(vy)))/Z
 ```
 
 
@@ -197,9 +197,9 @@ print(c(sum(vx), sum(vy)))
 
 # My code result
 ```{r}
-A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
-b = c(-9.780891,13.613476)
-c = 2.941653
+A = matrix(c(2,0,0,3),2,2)
+b = matrix(c(-2,-1),2,1)
+c = 3
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 emlasso(A,b,c)
 ```
