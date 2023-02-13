@@ -64,9 +64,6 @@ emlasso<- function(A,b,c)
   mu2 = as.vector(Sigma2 %*% matrix(c(b[1]-c,-b[2]-c),2,1))
   mu3 = as.vector(Sigma2 %*% matrix(c(-b[1]-c,b[2]-c),2,1))
   mu4 = as.vector(Sigma1 %*%(-b - c))
-  vsigma1 = Sigma1[row(Sigma1)==col(Sigma1)]
-  vsigma2 = Sigma2[row(Sigma2)==col(Sigma2)]
-  
   
   # Get normalizign constant
   Z = zmlasso(A,b,c)
@@ -101,8 +98,6 @@ emlasso<- function(A,b,c)
   #                       +c(-1,1)*exp(tn_mean3)* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
   #                       /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
   
-
-  
   return(mean)
 }
 
@@ -131,6 +126,16 @@ vmlasso = function(A,b,c)
   tn_cov3 = mom.mtruncnorm(powers = 2, mu3, Sigma2, rep(lower,2), rep(upper,2))$order2$m2
   tn_cov4 = mom.mtruncnorm(powers = 2, mu4, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
   
+  PartI = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
+          - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
+  PartII = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
+                              - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
+  
+  PartIII = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
+                               - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
+  
+  PartIV = log(tn_cov1) + log(exp(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + exp(tn_cov1)
+                              - log(dmvnorm(as.vector(A%*%mu1),sigma = A)))
   
   
   EX2 = det(Sigma1)/Z * (tn_cov1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
@@ -141,6 +146,9 @@ vmlasso = function(A,b,c)
                     /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
                     +matrix(c(1,-1,-1,1),2,2)*tn_cov3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
                     /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  
+  
+  # EX2 = exp(log(det(Sigma1)) - log(Z) + PartI + PartIV) + exp(log(det(Sigma2))-log(Z) + PartII + PartIII)  
 
 
   cov = EX2 - mu %*% t(mu)
@@ -148,31 +156,8 @@ vmlasso = function(A,b,c)
   
   
   # print(EX2)
+  # print(cov)
   # print(mu%*%t(mu))
   return(cov)
   
 }
-
-# A = matrix(c(2,0,0,3),2,2)
-# b = matrix(c(-2,1),2,1)
-# c = 3
-# calculate_multi_lasso_param(A,b,c)
-
-
-
-# library(pracma)
-# fun <- function(x,y) 
-# {
-#   A = matrix(c(2,0,0,3),2,2)
-#   b = matrix(c(-2,1),2,1)
-#   c = 3
-#   vx = matrix(c(x,y),2,1)
-#   return(exp((-0.5*t(vx)%*%A%*%vx + t(b)%*%vx-  c*norm(vx,"1"))[1]))
-# }
-# xmin <- -10; xmax <- 10
-# ymin <- -10; ymax <- 10
-# 
-# # Normalizing constant
-# integral2(fun, xmin, xmax, ymin, ymax)
-
-

@@ -14,10 +14,10 @@ library(tmvtnorm)
 library(cubature)
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 
-A = matrix(c(2,0,0,3),2,2)
-b = matrix(c(-2,-1),2,1)
-c = 3
-Z = zmlasso(A,b,c)
+# A = matrix(c(2,0,0,3),2,2)
+# b = matrix(c(-2,-1),2,1)
+# c = 3
+# Z = zmlasso(A,b,c)
 Z
 ```
 
@@ -197,9 +197,9 @@ print(c(sum(vx), sum(vy)))
 
 # My code result
 ```{r}
-A = matrix(c(2,0,0,3),2,2)
-b = matrix(c(-2,-1),2,1)
-c = 3
+A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+b = c(-9.780891,13.613476)
+c = 2.941653
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 emlasso(A,b,c)
 ```
@@ -213,17 +213,17 @@ ymin <- -Inf; ymax <- Inf
 
 actual_xfun <- function(x,y)
 {
-  A = matrix(c(2,0,0,3),2,2)
-  b = matrix(c(-2,-1),2,1)
-  c = 3
+  A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+  b = c(-9.780891,13.613476)
+  c = 2.941653
   return(x*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
 }
 
 actual_yfun <- function(x,y)
 {
-  A = matrix(c(2,0,0,3),2,2)
-  b = matrix(c(-2,-1),2,1)
-  c = 3
+  A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+  b = c(-9.780891,13.613476)
+  c = 2.941653
   return(y*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
 }
 
@@ -243,9 +243,9 @@ print(c(final1,final2)/Z)
 
 My code
 ```{r}
-A = matrix(c(4,0,0,3),2,2)
-b = matrix(c(-2,-1),2,1)
-c = 3
+A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+b = c(-9.780891,13.613476)
+c = 2.941653
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 Z = zmlasso(A,b,c)
 vmlasso(A,b,c)
@@ -254,30 +254,31 @@ vmlasso(A,b,c)
 
 # R code
 ```{r}
+
 xmin <- -Inf; xmax <- Inf
 ymin <- -Inf; ymax <- Inf
 
 actual_xfun <- function(x,y)
 {
-  A = matrix(c(4,0,0,3),2,2)
-  b = matrix(c(-2,-1),2,1)
-  c = 3
+  A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+  b = c(-9.780891,13.613476)
+  c = 2.941653
   return(x^2*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
 }
 
 actual_yfun <- function(x,y)
 {
-  A = matrix(c(4,0,0,3),2,2)
-  b = matrix(c(-2,-1),2,1)
-  c = 3
+  A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+  b = c(-9.780891,13.613476)
+  c = 2.941653
   return(y^2*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
 }
 
 actual_xyfun <- function(x,y)
 {
-  A = matrix(c(4,0,0,3),2,2)
-  b = matrix(c(-2,-1),2,1)
-  c = 3
+  A = matrix(c(68.32707,50.43952,50.43952,64.94208),2,2)
+  b = c(-9.780891,13.613476)
+  c = 2.941653
   return(x*y*exp((-0.5*(A[1,1]*x^2+(A[1,2]+A[2,1])*x*y+A[2,2]*y^2) + b[1]*x + b[2]*y -  c*abs(x)-c*abs(y))))
 }
 

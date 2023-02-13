@@ -57,6 +57,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       vlocal_mean = elasso(a,b,c)
       mlocal_var = vlasso(a,b,c)
       
+      
       # Record local parameter
       va[j] = a
       vb[j] = b
@@ -129,51 +130,57 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
   # Get unique pair of variable combination
   pairs = t(combn(unique(c(1:p)),2))
   
+  
   for (ITER in 1:MAXITER)
   {
     ## Local Update
     for (j in 1:dim(pairs)[1])
     {
+      
       # Store parameter for previous iteration
       vmu_old = vmu_adjust
       mSigma_old = mSigma_adjust
       curr_pair = c(pairs[j,1],pairs[j,2])
-      # Define some constant
-      j_len = length(vmu_adjust[curr_pair])
-      mSigma_jj_inv = solve(mSigma_adjust[curr_pair,curr_pair])
       
+      
+      # Define some constant
+      mSigma_jj_inv = solve(mSigma_adjust[curr_pair,curr_pair])
       mt = mSigma_adjust[-curr_pair,curr_pair] %*% mSigma_jj_inv
-      vs = matrix(vmu_adjust[-curr_pair]) - mt %*% matrix(vmu_adjust[curr_pair])
+      vs = as.matrix(vmu_adjust[-curr_pair]) - mt %*% vmu_adjust[curr_pair]
       
       # Local Update
       ## Update local parameter
       A = a_til/b_til*(XTX[curr_pair,curr_pair] + XTX[curr_pair,-curr_pair]%*%mt)
-      b = a_til/b_til*(t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs))
+      b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
       
-
+      print(A)
+      
       ## Calculate Local mean and variance
       vlocal_mean = emlasso(A,b,c)
       mlocal_var = vmlasso(A,b,c)
       
       
+
       # Record local parameter
       va[[j]] = A
       vb[[j]] = b
       vZ[j] = zmlasso(A,b,c)
       
+      
       # Global Update
       ## Update Mean
       vmu_adjust[curr_pair] = vlocal_mean
       vmu_adjust[-curr_pair] = vmu_adjust[-curr_pair] + mSigma_adjust[-curr_pair,curr_pair] %*%  
-                               mSigma_jj_inv  %*% vlocal_mean - vmu_old[curr_pair]
+                               mSigma_jj_inv  %*% (vlocal_mean - vmu_old[curr_pair])
       
       ## Update Covariance
       mSigma_adjust[curr_pair,curr_pair] = mlocal_var
       mSigma_adjust[curr_pair,-curr_pair] = mlocal_var %*% mSigma_jj_inv %*%  mSigma_old[curr_pair,-curr_pair]
       mSigma_adjust[-curr_pair,curr_pair] = t(mSigma_adjust[curr_pair,-curr_pair])
       mSigma_adjust[-curr_pair,-curr_pair] = as.matrix(mSigma_old[-curr_pair,-curr_pair]) + mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv %*% 
-                                            (mlocal_var - mSigma_old[curr_pair,curr_pair])  %*%mSigma_jj_inv %*%
+                                            (mlocal_var - mSigma_old[curr_pair,curr_pair])  %*% mSigma_jj_inv %*%
                                             mSigma_old[curr_pair,-curr_pair]
+      
       
       # Damping
       # mSigma_adjust = rho* mSigma_adjust + (1-rho)*mSigma_old
