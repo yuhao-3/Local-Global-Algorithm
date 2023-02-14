@@ -2,7 +2,7 @@
 \centering
 \topskip0pt
 \vspace*{\fill}
-\huge{\textbf{{\bf\Huge A fast and more accurate Approximate Bayesian Inference approach for Bayesian Lasso regression}}}\\
+\huge{\textbf{{\bf\Huge A new Approximate Bayesian Inference algorithm for Bayesian Lasso: A local approximation correction approach}}}\\
 
 
 %% A Statistical Model for Cell Reprogramming?
@@ -11,7 +11,8 @@
 
 \vspace{2.5cm}
 \LARGE{Yuhao Li}\\
-\vspace{1.5cm}
+\vspace{1cm}
+\large{Supervisor: A/Prof. John Ormerod}\\
 \large{A thesis submitted in partial fulfillment of \\ the requirements for the degree of \\  Bachelor of Science(Honour)(Data Science)} \\
 \vspace{1cm}
 \large{Mathematics and Statistics}\\
@@ -50,9 +51,9 @@ Yuhao Li
     \textbf{\large Abstract }\\
     \vspace{0.5cm}
 \end{center}
-Variational Approximation: as a deterministic approximation algorithm for Approximate Bayesian Inference(ABI), has been used prevalently among the Bayesian Statistical community for fast Approximate Bayesian Inference(ABI). It is also a faster alternative to Monte Carlo methods such as Markov Chain and Monte Carlo(MCMC). Nevertheless, the Variational Approximation algorithm suffers from the loss of approximation accuracy under some special circumstances, such as underestimating the variance when the correlation of variables becomes large. \\
-In addition, the Lasso penalized regression could be estimated in the Bayesian paradigm to facilitate standard error estimates of coefficients and credible intervals.\\
-In this thesis, we develop two fast and more accurate variational approximation algorithms for the Bayesian Lasso regression problem. The main idea behind these methods involves using the information of local parameter estimates by accommodating the univariate and multivariate lasso distribution, which results in more accurate global parameter approximation by Gaussian Variational Approximation. Our experimental results on numerous real-world datasets suggest their high Variational approximation accuracy with a descent time efficiency, compared with the traditional Monte Carlo methods and Mean-Field Variational Bayes(MFVB).
+Variational Approximation: as a deterministic approximation algorithm for Approximate Bayesian Inference(ABI) of intractable posterior distribution, has been used prevalently among the Bayesian Statistical community for fast Approximate Bayesian Inference(ABI). It is also a faster alternative to Monte Carlo methods such as Markov Chain and Monte Carlo(MCMC). Nevertheless, the Variational Approximation algorithm suffers from the loss of approximation accuracy under some special circumstances, such as underestimating the variance when the correlation of variables becomes large. \\
+In addition, the Lasso penalized regression could be estimated in the Bayesian paradigm to facilitate standard error estimates of coefficients and credible intervals of estimated coefficients.\\
+In this thesis, we develop two fast and more accurate variational approximation algorithms for the Bayesian Lasso regression problem. The main idea behind these methods involves using the information of local parameter estimates by accommodating the univariate and multivariate lasso distribution, which results in more accurate global parameter approximation via Gaussian Variational Approximation. Our experimental results on numerous real-world datasets suggest their high Variational Approximation accuracy with a descent time efficiency, compared with the traditional Monte Carlo methods and Mean-Field Variational Bayes(MFVB).
 
 
 \newpage
@@ -61,7 +62,7 @@ In this thesis, we develop two fast and more accurate variational approximation 
     \textbf{\large Acknowledgements}\\
     \vspace{0.5cm}
 \end{center}
-   Thanks to Supervisor and family and myself
+   Thanks to Supervisor and family 
    
    Finally, I would like to thank my friends   my family: my mother, father, brother, grandparents, and cousins. The last couple years has been full of adversity and I could not have overcome it without your support behind the scenes.
    

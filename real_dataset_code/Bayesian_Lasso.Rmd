@@ -172,7 +172,7 @@ res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples
 ```
 
 ```{r}
-lambda2 <- mean( res_gibbs$vlambda2 )
+lambda2 <- mean(res_gibbs$vlambda2 )
 lambda <- sqrt(lambda2)
 
 lambda2 <- quantile(res_gibbs$vlambda2, probs=0.5)
@@ -376,14 +376,9 @@ vb_phc_grad2 <- function(x, E_sigma2inv, E_sigmainv, vmu_til, mSigma_til, XTX, X
 
 
 ## Test effectiveness of Local-Global Algorithm 1
-```{r}
-source(here("code","local_global_algorithms.R")) 
-
-```
-
-
 # Testing
 ```{r}
+source(here("code","local_global_algorithms.R")) 
 time_LG1 <- system.time({
   res_LG1 = local_global_algorithm_1(vy, mX, lambda, res_mfvb) 
 })

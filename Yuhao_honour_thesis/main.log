@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  13 FEB 2023 18:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  14 FEB 2023 14:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,31 +600,31 @@ Package hyperref Info: Link coloring ON on input line 7.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=111, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=119, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
-Package pdftex.def Info: UsydLogo.pdf  used on input line 20.
+Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
 (pdftex.def)             Requested size: 219.8207pt x 76.03386pt.
  [1
 
 {C:/Users/12958/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./UsydLogo.p
 df>]
-Underfull \hbox (badness 10000) in paragraph at lines 38--45
+Underfull \hbox (badness 10000) in paragraph at lines 39--46
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--45
+Underfull \hbox (badness 10000) in paragraph at lines 39--46
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--45
+Underfull \hbox (badness 10000) in paragraph at lines 39--46
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--45
+Underfull \hbox (badness 10000) in paragraph at lines 39--46
 
  []
 
@@ -641,37 +641,33 @@ LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <16> not available
 (Font)              size <17.28> substituted on input line 3.
 
 
-Overfull \hbox (4.53804pt too wide) in paragraph at lines 10--11
+Overfull \hbox (4.53804pt too wide) in paragraph at lines 18--20
 []\OT1/cmr/m/n/12 Variational Ap-prox-i-ma-tion: an op-ti-m-imiza-tion based te
 ch-nique for ap-prox-i-mate bayesian
  []
 
-) (Chapter2.tex
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1 \chapter
-            {Definition and Literature Review} [1
+l.38 
+      [1
 
-]
+]) (Chapter2.tex [2]
 Chapter 2.
-) (Chapter3.tex [2
+) (Chapter3.tex [3
 
 ]
 Chapter 3.
-) (Chapter4.tex [3
+) (Chapter4.tex [4
 
 ]
 Chapter 4.
-) (Chapter5.tex [4
+) (Chapter5.tex [5
 
 ]
 Chapter 5.
-) (Chapter6.tex [5
-
-]
-Chapter 6.
 ) (main.bbl [6
 
 ]
@@ -686,22 +682,23 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9EDB8E19F68730C005F02441678AB8DE;4512.
+(rerunfilecheck)             Checksum: E6F4DC01982A130D34B59B3B17F357B9;5002.
  ) 
 Here is how much of TeX's memory you used:
- 14830 strings out of 475385
- 249200 string characters out of 2783908
- 628420 words of memory out of 3000000
+ 14834 strings out of 475385
+ 249198 string characters out of 2783908
+ 629385 words of memory out of 3000000
  35925 multiletter control sequences out of 15000+600000
- 477255 words of font info for 55 fonts, out of 8000000 for 9000
+ 477592 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,5n,80p,663b,571s stack positions out of 10000i,1000n,20000p,200000b,80000s
-<D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/
-Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program
- Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on main.pdf (13 pages, 91550 bytes).
+ 77i,6n,80p,664b,542s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
+1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
+b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/P
+rogram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on main.pdf (13 pages, 96852 bytes).
 PDF statistics:
- 227 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
- 222 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 247 PDF objects out of 1000 (max. 8388607)
+ 48 named destinations out of 1000 (max. 500000)
+ 238 words of extra memory for PDF output out of 10000 (max. 10000000)
 

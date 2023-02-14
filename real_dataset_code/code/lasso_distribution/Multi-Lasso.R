@@ -68,6 +68,7 @@ emlasso<- function(A,b,c)
   # Get normalizign constant
   Z = zmlasso(A,b,c)
   # Calculate expectation for each of the four parts
+
   tn_mean1 = log(mom.mtruncnorm(powers = 1, mu1, Sigma1, rep(lower,2), rep(upper,2))$cum1)
   tn_mean2 = log(mom.mtruncnorm(powers = 1, mu2, Sigma2, rep(lower,2), rep(upper,2))$cum1)
   tn_mean3 = log(mom.mtruncnorm(powers = 1, mu3, Sigma2, rep(lower,2), rep(upper,2))$cum1)
@@ -87,16 +88,16 @@ emlasso<- function(A,b,c)
   log_mean3 =  log(det(Sigma2)) + PartIII - log(Z) 
   log_mean4 =  log(det(Sigma1)) + PartIV - log(Z)
 
-  mean = exp(log_mean1)+ exp(log_mean2)*c(1,-1) + exp(log_mean3)*c(-1,1) - exp(log_mean4) 
+  # mean = exp(log_mean1)+ exp(log_mean2)*c(1,-1) + exp(log_mean3)*c(-1,1) - exp(log_mean4)
   
-  # mean = det(Sigma1)/Z * (exp(tn_mean1)* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
-  #                         /dmvnorm(as.vector(A%*%mu1),sigma = A)
-  #                       +c(-1,-1)*exp(tn_mean4)* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
-  #                       /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
-  #        det(Sigma2)/Z *(c(1,-1)*exp(tn_mean2)* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
-  #                                 /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
-  #                       +c(-1,1)*exp(tn_mean3)* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
-  #                       /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  mean = det(Sigma1)/Z * (exp(tn_mean1)* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
+                          /dmvnorm(as.vector(A%*%mu1),sigma = A)
+                        +c(-1,-1)*exp(tn_mean4)* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
+                        /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
+         det(Sigma2)/Z *(c(1,-1)*exp(tn_mean2)* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
+                                  /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
+                        +c(-1,1)*exp(tn_mean3)* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
+                        /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
   
   return(mean)
 }
@@ -127,6 +128,7 @@ vmlasso = function(A,b,c)
   tn_xxt4 = mom.mtruncnorm(powers = 2, mu4, Sigma1, rep(lower,2), rep(upper,2))$order2$m2
   
   
+  
   PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + log(tn_xxt1) - log(dmvnorm(as.vector(A%*%mu1),sigma = A))
   PartII = log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)) + log(tn_xxt2) - log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
   PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)) + log(tn_xxt3) - log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)) 
@@ -153,19 +155,19 @@ vmlasso = function(A,b,c)
   log_mean3 =  log(det(Sigma2)) + PartIII - log(Z) 
   log_mean4 =  log(det(Sigma1)) + PartIV - log(Z)
   
-  EX2 = exp(log_mean1)+ exp(log_mean2)*matrix(c(1,-1,-1,1),2,2) +
-         exp(log_mean3)*matrix(c(1,-1,-1,1),2,2) + exp(log_mean4) 
+  # EX2 = exp(log_mean1)+ exp(log_mean2)*matrix(c(1,-1,-1,1),2,2) +
+  #        exp(log_mean3)*matrix(c(1,-1,-1,1),2,2) + exp(log_mean4) 
   
   
   
-  # EX2 = det(Sigma1)/Z * (tn_xxt1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
-  #                         /dmvnorm(as.vector(A%*%mu1),sigma = A)
-  #                         +tn_xxt4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
-  #                         /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
-  #       det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_xxt2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
-  #                   /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
-  #                   +matrix(c(1,-1,-1,1),2,2)*tn_xxt3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
-  #                   /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  EX2 = det(Sigma1)/Z * (tn_xxt1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
+                          /dmvnorm(as.vector(A%*%mu1),sigma = A)
+                          +tn_xxt4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
+                          /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
+        det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_xxt2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
+                    /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
+                    +matrix(c(1,-1,-1,1),2,2)*tn_xxt3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
+                    /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
   
   
   

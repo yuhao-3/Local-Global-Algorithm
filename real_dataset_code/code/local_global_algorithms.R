@@ -24,6 +24,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   a_til = params$a_til
   b_til = params$b_til
   c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
+
   
   # Record the local parameter
   va = c()
@@ -53,6 +54,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       a = a_til/b_til*(matrix(XTX[j,j]) + t(XTX[j,-j]%*%mt))
       b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
       
+      
       ## Calculate Local mean and variance
       vlocal_mean = elasso(a,b,c)
       mlocal_var = vlasso(a,b,c)
@@ -65,6 +67,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
       
       # Global Update
       ## Update Mean
+      
       vmu_adjust[j] = vlocal_mean
       vmu_adjust[-j] = matrix(vmu_adjust[-j]) + matrix(mSigma_adjust[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
       
@@ -159,7 +162,6 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       vlocal_mean = emlasso(A,b,c)
       mlocal_var = vmlasso(A,b,c)
       
-      
       # Record local parameter
       va[[j]] = A
       vb[[j]] = b
@@ -177,10 +179,21 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       mSigma_adjust[curr_pair,curr_pair] = mlocal_var
       mSigma_adjust[curr_pair,-curr_pair] = mlocal_var %*% mSigma_jj_inv %*%  mSigma_old[curr_pair,-curr_pair]
       mSigma_adjust[-curr_pair,curr_pair] = t(mSigma_adjust[curr_pair,-curr_pair])
-      mSigma_adjust[-curr_pair,-curr_pair] = as.matrix(mSigma_old[-curr_pair,-curr_pair]) + 
-                                            mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv %*% 
-                                            (mlocal_var - mSigma_old[curr_pair,curr_pair]) %*% mSigma_jj_inv %*%
-                                            mSigma_old[curr_pair,-curr_pair]
+      mSigma_adjust[-curr_pair,-curr_pair] =  as.matrix(mSigma_old[-curr_pair,-curr_pair]) + 
+        mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv %*% 
+        (mlocal_var - mSigma_old[curr_pair,curr_pair]) %*% mSigma_jj_inv %*%
+        mSigma_old[curr_pair,-curr_pair]      
+      
+      
+      
+      
+      # Positive definiteness of local variance
+      
+      print(det(mlocal_var))
+      print(det(mlocal_var - mSigma_old[curr_pair,curr_pair]))
+      print(det(mSigma_adjust[-curr_pair,-curr_pair]))
+      
+      
       # Damping
       # mSigma_adjust = rho* mSigma_adjust + (1-rho)*mSigma_old
       
