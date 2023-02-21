@@ -387,6 +387,7 @@ time_LG1 <- system.time({
 ## Test effectiveness of Local-Global ALgorithm 2
 
 ```{r}
+
 source(here("code","local_global_algorithms.R")) 
 time_LG2 <- system.time({
   res_LG2 = local_global_algorithm_2(vy, mX, lambda, res_mfvb) 

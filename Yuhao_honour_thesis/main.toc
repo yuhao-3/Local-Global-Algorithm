@@ -16,7 +16,7 @@
 \contentsline {section}{\numberline {2.4}Expectation Maximization}{3}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Bayesian Expectation Maximization}{3}{subsection.2.4.1}%
 \contentsline {section}{\numberline {2.5}Markov Chain Monte Carlo(MCMC)}{3}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Metropolis–Hastings (MH) Algorithm}{3}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.1}Metropolis^^e2^^80^^93Hastings (MH) Algorithm}{3}{subsection.2.5.1}%
 \contentsline {subsection}{\numberline {2.5.2}Gibbs Sampler}{3}{subsection.2.5.2}%
 \contentsline {chapter}{\numberline {3}Methodlogy}{4}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Lasso distribution}{4}{section.3.1}%

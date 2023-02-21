@@ -109,6 +109,10 @@ emlasso<- function(A,b,c)
 vmlasso = function(A,b,c)
 {
   # Get parameter
+  
+  lower = 0
+  upper = Inf
+  
   A_star = A * matrix(c(1,-1,-1,1),2,2)
   Sigma1 = solve(A)
   Sigma2 = solve(A_star)

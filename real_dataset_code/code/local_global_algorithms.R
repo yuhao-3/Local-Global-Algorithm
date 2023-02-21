@@ -23,7 +23,7 @@ local_global_algorithm_1 <- function(vy, mX, lambda, params)
   # Later will be changed
   a_til = params$a_til
   b_til = params$b_til
-  c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
+  c = lambda * (exp(lgamma(a_til+0.5) - lgamma(a_til) - 0.5*log(b_til)))
 
   
   # Record the local parameter
@@ -120,7 +120,7 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
   # Later will be changed
   a_til = params$a_til
   b_til = params$b_til
-  c = lambda * gamma(a_til+0.5)/(gamma(a_til)*sqrt(b_til))
+  c = lambda * (exp(lgamma(a_til+0.5) - lgamma(a_til) - 0.5*log(b_til)))
   
   # Record the local parameter
   va = list()
@@ -158,6 +158,7 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
       
       
+      print(A)
       ## Calculate Local mean and variance
       vlocal_mean = emlasso(A,b,c)
       mlocal_var = vmlasso(A,b,c)
@@ -184,14 +185,6 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
         (mlocal_var - mSigma_old[curr_pair,curr_pair]) %*% mSigma_jj_inv %*%
         mSigma_old[curr_pair,-curr_pair]      
       
-      
-      
-      
-      # Positive definiteness of local variance
-      
-      print(det(mlocal_var))
-      print(det(mlocal_var - mSigma_old[curr_pair,curr_pair]))
-      print(det(mSigma_adjust[-curr_pair,-curr_pair]))
       
       
       # Damping

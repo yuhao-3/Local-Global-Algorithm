@@ -10,7 +10,7 @@ output: html_document
 ```{r}
 library(here)
 library(pracma)
-library(tmvtnorm)
+# library(tmvtnorm)
 library(cubature)
 source(here("code","lasso_distribution","Multi-Lasso.R")) 
 
