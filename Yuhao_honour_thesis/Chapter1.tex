@@ -1,17 +1,18 @@
 \chapter{Introduction}
 \label{Chapter1}
 \section{Motivation}
-
-\textbf{Bayesian and Frequentist}
-Frequentist
-Bayesian
-
-\textbf{Bayesian Inferenece}
-
-\textbf{Variational Inference}
-
-Stochastic Sampling based Approach
-Determinstic Approach
+Bayesian Inference approaches shares numerous advantages in statistic community, particularly for the circumstance when there is lack of data. An appropriate prior choice can be benefical in aforementioned case. Additionally, unlike frequentist inference approaches which treat parameter esimtate as a fixed value, Bayesian Inference approaches regard parameter estimate as a random variable that have probability distribution, which means interval estimate and error variance would be generated for capturing uncertainty, offering belief and confidence for parameter estimates.\\ Bayesian inference approach stems from the Bayes rule, which is defined as Equation (\ref{eq:Bayesrule}) based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the distribution after considering the information from data $\mathcal{D}$.
+\begin{equation}
+	p(\theta|\mathcal{D}) = \frac{p(\mathcal{D}|\theta)p(\theta)}{p(\mathcal{D})},
+	\label{eq:Bayesrule}
+\end{equation}
+Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to (\ref{eq:simBayesrule}) since $p(\mathcal{D})$ is equal to constant and is also insignificant to the overall posterior distribution equation.
+\begin{equation}
+	p(\theta|\mathcal{D}) \propto p(\mathcal{D}|\theta)p(\theta),
+	\label{eq:simBayesrule}
+\end{equation}
+Nevertheless, due to potential complexity for most of the posterior distribution form, intractable nature of exact posterior distribution form becomes one of the major obstacles in the progress of Bayesian Inference. Much efforts have been paid over the years, such as the design of stochastic sampling algorithms like Monte Carlo Markov Chain(MCMC), where an exact posterior distribution can be sampled given form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, MCMC will lead to an arbitary precise result of posterior distribution approximation if an arbitarily long burn-in period is allocated.\\
+On the other hand, determinstic approach such as Variational Bayes has also arised as an faster substitution compared with MCMC. It is an optimization-based approach by minimizing the distance between approximated distribution and target distribution. The most tranditional Variational Inference algorithm is known as Mean-Field Variational Bayes via mean-field Theory in physics produced by 
 
 
 
@@ -34,7 +35,7 @@ Our main contribution could be concluded as the following part:
 
 
 \section{Thesis Organization}
-This paper will be divided up into 6 chapters. Chapter 1 will briefly illustrate the motivation and application of variational approximation. Section 2 will briefly introduce basic definition and methodlogy in previous work such as MCMC(Monte Carlo Method) and Mean-Field Variational Bayes(MFVB). We will present our main methodlogy of variational correction algorithm in Chapter 3, followed by a comprehensive experiment for testing the effectiveness of algorithm in Chapter 4. In Chapter 5 and Chapter 6, we will briefly discuss and explain our result and potential improvement in the future. 
+This paper will be divided up into 5 chapters. Chapter 1 will briefly illustrate the motivation and application of variational approximation. Section 2 will briefly introduce basic definition and methodlogy in previous work such as MCMC(Monte Carlo Method) and Mean-Field Variational Bayes(MFVB). We will present our main methodlogy of variational correction algorithm in Chapter 3, followed by a comprehensive experiment for testing the effectiveness of algorithm in Chapter 4. In Chapter 5, we will briefly discuss and explain our result and potential improvement in the future. 
 
 
 

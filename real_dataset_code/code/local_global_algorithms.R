@@ -128,7 +128,7 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
   vZ = c()
   
   # Initial value Local parameters
-  vtheta <- c(vmu_adjust)
+  vtheta = c(vmu_adjust)
   
   # Get unique pair of variable combination
   pairs = t(combn(unique(c(1:p)),2))
@@ -139,18 +139,17 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
     ## Local Update
     for (j in 1:dim(pairs)[1])
     {
-      
       # Store parameter for previous iteration
       vmu_old = vmu_adjust
       mSigma_old = mSigma_adjust
       curr_pair = c(pairs[j,1],pairs[j,2])
-      
-      
+  
       # Define some constant
       mSigma_jj_inv = solve(mSigma_old[curr_pair,curr_pair])
       
       mt = mSigma_old[-curr_pair,curr_pair] %*% mSigma_jj_inv
       vs = as.matrix(vmu_old[-curr_pair]) - mt %*% vmu_old[curr_pair]
+      
       
       # Local Update
       ## Update local parameter
@@ -158,7 +157,6 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
       
       
-      print(A)
       ## Calculate Local mean and variance
       vlocal_mean = emlasso(A,b,c)
       mlocal_var = vmlasso(A,b,c)

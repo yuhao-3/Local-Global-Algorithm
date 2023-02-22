@@ -73,6 +73,8 @@ emlasso<- function(A,b,c)
   tn_mean2 = log(mom.mtruncnorm(powers = 1, mu2, Sigma2, rep(lower,2), rep(upper,2))$cum1)
   tn_mean3 = log(mom.mtruncnorm(powers = 1, mu3, Sigma2, rep(lower,2), rep(upper,2))$cum1)
   tn_mean4 = log(mom.mtruncnorm(powers = 1, mu4, Sigma1, rep(lower,2), rep(upper,2))$cum1)
+  
+
 
   # Get 4 parts of equation separately
   PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + tn_mean1-log(dmvnorm(as.vector(A%*%mu1),sigma = A))

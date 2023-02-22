@@ -3,6 +3,10 @@
 
 \usepackage[authoryear]{natbib}
 \usepackage{tocbibind}
+\usepackage[mathscr]{euscript}
+
+\DeclareSymbolFont{rsfs}{U}{rsfs}{m}{n}
+\DeclareSymbolFontAlphabet{\mathscrsfs}{rsfs}
 
 \begin{document}
 
@@ -12,6 +16,12 @@
 
 \setcounter{page}{1}\pagenumbering{arabic}
  
+\thispagestyle{empty}
+\listoffigures
+\listoftables
+\clearpage
+\pagenumbering{arabic}
+
 \input{Chapter1}
 \input{Chapter2}
 \input{Chapter3}
