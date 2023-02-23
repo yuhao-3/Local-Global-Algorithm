@@ -12,14 +12,12 @@ Incorporating information from current data and prior knowledge, posterior distr
 	\label{eq:simBayesrule}
 \end{equation}
 Nevertheless, due to potential complexity for most of the posterior distribution form, intractable nature of exact posterior distribution form becomes one of the major obstacles in the progress of Bayesian Inference. Much efforts have been paid over the years, there are two main types of sampling approach that are effective currently, which are stochastic sampling algorithms and deterministic approximation algorithms. \\
-The most typical stochastic sampling algorithm is Monte Carlo Markov Chain(MCMC), where an exact posterior distribution can be sampled given form of conditional distribution of each model parameter conditioning on rest of the other parameters. 
-
-Theoretically, MCMC will lead to an arbitary precise result of posterior distribution approximation if an arbitarily long burn-in period is allocated. However, MCMC is notorious for suffering from long execution time especially when amount of data is large, and we will expand more the property in the following subsection \ref{MCMC}.\\
+The most typical stochastic sampling algorithm is Monte Carlo Markov Chain(MCMC), where an exact posterior distribution can be sampled given form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, MCMC will lead to an arbitary precise result of posterior distribution approximation if an arbitarily long burn-in period is allocated. However, MCMC is notorious for suffering from long execution time especially when amount of data is large, and we will expand more the property in the following subsection \ref{MCMC}.\\
 On the other hand, determinstic approach such as Variational Bayes has also arised as an faster substitution compared with stochastic approximation approaches. Determinstic approaches assume the approximation originates from a tractable distribution first and attempt to search for the distribution from this family that is the closest to the target posterior distribution by optimization techniques, it has been indicated that Variational Inference algorithm demonstrate a descent computation cost and time-efficiency. 
 The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics produced by 
-\cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution from independent product of parameter distribution
+\cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution from independent product of parameter distribution.
 Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some circumstances. For example, it is suggested by \cite{Bishop_2006} that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
-Motivated by the intention of furthernenhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
+Motivated by the intention of further enhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
 
 
 \section{Contribution}
@@ -31,7 +29,7 @@ Our main contribution could be concluded as the following part:
 	\item Derivation of properties for Multivariate Lasso Distribution
 	\item Implementation of Univariate Lasso Distribution and Multivariate Lasso Distribution property in R
 	\item Design of two new Variational Inference approaches based on univariate lasso distribution and multivariate lasso distribution
-	\item Conduct of experiment to testify two algorithms under     dataset by several evaluation metrics for approximation accuracy such as
+	\item Conduct of experiment to testify two algorithms under  dataset by several evaluation metrics for approximation accuracy such as
 \end{itemize}
 
 
