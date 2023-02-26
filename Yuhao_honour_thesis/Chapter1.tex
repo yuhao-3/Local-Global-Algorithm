@@ -27,10 +27,12 @@ On the other hand, determinstic approach has also arised as an faster substituti
 \textbf{Variational Bayes}
 The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics produced by 
 \cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution.
-Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{Bishop_2006} that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
+Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{bishop_2006} that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
 
 \textbf{Motivation}
 Motivated by the intention of further enhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
+
+\textbf{Why Bayesian Lasso problem}
 
 
 \section{Contribution}
