@@ -28,7 +28,7 @@
 \newblock \URLprefix \url{https://doi.org/10.2307/2985818},
   \DOIprefix\doi{10.2307/2985818}.
 %Type = Book
-\bibitem[{Bishop(2006)}]{Bishop_2006}
+\bibitem[{Bishop(2006)}]{bishop_2006}
 \bibinfo{author}{Bishop, C.M.}, \bibinfo{year}{2006}.
 \newblock \bibinfo{title}{Pattern recognition and machine learning}.
 \newblock \bibinfo{publisher}{Springer}.
