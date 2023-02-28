@@ -8,19 +8,6 @@ library(matrixStats)
 # library(truncnorm)
 library(mnormt)
 
-# Note: A: positive definite,c vb in R2, cc>0, 
-# Note: a>0, c>0
-dmlasso <- function(x,a,b,c,logarithm=FALSE) 
-{
-  log_Z <- alasso(a,b,c) 
-  log_pdf <-  -0.5*t(x)%*%A%*%x + b %*% x - c*norm(x,"1") - log_Z
-  
-  if (logarithm) {
-    return(log_pdf) 
-  }  
-  return(exp(log_pdf))
-}
-
 # Calculate normalizing constant for Multivariate Lasso 
 zmlasso <- function(A,b,c,logarithm=FALSE)
 {
@@ -187,4 +174,17 @@ vmlasso = function(A,b,c)
   # print(mu%*%t(mu))
   return(cov)
   
+}
+
+# Note: A: positive definite,c vb in R2, cc>0, 
+# Note: a>0, c>0
+dmlasso <- function(x,a,b,c,logarithm=FALSE) 
+{
+  log_Z <- zmlasso(a,b,c) 
+  log_pdf <-  -0.5*t(x)%*%A%*%x + b %*% x - c*norm(x,"1") - log_Z
+  
+  if (logarithm) {
+    return(log_pdf) 
+  }  
+  return(exp(log_pdf))
 }

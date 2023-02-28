@@ -153,7 +153,7 @@ local_global_algorithm_2 <- function(vy, mX, lambda, params)
       
       # Local Update
       ## Update local parameter
-      A = a_til/b_til*(XTX[curr_pair,curr_pair] + XTX[curr_pair,-curr_pair]%*%mt)
+      A = a_til/b_til*(XTX[curr_pair,curr_pair] + 0.5*XTX[curr_pair,-curr_pair]%*%mt + 0.5* t(mt)%*%XTX[-curr_pair,curr_pair])
       b = a_til/b_til*t(mX[,curr_pair])%*%(vy-mX[,-curr_pair]%*%vs)
       
       

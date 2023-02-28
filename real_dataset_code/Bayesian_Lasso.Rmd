@@ -450,6 +450,7 @@ vsigma_lm <- summary(res_lm)$coefficients[,2]
 vmu_bem <- res_bem$vbeta
 vsigma_bem <- res_bem$vse[-(p+1)]
 
+# Parameter for LG1
 vmu_mfvb    <- res_mfvb$vmu_til
 vsigma_mfvb <- sqrt(diag(res_mfvb$mSigma_til))
 
@@ -459,6 +460,14 @@ vsigma_LG <- sqrt(diag(res_LG1$mSigma_til))
 va = res_LG1$a
 vb = res_LG1$b
 cc = res_LG1$c
+
+# Paraemter for LG2
+vmu_LG2 <- res_LG2$vmu_til
+vsigma_LG2 <- sqrt(diag(res_LG2$mSigma_til))
+  
+vA = res_LG2$A
+vb2 = res_LG2$b
+cc2 = res_LG2$c
  
 
 pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
@@ -482,7 +491,7 @@ par(mfrow=c(3,3),mai=mai.new)
 
 ranges <- apply(res_gibbs$mBeta[-c(1:nburn),], 2, range)
 
-mAcc <- matrix(0,6,p)
+mAcc <- matrix(0,7,p)
 
 for (j in 1:p) {
   
@@ -516,12 +525,14 @@ for (j in 1:p) {
     )
   ldens[[5]] <- list(x=xg, y = dlasso(xg,va[j],vb[j],cc))
   ldens[[6]] <- list(x=xg, y = dnorm(xg,vmu_LG[j], vsigma_LG[j]))
+  # ldens[[7]] <- list(x=xg, y = dmlasso(xg,vA[j],vb[j],cc))
+  ldens[[7]] <- list(x=xg, y = dnorm(xg,vmu_LG2[j], vsigma_LG2[j]))
   
   vacc <- plot_densities(ldens, cols, exclude, gold=2)
   
   mAcc[,j] <- vacc
   
-  methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
+  methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Global")
   
   if (j==1) {
     legend("topright",
