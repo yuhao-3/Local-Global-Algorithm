@@ -1,22 +1,30 @@
 \chapter{Introduction}
 \label{Chapter1}
 \section{Background and Motivation}
-\textbf{Why Bayesian}
-Bayesian Inference approaches shares numerous advantages in statistic community and applicationa reas, particularly for the circumstance when there is lack of data. An appropriate prior choice can be beneficial in aforementioned case, especially for medical problem where the amount of effective data is extremely rare and untenable. Additionally, unlike frequentist inference approaches which treat parameter estimate as a fixed value, Bayesian Inference approaches regard parameter estimate as a random variable that have probability distribution, which means interval estimate and error variance would be generated for capturing uncertainty, offering  belief and confidence for interpretating parameter estimates.
 
-\textbf{Bayesian Inference Intuition}
- Bayesian inference approach stems from the Bayes rule, which is defined as Equation (\ref{eq:Bayesrule}) based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the likelihood conditioning on the data $\mathcal{D}$.
-\begin{equation}
-	p(\theta|\mathcal{D}) = \frac{p(\mathcal{D}|\theta)p(\theta)}{p(\mathcal{D})},
-	\label{eq:Bayesrule}
-\end{equation}
-Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to (\ref{eq:simBayesrule}) since $p(\mathcal{D})$ is equal to constant and is also insignificant to the overall posterior distribution equation.
-\begin{equation}
-	p(\theta|\mathcal{D}) \propto p(\mathcal{D}|\theta)p(\theta),
-	\label{eq:simBayesrule}
-\end{equation}
-\textbf{Challenges for Bayesian Inference}
-Nevertheless, several disadvantages inferfere the progress of Bayesian Inference. \cite{bishop_2006} states three main challenges of obtaining posterior distribution. Firstly, the dimension of target parameter might be high, which results in heavy computational cost for estimating posterior distribution. Secondly, the exact posterior distribution form might be too complicated to be tractable. Thirdly, there might not exist an closed form analytical solution for integration. Much efforts have been paid over the years, there are two main types of sampling approach that are effective currently, which are stochastic sampling algorithms and deterministic approximation algorithms. 
+%%%%%%%%%%%%%%%% Next Version
+%%%%%%%%%%%%%%%%
+
+\textbf{Why Bayesian Lasso problem}
+Advantages: 1. Incorporate Variation (inferential quantity), bring prior if we haev strong prior , 2. Bayesian: Potential for auotomatic tuning selection while Freq cross validation)
+Disadvantages:
+Lasso -> bayesian lasso -> MCMC approximate bayesian inference
+
+\textbf{Introduction of Lasso Problem}\\
+The Least Absolute Shrinkage Operator(Lasso) purposed by \cite{tibshirani_1996} belongs to one of the shrinkage methods, the main idea behind shrinkage method is that the method will eliminate regression coefficient that are close to zero, by discarding the subset of them, the rest of the model shares numerous advantages including interpretability and low prediction error than the model fitting by all predictors. As one of the most traditional shrinkage methods, Lasso regression has been proven for his success in Statistical Community over the years. It has also been deployed in Machine Learning Community as well, as another name called $L_1$ regularization techniques for effectively avoiding over-fitting problems and reducing model complexity. The main idea of lasso is adding a penalty term in addition to the sum of absolute value of residuals, for further encouraging the minimization of regression coefficient to be zero.
+
+
+
+\textbf{Introduction of Bayesian Lasso Problem}
+
+
+\textbf{Challenges of Bayesian Lasso Problem}
+
+\textbf{The use of Variational Inference}
+
+
+
+
 
 \textbf{Approximation Algorithm: Stochastic type}
 The most typical stochastic approximation algorithm is Markov Chain Monte Carlo(MCMC), where an exact posterior distribution can be sampled given form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, MCMC will lead to an arbitary precise result of posterior distribution approximation if an arbitarily long burn-in period is allocated. However, MCMC is notorious for suffering from long execution time especially and heavy computational cost, and we will expand more the property in the following subsection \ref{MCMC}.
@@ -25,14 +33,13 @@ The most typical stochastic approximation algorithm is Markov Chain Monte Carlo(
 On the other hand, determinstic approach has also arised as an faster substitution compared with stochastic approximation approaches. Numerous algorithms have been designed and utilized widely such as Variational Bayes, Expectation Propagation algorithms etc. Determinstic approaches assume the approximation originates from a tractable distribution first and attempt to search for the distribution from this family that is the closest to the target posterior distribution by optimization techniques, it has been indicated that Variational Inference algorithm demonstrate a descent computation cost and time-efficiency. 
 
 \textbf{Variational Bayes}
-The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics produced by 
+The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics yielded by 
 \cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution.
 Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{bishop_2006} that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
 
 \textbf{Motivation}
 Motivated by the intention of further enhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
 
-\textbf{Why Bayesian Lasso problem}
 
 
 \section{Contribution}
