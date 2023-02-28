@@ -5,17 +5,22 @@
 %%%%%%%%%%%%%%%% Next Version
 %%%%%%%%%%%%%%%%
 
-\textbf{Why Bayesian Lasso problem}
-Advantages: 1. Incorporate Variation (inferential quantity), bring prior if we haev strong prior , 2. Bayesian: Potential for auotomatic tuning selection while Freq cross validation)
-Disadvantages:
-Lasso -> bayesian lasso -> MCMC approximate bayesian inference
+%\textbf{Why Bayesian Lasso problem}
+%Advantages: 1. Incorporate Variation (inferential quantity), bring prior if we haev strong prior , %2. Bayesian: Potential for auotomatic tuning selection while Freq cross validation)
+%Disadvantages:
+%Lasso -> bayesian lasso -> MCMC approximate bayesian inference
 
 \textbf{Introduction of Lasso Problem}\\
-The Least Absolute Shrinkage Operator(Lasso) purposed by \cite{tibshirani_1996} belongs to one of the shrinkage methods, the main idea behind shrinkage method is that the method will eliminate regression coefficient that are close to zero, by discarding the subset of them, the rest of the model shares numerous advantages including interpretability and low prediction error than the model fitting by all predictors. As one of the most traditional shrinkage methods, Lasso regression has been proven for his success in Statistical Community over the years. It has also been deployed in Machine Learning Community as well, as another name called $L_1$ regularization techniques for effectively avoiding over-fitting problems and reducing model complexity. The main idea of lasso is adding a penalty term in addition to the sum of absolute value of residuals, for further encouraging the minimization of regression coefficient to be zero.
+The Least Absolute Shrinkage Operator(Lasso) regression proposed by \cite{tibshirani_1996} belongs to one of the shrinkage methods, the main idea behind shrinkage method is that it will eliminate regression coefficient that are close to zero, by discarding the subset of them, the rest of the model might shares numerous advantages including interpretability and less prediction error than the model fitting by all predictors. As one of the most traditional shrinkage methods, Lasso regression has been proven for his success in Statistical Community over the years. It has also been deployed in Machine Learning Community as well, as another name called $L_1$ regularization techniques for effectively avoiding over-fitting problems and reducing model complexity. The main idea of lasso is adding a penalty term of absolute value of coefficients in addition to the sum of squared value of residuals. Due to squared constraint set shape of regression coefficient, lasso penalty regression will tend to have a higher chance to shrink the subset of the estimated regression coefficient to be zero, generating a more interprable model if discard them. \cite{tibshirani_1996} has also shown that the effect of new submodel is competitive as opposed to other typical shrinkage methods such as subset selection and ridge regression. \\
+Moreover, he also purpose that the lasso estimate can also be calculated under the Bayesian framework, if independent and identically distributed laplacian prior is assigned to the problem.\\
+
+
+\textbf{Introduction of Bayesian Lasso Problem(Why Bayesian Lasso)}
+Furthermore, \cite{park_casella_2008} further explore the Lasso problem under the setting of Bayesian framework, where the choice of a conditional Laplace prior distribution over the regression coefficietn $\beta$ given by standard error $\sigma^2$ is equivalent to the Lasso penalty formulation in the frequentist framework. It could also support a more stable automatic tuning process of choosing the most appropriate tuning parameter $\lambda$ for the Lasso problem. 
 
 
 
-\textbf{Introduction of Bayesian Lasso Problem}
+
 
 
 \textbf{Challenges of Bayesian Lasso Problem}
@@ -57,7 +62,7 @@ Our main contribution could be concluded as the following part:
 
 
 \section{Thesis Organization}
-This paper will be divided up into 5 chapters. Chapter 1 will briefly illustrate the motivation and background of Variational Approximation. Chapter 2 will briefly introduce basic definition and methodlogy in previous work such as Least Absolute Shrinkage and Selection Operator problem, MCMC(Monte Carlo Method) and their variants and Mean-Field Variational Bayes(MFVB). We will present our main methodlogy of variational correction algorithm in Chapter 3, followed by a comprehensive experiment for testing the effectiveness of algorithm in Chapter 4. In Chapter 5, we will briefly discuss and explain our result and potential improvement in the future. 
+This paper will be divided up into 5 chapters. Chapter 1 briefly illustrate the motivation and background of the Lasso problem, Bayesian Lasso Problem and fast Approximate Bayesian Inference such as Variational Approximation. Chapter 2 will briefly review and explain the details of the methodlogy in previous work such as the lasso problem, MCMC(Monte Carlo Method) and their variants and Mean-Field Variational Bayes(MFVB). We will present our main methodlogy of variational correction algorithm in Chapter 3, followed by a comprehensive experiment for testing the effectiveness of algorithm in Chapter 4. In Chapter 5, we will briefly discuss and explain our result and potential improvement in the future. 
 
 
 

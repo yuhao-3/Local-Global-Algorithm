@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  28 FEB 2023 16:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  28 FEB 2023 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,12 +643,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--46
 
  []
 
-[1]
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 65
+[1] [2]
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 71
 .
  (D:\Program Files (x86)\MiKTeX\tex/latex/jknappen\ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-) [2] [3]
+) [3]
 [4]) (main.toc [5
 
 ])
@@ -680,21 +680,21 @@ LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <16> not available
 (Font)              size <17.28> substituted on input line 3.
 
 
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.31 
-      [1
-
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 35--39
+Underfull \hbox (badness 10000) in paragraph at lines 13--16
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--42
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.20 
+      [1
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 40--44
 
  []
 
@@ -703,20 +703,25 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.49 	\item I
-             ntroduction of Lasso Distribution [2]) (Chapter2.tex [3]
-Chapter 2.
-[4
+l.45 \textbf{Motivation}
+                         [2]
+Underfull \hbox (badness 10000) in paragraph at lines 45--47
 
-] [5]
-<lassodemo.png, id=267, 614.295pt x 388.45125pt>
+ []
+
+[3]) (Chapter2.tex [4]
+Chapter 2.
+[5
+
+] [6]
+<lassodemo.png, id=279, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 46.
 (pdftex.def)             Requested size: 462.64183pt x 292.55873pt.
- [6 <./lassodemo.png>]) (Chapter3.tex [7]
+ [7 <./lassodemo.png>]) (Chapter3.tex [8]
 Chapter 3.
-) (Chapter4.tex [8
+) (Chapter4.tex [9
 
 ]
 Chapter 4.
@@ -725,13 +730,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [9
+) (Chapter5.tex [10
 
 ]
 Chapter 5.
-) (main.bbl [10
+) (main.bbl [11
 
-]) [11
+]) [12
 
 ] (main.aux)
 
@@ -742,13 +747,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: EA3EC7C261E5FBD41FD7C25B20A4B8A2;5671.
  ) 
 Here is how much of TeX's memory you used:
- 15016 strings out of 475385
- 252917 string characters out of 2783908
- 630041 words of memory out of 3000000
- 36065 multiletter control sequences out of 15000+600000
+ 15020 strings out of 475385
+ 253009 string characters out of 2783908
+ 630077 words of memory out of 3000000
+ 36068 multiletter control sequences out of 15000+600000
  478255 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,6n,80p,984b,571s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 77i,6n,80p,1377b,571s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
 b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/
@@ -758,11 +763,10 @@ m Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files
 MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/
 fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Program Files (x86)/MiKTeX/fonts/ty
 pe1/public/amsfonts/cm/cmsy10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmsy8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmtt12.pfb>
-Output written on main.pdf (20 pages, 200807 bytes).
+blic/amsfonts/cm/cmtt12.pfb>
+Output written on main.pdf (21 pages, 193656 bytes).
 PDF statistics:
- 375 PDF objects out of 1000 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
+ 382 PDF objects out of 1000 (max. 8388607)
+ 69 named destinations out of 1000 (max. 500000)
  267 words of extra memory for PDF output out of 10000 (max. 10000000)
 
