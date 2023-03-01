@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  14 FEB 2023 14:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  1 MAR 2023 22:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -257,7 +257,7 @@ Overfull \hbox (13.99362pt too wide) detected at line 238
 []
  []
 
-[3] (Bivariate_Lasso.aux) ) 
+[3] [4] (Bivariate_Lasso.aux) ) 
 Here is how much of TeX's memory you used:
  2638 strings out of 475385
  42608 string characters out of 2783908
@@ -266,25 +266,25 @@ Here is how much of TeX's memory you used:
  477434 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,13n,62p,492b,217s stack positions out of 10000i,1000n,20000p,200000b,80000s
-<D:/Program Files (x86)/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmbx10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmbx12.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-bx7.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pf
-b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex7.pfb>
-<D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Pr
-ogram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><D:/Program F
-iles (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Program Files (x
-86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files (x86)/MiK
-TeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX/fon
-ts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/type
-1/public/amsfonts/cm/cmr5.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmr7.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/c
-msy5.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pf
-b>
-Output written on Bivariate_Lasso.pdf (3 pages, 185498 bytes).
+<D:/Program Files (x86)/MiKTeX/fonts/type1/publi
+c/amsfonts/cm/cmbx10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmbx12.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/c
+m/cmbx7.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex1
+0.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex7.
+pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D
+:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><D:/Progr
+am Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Program File
+s (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files (x86)
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmr5.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmr7.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmsy10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmsy5.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
+7.pfb>
+Output written on Bivariate_Lasso.pdf (4 pages, 190982 bytes).
 PDF statistics:
- 92 PDF objects out of 1000 (max. 8388607)
+ 95 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

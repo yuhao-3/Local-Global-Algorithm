@@ -178,9 +178,9 @@ vmlasso = function(A,b,c)
 
 # Note: A: positive definite,c vb in R2, cc>0, 
 # Note: a>0, c>0
-dmlasso <- function(x,a,b,c,logarithm=FALSE) 
+dmlasso <- function(x,A,b,c,logarithm=FALSE) 
 {
-  log_Z <- zmlasso(a,b,c) 
+  log_Z <- zmlasso(A,b,c) 
   log_pdf <-  -0.5*t(x)%*%A%*%x + b %*% x - c*norm(x,"1") - log_Z
   
   if (logarithm) {
@@ -188,3 +188,49 @@ dmlasso <- function(x,a,b,c,logarithm=FALSE)
   }  
   return(exp(log_pdf))
 }
+
+# Get marginal distribution of x_1
+
+dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
+{
+  sigma2 = 1/A[2,2]
+  Z <- zmlasso(A,b,c)
+  k = exp(-0.5*A[1,1]*x^2+b[1]*x-c*abs(x))/Z
+  mu1 = 0.5*(A[1,2]*A[2,1]/A[2,2])*x + (b[2]-c)/A[2,2]
+  mu2 = 0.5*(A[1,2]*A[2,1]/A[2,2])*x - (b[2]+c)/A[2,2]
+  
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + logSumExp(c(log_partI,log_partII))
+  
+  if (logarithm) {
+    return(log_mpdf)
+  } 
+  return(exp(log_mpdf)) 
+  
+  
+}
+
+
+# Get marginal distribution of x_2
+dmmlasso2 <- function(x,A,b,c,logarithm= FALSE)
+{
+  sigma2 = 1/A[1,1]
+  Z <- zmlasso(A,b,c)
+  k = exp(-0.5*A[2,2]*x^2+b[2]*x-c*abs(x))/Z
+  mu1 = 0.5*(A[1,2]*A[2,1]/A[1,1])*x + (b[1]-c)/A[1,1]
+  mu2 = 0.5*(A[1,2]*A[2,1]/A[1,1])*x - (b[1]+c)/A[1,1]
+  
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + logSumExp(c(log_partI,log_partII))
+  
+  if (logarithm) {
+    return(log_mpdf)
+  } 
+  return(exp(log_mpdf)) 
+    
+    
+}
+
+

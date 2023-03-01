@@ -246,5 +246,73 @@ $$
 E[AA^T] = Cov(A) - E[A]E[A]^T 
 $$
 
+\section{Finding marginal distribution}
+$$
+f(x_1,x_2) \\
+= \frac{1}{Z}exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2$$
+
+
+$$
+\begin{array}{rl}
+	f(x_1)
+	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_2 \\
+	& \qquad
+	= Z^{-1}exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2 \\
+	& \qquad
+	= Z^{-1}exp(-0.5a_{11}x_1^2  + b_1x_1 - c|x_1|) \\
+	& \qquad
+	 \int_{-\infty}^{\infty}exp(-\frac{1}{2} [a_{12}a_{21}x_1x_2 + a_{22}x_2^2] + b_2x_2 - c|x_2|]dx_2\\
+	& \qquad
+	= k \int_{-\infty}^{\infty} exp[-a_{12}a_{21}x_1x_2 -0.5a_{22}x_2^2 + b_2x_2 - c|x_2|]dx_2\\
+	& \qquad
+	= k[ \int_{0}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
+	& \qquad
+		+\int_{-\infty}^{0} exp[-0.5a_{12}a_{21}x_1x_2  - 0.5a_{22}x_2^2  + (b_2+c)x_2]dx_2 \\
+	& \qquad
+	= k[ \int_{0}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
+	& \qquad
+	+\int_{0}^{\infty} exp[0.5a_{12}a_{21}x_1x_2  - 0.5a_{22}x_2^2  - (b_2+ c)x_2]dx_2 ]\\
+	& \qquad
+	= k[\int_{0}^{\infty} exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}dx_2] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
+	& \qquad
+	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
+		\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
+	
+\end{array}
+$$
+where $\mu_1 = (\frac{a_{12}a_{21}}{2a_{22}}x_1 + \frac{b_2-c}{a_{22}}) $, $\mu_2 =(\frac{a_{12}a_{21}}{2a_{22}}x_1 - \frac{b_2+c}{a_{22}}) $, $\sigma^2 = 1/a_{22}$, $k =  Z^{-1}exp(-0.5a_{11}x_1^2 + b_1x_1 - c|x_1|)$
+
+$$
+\begin{array}{rl}
+	f(x_2)
+	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_1 \\
+	& \qquad
+	= Z^{-1}exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_1 \\
+	& \qquad
+	= Z^{-1}exp(-0.5 a_{22}x_2^2 + b_2x_2 - c|x_2|) \\
+	& \qquad
+	\int_{-\infty}^{\infty}exp(-\frac{1}{2} [a_{12}a_{21}x_1x_2 + a_{11}x_1^2] + b_1x_1 - c|x_1|]dx_1\\
+	& \qquad
+	= k \int_{-\infty}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2 -0.5a_{11}x_1^2 + b_1x_1 - c|x_1|]dx_1\\
+	& \qquad
+	= k[ \int_{0}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2 - 0.5a_{11}x_1^2 + (b_1 - c)x_1 ]dx_1  \\
+	& \qquad
+	+\int_{-\infty}^{0} exp[-0.5a_{12}a_{21}x_1x_2  - 0.5a_{11}x_1^2  + (b_1 + c)x_1]dx_1 ]\\
+	& \qquad
+	= k[ \int_{0}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2 - 0.5a_{11}x_1^2 + (b_1 + c)x_1 ]dx_1  \\
+	& \qquad
+	+\int_{0}^{\infty} exp[-0.5a_{12}a_{21}x_1x_2  - 0.5a_{11}x_1^2  - (b_1-c)x_1]dx_1 ]\\
+	& \qquad
+	= k[\int_{0}^{\infty} exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}dx_1] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
+	& \qquad
+	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
+	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
+	
+\end{array}
+$$
+where $\mu_1 = (\frac{a_{12}a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\mu_2 =(\frac{a_{12}a_{21}}{2a_{11}}x_2 - \frac{b_1+c}{a_{11}}) $, $\sigma^2 = 1/a_{11}$, $k =  Z^{-1}exp(-0.5a_{22}x_2^2 + b_2x_2 - c|x_2|)$
+
 
 \end{document}
+
+
