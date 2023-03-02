@@ -404,7 +404,7 @@ cat("BEM running time = ",time_bem[3],"s")
 cat("\nMCMC running time = ",time_gibbs2[3],"s")
 cat("\nMFVB running time = ",time_mfvb[3],"s")
 cat("\nLG1 running time =",time_LG1[3],"s")
-cat("\nLG 2running time =",time_LG2[3],"s")
+cat("\nLG2 running time =",time_LG2[3],"s")
 ```
 
 ```{r}

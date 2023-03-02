@@ -196,8 +196,8 @@ dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
   sigma2 = 1/A[2,2]
   Z <- zmlasso(A,b,c)
   k = exp(-0.5*A[1,1]*x^2+b[1]*x-c*abs(x))/Z
-  mu1 = 0.5*(A[1,2]*A[2,1]/A[2,2])*x + (b[2]-c)/A[2,2]
-  mu2 = 0.5*(A[1,2]*A[2,1]/A[2,2])*x - (b[2]+c)/A[2,2]
+  mu1 = -0.5*((A[1,2]+A[2,1])/A[2,2])*x + (b[2]-c)/A[2,2]
+  mu2 = 0.5*((A[1,2]+A[2,1])/A[2,2])*x - (b[2]+c)/A[2,2]
   
   log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
   log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
@@ -207,7 +207,6 @@ dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
     return(log_mpdf)
   } 
   return(exp(log_mpdf)) 
-  
   
 }
 
@@ -218,8 +217,8 @@ dmmlasso2 <- function(x,A,b,c,logarithm= FALSE)
   sigma2 = 1/A[1,1]
   Z <- zmlasso(A,b,c)
   k = exp(-0.5*A[2,2]*x^2+b[2]*x-c*abs(x))/Z
-  mu1 = 0.5*(A[1,2]*A[2,1]/A[1,1])*x + (b[1]-c)/A[1,1]
-  mu2 = 0.5*(A[1,2]*A[2,1]/A[1,1])*x - (b[1]+c)/A[1,1]
+  mu1 = -0.5*((A[1,2]+A[2,1])/A[1,1])*x + (b[1]-c)/A[1,1]
+  mu2 = 0.5*((A[1,2]+A[2,1])/A[1,1])*x - (b[1]+c)/A[1,1]
   
   log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
   log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
@@ -229,7 +228,6 @@ dmmlasso2 <- function(x,A,b,c,logarithm= FALSE)
     return(log_mpdf)
   } 
   return(exp(log_mpdf)) 
-    
     
 }
 
