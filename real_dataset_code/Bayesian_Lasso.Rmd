@@ -385,11 +385,19 @@ time_LG1 <- system.time({
 ## Test effectiveness of Local-Global ALgorithm 2
 
 ```{r}
-
 source(here("code","local_global_algorithms.R")) 
-time_LG2 <- system.time({
-  res_LG2 = local_global_algorithm_2(vy, mX, lambda, res_mfvb) 
-})
+if(file.exists(paste("res_LG2",dataset_name,".Rdata",sep="")))
+{
+  load(paste("res_LG2",dataset_name,".Rdata",sep=""))
+}else
+{
+  time_LG2 <- system.time({
+    res_LG2 = local_global_algorithm_2(vy, mX, lambda, res_mfvb) 
+  })
+  save.image(paste("res_LG2",dataset_name,".Rdata",sep=""))
+}
+
+
 ```
 
 
@@ -524,8 +532,8 @@ for (j in 1:p) {
     )
   ldens[[5]] <- list(x=xg, y = dlasso(xg,va[j],vb[j],cc))
   ldens[[6]] <- list(x=xg, y = dnorm(xg,vmu_LG[j], vsigma_LG[j]))
-  ldens[[7]] <- list(x=xg, y = dmmlasso1(xg,vA[[j]],vb2[[j]],cc))
-  ldens[[8]] <- list(x=xg, y = dmmlasso2(xg,vA[[j]],vb2[[j]],cc))
+  ldens[[7]] <- list(x=xg, y = dmmlasso1(xg,vA[[j]],vb2[[j]],cc2))
+  ldens[[8]] <- list(x=xg, y = dmmlasso2(xg,vA[[j]],vb2[[j]],cc2))
   ldens[[9]] <- list(x=xg, y = dnorm(xg,vmu_LG2[j], vsigma_LG2[j]))
   
   vacc <- plot_densities(ldens, cols, exclude, gold=2)

@@ -301,3 +301,40 @@ print(ex2)
 print(ex2 - emlasso(A,b,c) %*% t(emlasso(A,b,c)))
 ```
 
+
+
+
+```{r}
+source(here("code/lasso_distribution","lasso_distribution.R"))
+fun <- function(x)
+{
+  A = matrix(c(2,0,0,3),2,2)
+  b = matrix(c(-2,-1),2,1)
+  c = 3
+  sigma2 = 1/A[2,2]
+  Z <- zmlasso(A,b,c)
+  z1 = zlasso(A[1,1],b[1],c)
+  z2 = zlasso(A[2,2],b[2],c)
+  
+  
+  k = exp(-0.5*A[1,1]*x^2+b[1]*x-c*abs(x))/Z
+  mu1 = -0.5*((A[1,2]+A[2,1])/A[2,2])*x + (b[2]-c)/A[2,2]
+  mu2 = 0.5*((A[1,2]+A[2,1])/A[2,2])*x - (b[2]+c)/A[2,2]
+  
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + logSumExp(c(log_partI,log_partII))
+  
+  print(z2)
+  print(k)
+  print(sqrt(sigma2)*(exp(log_partI)+exp(log_partII)))
+
+  
+  # return(k*sqrt(sigma2) * (pnorm(mu1/sqrt(sigma2)/dnorm(mu1/sqrt(sigma2))+ pnorm(mu2/sqrt(sigma2))/dnorm(mu2/sqrt(sigma2)))))
+  return(exp(log_mpdf)) 
+  
+}
+
+integrate(fun,lower = -Inf, upper = Inf)
+```
+

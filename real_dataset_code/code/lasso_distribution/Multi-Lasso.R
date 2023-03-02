@@ -189,7 +189,9 @@ dmlasso <- function(x,A,b,c,logarithm=FALSE)
   return(exp(log_pdf))
 }
 
-# Get marginal distribution of x_1
+
+
+
 
 dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
 {
@@ -199,14 +201,16 @@ dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
   mu1 = -0.5*((A[1,2]+A[2,1])/A[2,2])*x + (b[2]-c)/A[2,2]
   mu2 = 0.5*((A[1,2]+A[2,1])/A[2,2])*x - (b[2]+c)/A[2,2]
   
-  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
-  log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
-  log_mpdf =  log(sqrt(sigma2)) + log(k) + logSumExp(c(log_partI,log_partII))
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  
+  M <- max(c(log_partI,log_partII))
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + M +log(exp(log_partI - M)+exp(log_partII - M))
   
   if (logarithm) {
     return(log_mpdf)
-  } 
-  return(exp(log_mpdf)) 
+  }
+  return(exp(log_mpdf))
   
 }
 
@@ -220,15 +224,17 @@ dmmlasso2 <- function(x,A,b,c,logarithm= FALSE)
   mu1 = -0.5*((A[1,2]+A[2,1])/A[1,1])*x + (b[1]-c)/A[1,1]
   mu2 = 0.5*((A[1,2]+A[2,1])/A[1,1])*x - (b[1]+c)/A[1,1]
   
-  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu2/sqrt(sigma2),log=TRUE)
-  log_partII <- pnorm(mu1/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
-  log_mpdf =  log(sqrt(sigma2)) + log(k) + logSumExp(c(log_partI,log_partII))
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  
+  M <- max(c(log_partI,log_partII))
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + M + log(exp(log_partI - M)+exp(log_partII - M))
   
   if (logarithm) {
     return(log_mpdf)
-  } 
-  return(exp(log_mpdf)) 
-    
+  }
+  return(exp(log_mpdf))
+  
 }
 
 
