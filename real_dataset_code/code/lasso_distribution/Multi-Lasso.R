@@ -193,7 +193,7 @@ dmlasso <- function(x,A,b,c,logarithm=FALSE)
 
 
 
-dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
+dmmlasso1 <- function(x,A,b,c,logarithm = FALSE)
 {
   sigma2 = 1/A[2,2]
   Z <- zmlasso(A,b,c)
@@ -216,7 +216,7 @@ dmmlasso1 <- function(x,A,b,c,logarithm= FALSE)
 
 
 # Get marginal distribution of x_2
-dmmlasso2 <- function(x,A,b,c,logarithm= FALSE)
+dmmlasso2 <- function(x,A,b,c,logarithm = FALSE)
 {
   sigma2 = 1/A[1,1]
   Z <- zmlasso(A,b,c)

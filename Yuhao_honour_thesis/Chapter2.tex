@@ -35,10 +35,6 @@ In order to transform constraint form of lasso to penalty form, Lagranage multip
 \end{equation}
  Since the objective function contains a quadratic term $||y-X\beta||_2$ with a linear term $\lambda||\beta||_1 - \lambda t)$, leading to a convex optimization problem. Due to strong duality theorem in convex optimization system, therefore the penalty formulation of lasso regression can be deduced as Equation \ref{eq:lasso1}, is equivalent to constraint form \ref{eq:lasso2} after ignoring the unaffected constant $-\lambda t$.
 
-\begin{equation}
-	\label{eq:lasso1}
-	\hat{\beta}_{lasso} = \underset{\beta}{\operatorname{argmin}} ||y-X\beta||_2 + \lambda ||\beta||_1, \lambda \geq 0.
-\end{equation}
 
 Graphical demonstration of the lasso for Equation \ref{eq:lasso2} and Equation \ref{eq:lasso1} can also be found on the left hand side of the Figure \ref{fig:lassodemo}, where the squared constraint set is drawn, in addition to the contour line of regression coefficient. Given that $\lambda$ is set as penalty term that control the strength of penalization, larger penalization facilitate a more sparse solution, so that further enclosing the estimated coefficient to lies on the axis of each parameter as shown in Figure \ref{fig:lassodemo}. Lasso regression coefficient would have higher chance to render the contour line of $\beta$ intersect with the corner of the squared constraint set, causing the occurrence of sparse estimated regression coefficient. Compared with the ridge regression where a sum of square of penalty term is yielded instead on the right side of Figure \ref{fig:lassodemo}, ridge regression tends to gain a non-sparse solution due to circled constraint set for $\beta$.
 

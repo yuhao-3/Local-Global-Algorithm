@@ -386,6 +386,7 @@ time_LG1 <- system.time({
 
 ```{r}
 source(here("code","local_global_algorithms.R")) 
+
 if(file.exists(paste("res_LG2",dataset_name,".Rdata",sep="")))
 {
   load(paste("res_LG2",dataset_name,".Rdata",sep=""))
@@ -402,6 +403,20 @@ if(file.exists(paste("res_LG2",dataset_name,".Rdata",sep="")))
 
 
 
+```{r}
+source(here("code","lasso_distribution","bivariate_lasso_distribution.R"))
+if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
+{
+  load(paste("res_LG2_new",dataset_name,".Rdata",sep=""))
+}else
+{
+  time_LG2 <- system.time({
+    res_LG2_new = local_global_algorithm_2(vy, mX, lambda, res_mfvb) 
+  })
+  save.image(paste("res_LG2_new",dataset_name,".Rdata",sep=""))
+}
+
+```
 
 
 
@@ -475,6 +490,14 @@ vsigma_LG2 <- sqrt(diag(res_LG2$mSigma_til))
 vA = res_LG2$A
 vb2 = res_LG2$b
 cc2 = res_LG2$c
+
+# Paraemter for LG2 new
+vmu_LG2 <- res_LG2_new$vmu_til
+vsigma_LG2 <- sqrt(diag(res_LG2_new$mSigma_til))
+  
+vA = res_LG2_new$A
+vb2 = res_LG2_new$b
+cc2 = res_LG2_new$c
  
 
 pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
