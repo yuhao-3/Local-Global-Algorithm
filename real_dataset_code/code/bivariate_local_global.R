@@ -1,6 +1,5 @@
 ###############################################################################
-
-source("bivariate_lasso_distribution.R")
+source(here("code","lasso_distribution","bivariate_lasso_distribution.R"))
 
 ###############################################################################
 

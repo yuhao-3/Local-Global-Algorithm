@@ -7,45 +7,45 @@ Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Warning--empty chapter and pages in attias_1999
-You've used 6 entries,
+You've used 12 entries,
             2990 wiz_defined-function locations,
-            672 strings with 6182 characters,
-and the built_in function-call counts, 3764 in all, are:
-= -- 291
-> -- 108
-< -- 5
-+ -- 48
-- -- 36
-* -- 364
-:= -- 542
-add.period$ -- 21
-call.type$ -- 6
-change.case$ -- 40
-chr.to.int$ -- 6
-cite$ -- 7
-duplicate$ -- 294
-empty$ -- 303
-format.name$ -- 50
-if$ -- 722
+            714 strings with 7373 characters,
+and the built_in function-call counts, 7272 in all, are:
+= -- 568
+> -- 240
+< -- 9
++ -- 103
+- -- 81
+* -- 736
+:= -- 1066
+add.period$ -- 43
+call.type$ -- 12
+change.case$ -- 85
+chr.to.int$ -- 12
+cite$ -- 13
+duplicate$ -- 570
+empty$ -- 551
+format.name$ -- 121
+if$ -- 1369
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 52
-newline$ -- 48
-num.names$ -- 24
-pop$ -- 105
+missing$ -- 101
+newline$ -- 82
+num.names$ -- 48
+pop$ -- 207
 preamble$ -- 1
-purify$ -- 36
+purify$ -- 75
 quote$ -- 0
-skip$ -- 110
+skip$ -- 194
 stack$ -- 0
-substring$ -- 173
-swap$ -- 194
+substring$ -- 270
+swap$ -- 373
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 48
+type$ -- 102
 warning$ -- 1
-while$ -- 23
+while$ -- 42
 width$ -- 0
-write$ -- 103
+write$ -- 194
 (There was 1 warning)

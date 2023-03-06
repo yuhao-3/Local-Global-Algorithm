@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  4 MAR 2023 00:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  6 MAR 2023 17:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -684,49 +684,44 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.32 
-      [1
+l.30  \begin{equation}
+                       [1
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 47--49
-
- []
-
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.67 
-      [2]
-Underfull \hbox (badness 10000) in paragraph at lines 72--76
+l.53 
+      [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 67--71
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--79
+Underfull \hbox (badness 10000) in paragraph at lines 76--78
 
  []
 
-[3]) (Chapter2.tex [4]
+[4]) (Chapter2.tex [5]
 Chapter 2.
-[5
+[6
 
-] [6]
-<lassodemo.png, id=295, 614.295pt x 388.45125pt>
+] [7]
+<lassodemo.png, id=321, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 42.
 (pdftex.def)             Requested size: 462.64183pt x 292.55873pt.
 
 
-LaTeX Warning: Reference `eq:lassosolution' on page 7 undefined on input line 4
+LaTeX Warning: Reference `eq:lassosolution' on page 8 undefined on input line 4
 8.
 
-[7 <./lassodemo.png>]) (Chapter3.tex [8]
+[8 <./lassodemo.png>]) (Chapter3.tex [9]
 Chapter 3.
-) (Chapter4.tex [9
+) (Chapter4.tex [10
 
 ]
 Chapter 4.
@@ -735,15 +730,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [10
+) (Chapter5.tex [11
 
 ]
 Chapter 5.
-) (main.bbl [11
+) (main.bbl [12
 
-]) [12
+] [13
 
-] (main.aux)
+]) [14] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -755,13 +750,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: EA3EC7C261E5FBD41FD7C25B20A4B8A2;5671.
  ) 
 Here is how much of TeX's memory you used:
- 15026 strings out of 475385
- 253087 string characters out of 2783908
- 630183 words of memory out of 3000000
- 36071 multiletter control sequences out of 15000+600000
+ 15054 strings out of 475385
+ 253907 string characters out of 2783908
+ 633519 words of memory out of 3000000
+ 36090 multiletter control sequences out of 15000+600000
  478255 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,6n,80p,1045b,571s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 77i,6n,80p,1064b,593s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
 b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/
@@ -775,9 +770,9 @@ lic/amsfonts/cm/cmr8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmsy8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt1
 2.pfb>
-Output written on main.pdf (21 pages, 227566 bytes).
+Output written on main.pdf (23 pages, 239124 bytes).
 PDF statistics:
- 408 PDF objects out of 1000 (max. 8388607)
- 72 named destinations out of 1000 (max. 500000)
+ 449 PDF objects out of 1000 (max. 8388607)
+ 81 named destinations out of 1000 (max. 500000)
  267 words of extra memory for PDF output out of 10000 (max. 10000000)
 

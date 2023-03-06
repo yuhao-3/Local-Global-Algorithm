@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{12}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -18,6 +18,15 @@
   Models byVariational Bayes}.
 \newblock p. \bibinfo{pages}{21–30}.
 %Type = Article
+\bibitem[{Beck and Teboulle(2009)}]{beck_teboulle_2009}
+\bibinfo{author}{Beck, A.}, \bibinfo{author}{Teboulle, M.},
+  \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{A fast iterative shrinkage-thresholding algorithm for
+  linear inverse problems}.
+\newblock \bibinfo{journal}{SIAM Journal on Imaging Sciences}
+  \bibinfo{volume}{2}, \bibinfo{pages}{183–202}.
+\newblock \DOIprefix\doi{10.1137/080716542}.
+%Type = Article
 \bibitem[{Beech et~al.(1959)Beech, Kendall and Stuart}]{Beech1959}
 \bibinfo{author}{Beech, D.G.}, \bibinfo{author}{Kendall, M.G.},
   \bibinfo{author}{Stuart, A.}, \bibinfo{year}{1959}.
@@ -33,6 +42,25 @@
 \newblock \bibinfo{title}{Pattern recognition and machine learning}.
 \newblock \bibinfo{publisher}{Springer}.
 %Type = Article
+\bibitem[{Efron et~al.(2004)Efron, Hastie, Johnstone and
+  Tibshirani}]{efron_hastie_johnstone_tibshirani_2004}
+\bibinfo{author}{Efron, B.}, \bibinfo{author}{Hastie, T.},
+  \bibinfo{author}{Johnstone, I.}, \bibinfo{author}{Tibshirani, R.},
+  \bibinfo{year}{2004}.
+\newblock \bibinfo{title}{Least angle regression}.
+\newblock \bibinfo{journal}{The Annals of Statistics} \bibinfo{volume}{32}.
+\newblock \DOIprefix\doi{10.1214/009053604000000067}.
+%Type = Article
+\bibitem[{Friedman et~al.(2010)Friedman, Hastie and
+  Tibshirani}]{friedman_hastie_tibshirani_2010}
+\bibinfo{author}{Friedman, J.}, \bibinfo{author}{Hastie, T.},
+  \bibinfo{author}{Tibshirani, R.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Regularization paths for generalized linear models
+  via coordinate descent}.
+\newblock \bibinfo{journal}{Journal of Statistical Software}
+  \bibinfo{volume}{33}.
+\newblock \DOIprefix\doi{10.18637/jss.v033.i01}.
+%Type = Article
 \bibitem[{Jordan et~al.(1998)Jordan, Ghahramani, Jaakkola and
   Saul}]{jordan_ghahramani_jaakkola_saul_1998}
 \bibinfo{author}{Jordan, M.I.}, \bibinfo{author}{Ghahramani, Z.},
@@ -43,6 +71,14 @@
 \newblock \bibinfo{journal}{Learning in Graphical Models} ,
   \bibinfo{pages}{105–161}\DOIprefix\doi{10.1007/978-94-011-5014-9_5}.
 %Type = Article
+\bibitem[{Khare and Hobert(2013)}]{khare_hobert_2013}
+\bibinfo{author}{Khare, K.}, \bibinfo{author}{Hobert, J.P.},
+  \bibinfo{year}{2013}.
+\newblock \bibinfo{title}{Geometric ergodicity of the bayesian lasso}.
+\newblock \bibinfo{journal}{Electronic Journal of Statistics}
+  \bibinfo{volume}{7}.
+\newblock \DOIprefix\doi{10.1214/13-ejs841}.
+%Type = Article
 \bibitem[{Park and Casella(2008)}]{park_casella_2008}
 \bibinfo{author}{Park, T.}, \bibinfo{author}{Casella, G.},
   \bibinfo{year}{2008}.
@@ -50,6 +86,14 @@
 \newblock \bibinfo{journal}{Journal of the American Statistical Association}
   \bibinfo{volume}{103}, \bibinfo{pages}{681–686}.
 \newblock \DOIprefix\doi{10.1198/016214508000000337}.
+%Type = Misc
+\bibitem[{Rajaratnam and Sparks(2015)}]{rajaratnam_sparks_2015}
+\bibinfo{author}{Rajaratnam, B.}, \bibinfo{author}{Sparks, D.},
+  \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{Mcmc-based inference in the era of big data: A
+  fundamental analysis of the convergence complexity of high-dimensional
+  chains}.
+\newblock \URLprefix \url{https://arxiv.org/abs/1508.00947}.
 %Type = Article
 \bibitem[{Tibshirani(1996)}]{tibshirani_1996}
 \bibinfo{author}{Tibshirani, R.}, \bibinfo{year}{1996}.
@@ -57,5 +101,13 @@
 \newblock \bibinfo{journal}{Journal of the Royal Statistical Society: Series B
   (Methodological)} \bibinfo{volume}{58}, \bibinfo{pages}{267–288}.
 \newblock \DOIprefix\doi{10.1111/j.2517-6161.1996.tb02080.x}.
+%Type = Article
+\bibitem[{Zhang and Zeng(2005)}]{nan_zhang_shuqing_zeng_2005}
+\bibinfo{author}{Zhang, N.}, \bibinfo{author}{Zeng, S.}, \bibinfo{year}{2005}.
+\newblock \bibinfo{title}{A gradient descending solution to the lasso
+  criteria}.
+\newblock \bibinfo{journal}{Proceedings. 2005 IEEE International Joint
+  Conference on Neural Networks, 2005.}
+  \DOIprefix\doi{10.1109/ijcnn.2005.1556393}.
 
 \end{thebibliography}

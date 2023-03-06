@@ -13,7 +13,7 @@
 \textbf{Introduction of Lasso Problem}\\
 The Least Absolute Selection and Shrinkage Operator(Lasso) regression proposed by \cite{tibshirani_1996} belongs to one of the shrinkage methods. As one of the most traditional shrinkage methods, Lasso regression has been proven for his success in Statistical Community over the years.
 
-The Lasso serves as two purposes, one is the estimation of regression parameter, the other is to effective shrinking of the coefficients to achieve variable selection purpose, which is also the fundamental difference of Lasso with other methods. 
+The Lasso serves as two purposes, one is the estimation of regression parameter, the other is to effective shrinking of the coefficients to achieve variable selection purpose, which is also the fundamental difference of Lasso with other methods. The Lasso Regression is helpful particularly for high-dimensional data because of its sparsity nature.
 
 \textbf{Explain purpose of Lasso}
 The definition of linear regression model of interest can be referred based on the following definition defined by \cite{tibshirani_1996}: the $n \times 1$ vector of regression coefficient $\beta$,  $y$ is the response variable with a dimension of $n \time 1$, $X$ is data matrix after standardization with a dimension of $n \times p$ , $\mu$ is the population mean with a dimension of $n \times 1$, $\epsilon$ is independent and identically distributed normal noise with expectation of 0 and variance of $\sigma^2$. Then the linear model can be explained by the Equation \ref{eq:LRmodel}
@@ -21,58 +21,57 @@ The definition of linear regression model of interest can be referred based on t
 	\label{eq:LRmodel}
 	y = \mu 1_n + X\beta + \epsilon.
 \end{equation} 
-
+The Least square estimator suggest the sum of square of the difference between estimated response variable and true response variable should be used as loss function as described in Equation (\ref{eq:OLS})
+\begin{equation}
+	\label{eq:OLS}
+	\hat{\beta} = \underset{\beta}{\operatorname{argmin}} || (\tilde{y} - X\beta)^T(\tilde{y}-X\beta)||.
+\end{equation}
  The Lasso estimate of regression coefficient is based on Equation (\ref{eq:lasso1}), where the main distinction of Lasso is adding a penalty term of absolute value of regression coefficients $\beta$ in addition to the sum of squared value of residuals from ordinary regression objective function. The value of tuning parameter $\lambda$ is served as a measure of the extent of penalization.
  \begin{equation}
  	\label{eq:lasso1}
- 	\hat{\beta}_{lasso} = \underset{\beta}{\operatorname{argmin}} ||\tilde{y}-X\beta||_2 + \lambda ||\beta||_1, \lambda \geq 0. \tilde{y} =  y - \bar{y}\textbf{1}_n \\
+ 	\hat{\beta}_{lasso} = \underset{\beta}{\operatorname{argmin}} (\tilde{y}-X\beta)^T(\tilde{y}-X\beta) + \lambda ||\beta||_1, \lambda \geq 0. \tilde{y} =  y - \bar{y}\textbf{1}_n \\
  \end{equation}
-  
  Larger penalization leads to more sparse solution of regression coefficient due to a square constraint set results from $L_1$ penalty function, so that achieve variable selection of parameter, generating a higher prediction accuracy as well as interpretable model since we could drop the estimated regression coefficient that has 0 and state they have weak effect for prediction according to \cite{tibshirani_1996}.
- 
-\textbf{Bayesian Lasso}\\
-Based on the ordinary Lasso setting, \cite{tibshirani_1996} also suggests that the lasso estimate can also be extended under the Bayesian framework, if independent and identically distributed laplacian prior is assigned to the Lasso model from Equation (\ref{eq:LassoPrior}).
+However, due to non-existence of derivative of absolute value of regression coefficient $\beta$, alternative improved algorithm have been purposed and deployed such as Least Angle Regression(LARS), iterative soft-thresholding, subgradient method, and iteratively reweighted least square(IRLS) by \cite{efron_hastie_johnstone_tibshirani_2004},   \cite{beck_teboulle_2009}, \cite{nan_zhang_shuqing_zeng_2005} and \cite{friedman_hastie_tibshirani_2010}.
 
+\textbf{Bayesian Lasso}
+One of the detriments of the ordinary lasso is that the variation of inferential quantity can't be captured properly. To resolve this issue, \cite{tibshirani_1996} also suggests that the lasso estimate can also be extended under the Bayesian framework, which can be described as posterior mode if independent and identically distributed Laplacian prior from Equation (\ref{eq:LassoPrior}) is assigned.
 \begin{equation}
 	\label{eq:LassoPrior}
-	f(\beta_j) = \frac{1}{2\tau} exp(\frac{-|\beta_j|}{\tau}), \tau = \frac{1}{\lambda}
+	f(\beta_j) = \frac{1}{2\tau} exp(\frac{-|\beta_j|}{\tau}), \tau = \frac{1}{\lambda},
 \end{equation}
-
-
 \textbf{Introduction of Bayesian Lasso Problem(Why Bayesian Lasso)}
-Furthermore, \cite{park_casella_2008} further explore the Lasso model under the setting of Bayesian framework, where the choice of a conditional Laplace prior distribution over the regression coefficient $\beta$ given by standard error $\sigma^2$ is added to the Lasso penalty formulation in the frequentist framework. 
+Nevertheless, there is no tractable integration form for the Bayesian Lasso posterior until \cite{park_casella_2008} further explore the Lasso model under the setting of Bayesian framework, where the choice of a conditional Laplace prior distribution over the regression coefficient $\beta$ conditioning by standard error $\sigma^2$ is added to the Lasso penalty formulation in the frequentist framework to ensure unimodality of full posterior distribution. Based on closed form of tractable posterior distribution, a three-step Gibbs sampler is proposed to sample Bayes Lasso posterior distribution, which can be utilized for further inference of parameter of interest.
 \begin{equation}
 	\label{eq:lassoprior}
 	\pi(\beta |\sigma^2) = \prod_{j=1}^p \frac{\lambda}{2\sqrt{\sigma^2}} e^{-\lambda|\beta_j|/\sqrt{\sigma^2}}
 \end{equation}
-There are several benefits for using the Bayesian Lasso model, firstly, it has easier implementation than the traditional Lasso. Secondly a Bayesian credible interval of parameter can be utilized for modelling uncertainty and therefore can also guide variable selection based on the interpretation that lasso estimated is regarded as the mode of posterior distribution of $\beta$. \\
 
-%%%%%%%%%%%%%%%%%%%%% To be continued
+There are several benefits for using the Bayesian Lasso model. Firstly, it has easier implementation than the traditional Lasso, although more computation of conditional distribution form is demanded. Secondly Bayesian credible interval of parameters can be generated simultaneously for modelling uncertainty and therefore can also guide variable selection based on the interpretation that lasso estimated is regarded as the mode of posterior distribution of $\beta$. 
+Thirdly, \cite{park_casella_2008} also state that the Bayesian Lasso model could also be a potential solution for addressing the issue of attaining optimal tuning parameter $\lambda$ by marginal maximum likelihood method together with a sue of an suitable hyperprior such as gamma prior on the square of tuning parameter $\lambda$: $\lambda^2$. 
+It could support a more stable automatic tuning process of choosing the most appropriate tuning parameter $\lambda$ for the Lasso problem, as opposed to inefficient $K$-fold cross validation approach under the ordinary Lasso model that is time consuming and computational demanding. Lastly, the three-step Bayesian Lasso Gibbs Sampler proposed by \cite{park_casella_2008} would yield an exact posterior distribution that can be sampled given exact form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, \cite{khare_hobert_2013} has demonstrated a Bayesian Lasso Gibbs sampler version of central limit theorem(CLT), indicating Bayesian Lasso Gibbs Sampler satisfy geometriclly ergodicity if any values of sample size $n \geq 3$ and arbitary number of regression coefficient $p$, data matrix $X$, tuning parameter $\lambda$ are assigned. This means, the Bayesian lasso Gibbs Sampler is able to achieve asymptotically uncertainty of posterior estimation. 
 
-
-
-
-
-
-
-
-
-
-%% 1: Adapt a prior distribution, 2: automatic tuning process
-
-Secondly, \cite{park_casella_2008} also state that the Bayesian Lasso model could also be a potential solution for addressing the issue of getting optimal tuning parameter $\lambda$. It could support a more stable automatic tuning process of choosing the most appropriate tuning parameter $\lambda$ for the Lasso problem, as opposed to inefficient $K$-fold cross validation approach under the ordinary Lasso model that is time consuming and computational demanding.
 
 \textbf{Challenges of Bayesian Lasso Problem}
-However, the traditional way of obtaining posterior distribution of the Bayesian Lasso model such as the  Gibbs sampler from Markov Chain Monte Carlo(MCMC) under the class of stochastic approximation algorithm is time-consuming and computational challenging, even though where MCMC would yield an exact posterior distribution that can be sampled given exact form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, Gibbs sampler will lead to an arbitrarily precise result of posterior distribution approximation if an arbitrarily long burn-in period is allocated. 
+On the other hand, the three-step Gibbs sampler from Markov Chain Monte Carlo(MCMC) under the class of stochastic approximation algorithm is time-consuming and computational challenging, given the fact that it normally requires a long time to converge inisde the interval of an acceptable tolerance, especially when $n$ is small and $p$ is large \cite{rajaratnam_sparks_2015}. 
 
+% Collapsed Gibbs sampler / Blocked Gibbs Sampeler
+
+% TBC
+
+%Some improvement paper over the year(Variational Infernece)%
 
 \textbf{Approximation Algorithm: Deterministic type}
-On the other hand, determinstic approach has also arised as an faster substitution compared with stochastic approximation approaches. Numerous algorithms have been designed and utilized widely such as Variational Bayes, Expectation Propagation algorithms etc. Determinstic approaches assume the approximation originates from a tractable distribution first and attempt to search for the distribution from this family that is the closest to the target posterior distribution by optimization techniques, it has been indicated that Variational Inference algorithm demonstrate a descent computation cost and time-efficiency. 
+Despite of the Bayesian Lasso Gibbs Sampler, alternative methods such as determinstic Approximate Bayesian Infernece methods has becoming popular due to its fast speed and simple computaation. There are two genres of Approximate Bayesian Inferenece method, which includes stochastic approach such as MCMC, where an exact result can be obtained if infinte computataional resource is assigned. Another category lies in determinstic approach has also arised as an faster substitution compared with stochastic approximation approaches. Numerous algorithms have been designed and utilized widely such as Variational Bayes, Expectation Propagation algorithms etc. Determinstic approaches assume the approximation originates from a tractable distribution first and attempt to search for the distribution from this family that is the closest to the target posterior distribution by optimization techniques, it has been indicated that Variational Inference algorithm shows a descent computation cost and time-efficiency. 
 
 \textbf{Variational Bayes}
 The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics yielded by 
 \cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution.
 Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{bishop_2006} that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
+
+\textbf{Drawbacks of VI}
+
+
 
 \textbf{Motivation}
 Motivated by the intention of further enhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
