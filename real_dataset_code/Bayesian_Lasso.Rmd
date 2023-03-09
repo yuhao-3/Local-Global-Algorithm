@@ -419,6 +419,23 @@ if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
 
 ```
 
+# Algorithm 3
+```{r}
+source(here("code","local_global_algorithms.R"))
+
+if(file.exists(paste("res_LG3_new",dataset_name,".Rdata",sep="")))
+{
+  load(paste("res_LG3_new",dataset_name,".Rdata",sep=""))
+}else
+{
+  time_LG3_new <- system.time({
+    res_LG3_new = local_global_algorithm_3(vy, mX, lambda, res_mfvb$vmu_til,res_mfvb$mSigma_til,res_mfvb$a_til,0.5, res_mfvb$b_til,res_bem$vbeta) 
+  })
+  save.image(paste("res_LG3_new",dataset_name,".Rdata",sep=""))
+}
+
+
+```
 
 
 

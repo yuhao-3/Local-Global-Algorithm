@@ -21,12 +21,9 @@ check_posdef <- function(mA) {
 }
 
 
-###############################################################################
 
-# Bivariate Local and Global Iterations 
-# (Update each pair of variables at a time) 
-
-bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til, b_til, damp)
+# When bem coefficient is 0, then use univariate, otherwise, use bivariate for other pairs
+local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til, b_til, damp, vbem_beta)
 {
   ## Initialization
   MAXITER = 500
@@ -61,13 +58,60 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
   # Initial value Local parameters
   vtheta = c(vmu_glob)
   
-  # Get unique pair of variable combination
-  mPairs = t(combn(unique(c(1:p)),2))
+  # Get index of variable with zero coefficient
+  zero_var = which(vbem_beta == 0)
+  
+  # Get unique pair of non-zero variable combination
+  mPairs = t(combn(unique(setdiff(c(1:p),zero_var)),2))
   
   
   for (ITER in 1:MAXITER)
   {
     ## Local Update
+    for (j in 1:length(zero_var))
+    {
+      # Store parameter for previous iteration
+      vmu_old = vmu_glob
+      mSigma_old = mSigma_glob
+      
+      # Define some constant
+      j_len = length(vmu_glob[j])
+      mSigma_jj_inv = matrix(solve(mSigma_glob[j,j]),j_len,j_len)
+      mt = matrix(mSigma_glob[-j,j]) %*% mSigma_jj_inv
+      vs = matrix(vmu_glob[-j]) - mt %*% matrix(vmu_glob[j])
+      
+      # Local Update
+      ## Update local parameter
+      a = a_til/b_til*(matrix(XTX[j,j]) + t(XTX[j,-j]%*%mt))
+      b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
+      
+      
+      ## Calculate Local mean and variance
+      vlocal_mean = elasso(a,b,c)
+      mlocal_var = vlasso(a,b,c)
+      
+      
+      # Record local parameter
+      lma[j] = a
+      lvb[j] = b
+      # vZ[j] = zlasso(a,b,c)
+      
+      # Global Update
+      ## Update Mean
+      
+      vmu_glob[j] = vlocal_mean
+      vmu_glob[-j] = matrix(vmu_glob[-j]) + matrix(mSigma_glob[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
+      
+      ## Update Covariance
+      mSigma_glob[j,j] = mlocal_var
+      mSigma_glob[j,-j] = mlocal_var %*% mSigma_jj_inv %*%  t(matrix(mSigma_old[j,-j]))
+      mSigma_glob[-j,j] = t(mSigma_glob[j,-j])
+      mSigma_glob[-j,-j] = matrix(mSigma_old[-j,-j],p-j_len,p-j_len) + matrix(mSigma_old[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_old[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_old[j,-j]))
+      
+    }
+    
+    
+    
     for (j in 1:nrow(mPairs))
     {
       vmu_old <- vmu_glob
@@ -218,3 +262,10 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
   return(list("vmu_til" = vmu_glob, "mSigma_til" = mSigma_glob, "lmA" = lmA,"lvb" = lvb,"c_val"= c_val, mPairs=mPairs))
   
 }
+
+
+
+
+
+
+
