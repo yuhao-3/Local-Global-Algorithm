@@ -35,18 +35,26 @@ The Least square estimator suggest the sum of square of the difference between e
 However, due to non-existence of derivative of absolute value of regression coefficient $\beta$, alternative improved algorithm have been purposed and deployed such as Least Angle Regression(LARS), iterative soft-thresholding, subgradient method, and iteratively reweighted least square(IRLS) by \cite{efron_hastie_johnstone_tibshirani_2004},   \cite{beck_teboulle_2009}, \cite{nan_zhang_shuqing_zeng_2005} and \cite{friedman_hastie_tibshirani_2010}.
 
 \textbf{Bayesian Lasso}
-One of the detriments of the ordinary lasso is that the variation of inferential quantity can't be captured properly. To resolve this issue, \cite{tibshirani_1996} also suggests that the lasso estimate can also be extended under the Bayesian framework, which can be described as posterior mode if independent and identically distributed Laplacian prior from Equation (\ref{eq:LassoPrior}) is assigned.
+One of the detriments of the ordinary lasso is that the variation of inferential quantity can't be captured properly. To resolve this issue, \cite{tibshirani_1996} also suggests that the lasso estimate can also be extended under the Bayesian framework, which can be described as posterior mode Equation(\ref{eq:MLELasso}) if independent and identically distributed Laplacian prior from Equation (\ref{eq:LassoPrior}) is assigned,together with the likelihood form on Equation(\ref{eq:lassolikelihood}). 
+\begin{equation}
+	\label{eq:MLELasso}
+	\hat{\beta}_{lasso} = \underset{\beta}{\operatorname{argmax}}P(\beta|y,\sigma^2,\tau), \tau = \frac{\lambda}{2\sigma^2}
+\end{equation}
 \begin{equation}
 	\label{eq:LassoPrior}
-	f(\beta_j) = \frac{1}{2\tau} exp(\frac{-|\beta_j|}{\tau}), \tau = \frac{1}{\lambda},
+	f(\beta_j) = (\frac{\tau}{2})^p exp(-\tau|\beta_j|),
 \end{equation}
+\begin{equation}
+	\label{eq:lassolikelihood}
+	p(y |\beta,\sigma^2) = N(y|X\beta,\sigma^2I_n).
+\end{equation}
+% Add full models
 \textbf{Introduction of Bayesian Lasso Problem(Why Bayesian Lasso)}
-Nevertheless, there is no tractable integration form for the Bayesian Lasso posterior until \cite{park_casella_2008} further explore the Lasso model under the setting of Bayesian framework, where the choice of a conditional Laplace prior distribution over the regression coefficient $\beta$ conditioning by standard error $\sigma^2$ is added to the Lasso penalty formulation in the frequentist framework to ensure unimodality of full posterior distribution. Based on closed form of tractable posterior distribution, a three-step Gibbs sampler is proposed to sample Bayes Lasso posterior distribution, which can be utilized for further inference of parameter of interest.
+Nevertheless, there is no tractable integration form for the Bayesian Lasso posterior until \cite{park_casella_2008} further explore the Lasso model under the setting of Bayesian framework, where the choice of a conditional Laplace prior distribution over the regression coefficient $\beta$ conditioning by standard error $\sigma^2$ is added to the Lasso penalty formulation in the frequentist framework to ensure unimodality of full posterior distribution. Based on closed form of tractable posterior distribution, a three-step Gibbs sampler is proposed to draw approximate samples from Bayes Lasso posterior distribution, which can be utilized for further inference of parameter of interest.
 \begin{equation}
 	\label{eq:lassoprior}
 	\pi(\beta |\sigma^2) = \prod_{j=1}^p \frac{\lambda}{2\sqrt{\sigma^2}} e^{-\lambda|\beta_j|/\sqrt{\sigma^2}}
 \end{equation}
-
 There are several benefits for using the Bayesian Lasso model. Firstly, it has easier implementation than the traditional Lasso, although more computation of conditional distribution form is demanded. Secondly Bayesian credible interval of parameters can be generated simultaneously for modelling uncertainty and therefore can also guide variable selection based on the interpretation that lasso estimated is regarded as the mode of posterior distribution of $\beta$. 
 Thirdly, \cite{park_casella_2008} also state that the Bayesian Lasso model could also be a potential solution for addressing the issue of attaining optimal tuning parameter $\lambda$ by marginal maximum likelihood method together with a sue of an suitable hyperprior such as gamma prior on the square of tuning parameter $\lambda$: $\lambda^2$. 
 It could support a more stable automatic tuning process of choosing the most appropriate tuning parameter $\lambda$ for the Lasso problem, as opposed to inefficient $K$-fold cross validation approach under the ordinary Lasso model that is time consuming and computational demanding. Lastly, the three-step Bayesian Lasso Gibbs Sampler proposed by \cite{park_casella_2008} would yield an exact posterior distribution that can be sampled given exact form of conditional distribution of each model parameter conditioning on rest of the other parameters. Theoretically, \cite{khare_hobert_2013} has demonstrated a Bayesian Lasso Gibbs sampler version of central limit theorem(CLT), indicating Bayesian Lasso Gibbs Sampler satisfy geometriclly ergodicity if any values of sample size $n \geq 3$ and arbitary number of regression coefficient $p$, data matrix $X$, tuning parameter $\lambda$ are assigned. This means, the Bayesian lasso Gibbs Sampler is able to achieve asymptotically uncertainty of posterior estimation. 
@@ -59,6 +67,8 @@ On the other hand, the three-step Gibbs sampler from Markov Chain Monte Carlo(MC
 
 % TBC
 
+
+% A direct chaaracterization of Bayesian Lasso Gibbs Sampler is introduced
 %Some improvement paper over the year(Variational Infernece)%
 
 \textbf{Approximation Algorithm: Deterministic type}
