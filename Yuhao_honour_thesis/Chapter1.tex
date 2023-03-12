@@ -61,29 +61,37 @@ It could support a more stable automatic tuning process of choosing the most app
 
 
 \textbf{Challenges of Bayesian Lasso Problem}
-On the other hand, the three-step Gibbs sampler from Markov Chain Monte Carlo(MCMC) under the class of stochastic approximation algorithm is time-consuming and computational challenging, given the fact that it normally requires a long time to converge inisde the interval of an acceptable tolerance, especially when $n$ is small and $p$ is large \cite{rajaratnam_sparks_2015}. 
+To attain approximated posterior samples, the three-step Gibbs sampler belongs to the class of MCMC algorithm, which produce samples demonstrates gradually decreasing correlated samples as the burn-in period is increased. Burn-in period refers to the time the sample before that period have to be abandoned. On the other hand, the three-step Gibbs sampler from Markov Chain Monte Carlo(MCMC) under the class of stochastic approximation algorithm is time-consuming and computational challenging, given the fact that it normally requires a long time to converge inside the interval of an acceptable tolerance, especially when $n$ is small and $p$ is large derivation according to the upper bound of convergence rate by \cite{rajaratnam_sparks_2015}. 
+To address this issue, \cite{FastBL} invented a reduced step Gibbs sampler instead, successfully accelerating the sampling procedure. 
 
-% Collapsed Gibbs sampler / Blocked Gibbs Sampeler
+\textbf{Approximation Algorithm: Deterministic type}
+Despite of the Bayesian Lasso Gibbs Sampler, alternative methods such as deterministic Approximate Bayesian Inference methods has becoming popular due to its fast speed and simple computation. There are two genres of Approximate Bayesian Inference method, which includes stochastic approach such as MCMC, where an exact result can be obtained if infinite computational resource is assigned. Another category lies in deterministic approach that as an faster substitution compared with stochastic approximation approaches. Numerous algorithms have been designed and utilized widely such as Variational Bayes, Expectation Propagation algorithms etc. A common variational is Coordinate Ascent Variational Inference approach produced by \cite{Blei2003LDA} , which assume the approximation originates from a analytically tractable class of distribution $Q$ first and attempt to search for the distribution from this family that is the closest to the target posterior distribution with some discrepancy metric such as e Kullback–Leibler divergence  etc. An optimization based system is established by iteratively updating variational parameter with an appropriate optimization algorithm such as Coordinate Ascent to obtain approximated posterior distribution that is in the family of $Q$
+\begin{equation}
+	q^{*}(\theta) = \underset{q_{\theta} \in Q}{\operatorname{argmin}} KL(q(\theta)||p(\theta|\mathcal{D}))
+\end{equation}
+
+\textbf{Variational Bayes}
+The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics yielded by 
+\cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution from set $Q$ as in Equation (\ref{eq:MFVBassume}) if assuming there are $k$ sub-parameter of target parameter $\theta$.
+\begin{equation}
+	\label{eq:MFVBassume}
+	q(\theta) = \prod_{i=1}^{k} q_i(\theta)
+\end{equation}
+
+
+Variational approach is more superior and appropriate at present for several reasons according to \cite{blei_kucukelbir_mcauliffe_2017} . One is that Variational Inference algorithm shows a descent computation cost and time-efficiency, and thus Variational inference can be adaptive when the amount of data is huge, Variational Inference originates from Machine Learning for approximating probability density for complex probabilistic graphical model \cite{jordan_ghahramani_jaakkola_saul_1999} and it has been widely propagated to various application fields such as speech recognition and document retrieval in natural language processing, computer vision etc. With the progress of big data and deep learning nowadays, the potential of variational approximation to provide reliable posterior estimate is invaluable.
+Apart from that, distributed computation and stochastic optimization technique can be embedded to the Variational Inference framework due to its nature of an optimization system. 
 
 % TBC
 
 
-% A direct chaaracterization of Bayesian Lasso Gibbs Sampler is introduced
-%Some improvement paper over the year(Variational Infernece)%
 
-\textbf{Approximation Algorithm: Deterministic type}
-Despite of the Bayesian Lasso Gibbs Sampler, alternative methods such as determinstic Approximate Bayesian Infernece methods has becoming popular due to its fast speed and simple computaation. There are two genres of Approximate Bayesian Inferenece method, which includes stochastic approach such as MCMC, where an exact result can be obtained if infinte computataional resource is assigned. Another category lies in deterministic approach that as an faster substitution compared with stochastic approximation approaches. Numerous algorithms have been designed and utilized widely such as Variational Bayes, Expectation Propagation algorithms etc. Deterministic approaches assume the approximation originates from a tractable distribution first and attempt to search for the distribution from this family that is the closest to the target posterior distribution by optimization techniques, it has been indicated that Variational Inference algorithm shows a descent computation cost and time-efficiency. 
 
-\textbf{Variational Bayes}
-The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics yielded by 
-\cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution.
-Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{bishop_2006} 
-%Might have problem with citation pRML%
- that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
 
 \textbf{Drawbacks of VI}
-
-
+Meanwhile, disadvantages of Variational Bayes include inexact approximation result under some scenarios. For example, it is suggested by \cite{bishop_2006} 
+%Might have problem with citation pRML%
+that Variational Inference algorithm might underestimate the covariance between parameter of interest, if parameter of interest have a strong correlation. We will expand properties and derivation of Variational Inference more in subsection \ref{VI}.\\
 
 \textbf{Motivation}
 Motivated by the intention of further enhancing the approximation accuracy of Variational Bayes, we have designed two new Variational algorithms, particularly for Bayesian Lasso problem. By utilizing and fitting a Lasso distribution to marginal distribution, an improved estimate for global Gaussian Approximation can be obtained. Our contribution have been listed in the following subsection \ref{cont}.\\
