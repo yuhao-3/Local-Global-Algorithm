@@ -1,23 +1,24 @@
 \chapter{Definition and Literature Review}
 \label{Chapter2}
+
+% 转折
+% \subsubsection{Approximate Bayesian Inference Intuition}
+\section{Definition}
+
 \section{Bayesian Inference Paradigm}
+\label{bayeisanP}
 \textbf{Why Bayesian}
 Bayesian Inference approaches shares numerous advantages in statistic community and applicationa areas, particularly for the circumstance when there is lack of data. An appropriate prior choice can be beneficial in aforementioned case, especially for medical problem where the amount of effective data is extremely rare and untenable. Additionally, unlike frequentist inference approaches which treat parameter estimate as a fixed value, Bayesian Inference approaches regard parameter estimate as a random variable that have probability distribution, which means interval estimate and error variance would be generated for capturing uncertainty, offering  belief and confidence for interpretating parameter estimates.
 
 \textbf{Bayesian Inference Intuition}
 Bayesian inference approach stems from the Bayes rule, which is defined as Equation (\ref{eq:Bayesrule}) based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the likelihood conditioning on the data $\mathcal{D}$.
-\begin{equation}
-	p(\theta|\mathcal{D}) = \frac{p(\mathcal{D}|\theta)p(\theta)}{p(\mathcal{D})},
-	\label{eq:Bayesrule}
-\end{equation}
-Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to Equation (\ref{eq:simBayesrule}) since $p(\mathcal{D})$ is equal to constant and is also insignificant to the overall posterior distribution equation.
+Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to Equation (\ref{eq:simBayesrule}) since $p(\mathcal{D})$ is equal to constant and is also insignificant to know overall posterior distribution.
 \begin{equation}
 	p(\theta|\mathcal{D}) \propto p(\mathcal{D}|\theta)p(\theta),
 	\label{eq:simBayesrule}
 \end{equation}
 
-\textbf{Challenges for Bayesian Inference}
-Nevertheless, several disadvantages are still in the progress of Bayesian Inference. \cite{bishop_2006} states three main challenges of obtaining posterior distribution. Firstly, the dimension of target parameter might be high, which results in heavy computational cost for estimating posterior distribution. Secondly, the exact posterior distribution form might be too complicated to be tractable. Thirdly, there might not exist an closed form analytical solution for integration. Much efforts have been paid over the years, there are two main types of sampling approach that are effective currently, which are stochastic sampling algorithms and deterministic approximation algorithms. 
+
 
 
 \section{Least Absolute Shrinkage and Selection Operator(LASSO) penalized regression}
@@ -50,6 +51,11 @@ In addition, lasso estimated can be efficiently computed via Least Angle Regress
 
 \subsection{Bayesian Lasso regression}
 
+Gbbs Sampler
+
+
+
+
 
 % \section{Bayesian Paradigm}
 \section{Expectation Maximization}
@@ -75,6 +81,7 @@ To measure the similarity between true distribution and target distribution, KL 
 	KL(q(x)||p(x|\mathcal{D})) 
 \end{equation}
 
+\subsection{MFVB for Bayesian Lasso}
 
 
 

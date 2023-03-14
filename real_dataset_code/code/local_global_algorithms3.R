@@ -67,48 +67,48 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
   
   for (ITER in 1:MAXITER)
   {
-    ## Local Update
-    for (j in 1:length(zero_var))
-    {
-      # Store parameter for previous iteration
-      vmu_old = vmu_glob
-      mSigma_old = mSigma_glob
-      
-      # Define some constant
-      j_len = length(vmu_glob[j])
-      mSigma_jj_inv = matrix(solve(mSigma_glob[j,j]),j_len,j_len)
-      mt = matrix(mSigma_glob[-j,j]) %*% mSigma_jj_inv
-      vs = matrix(vmu_glob[-j]) - mt %*% matrix(vmu_glob[j])
-      
-      # Local Update
-      ## Update local parameter
-      a = a_til/b_til*(matrix(XTX[j,j]) + t(XTX[j,-j]%*%mt))
-      b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
-      
-      
-      ## Calculate Local mean and variance
-      vlocal_mean = elasso(a,b,c)
-      mlocal_var = vlasso(a,b,c)
-      
-      
-      # Record local parameter
-      lma[j] = a
-      lvb[j] = b
-      # vZ[j] = zlasso(a,b,c)
-      
-      # Global Update
-      ## Update Mean
-      
-      vmu_glob[j] = vlocal_mean
-      vmu_glob[-j] = matrix(vmu_glob[-j]) + matrix(mSigma_glob[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
-      
-      ## Update Covariance
-      mSigma_glob[j,j] = mlocal_var
-      mSigma_glob[j,-j] = mlocal_var %*% mSigma_jj_inv %*%  t(matrix(mSigma_old[j,-j]))
-      mSigma_glob[-j,j] = t(mSigma_glob[j,-j])
-      mSigma_glob[-j,-j] = matrix(mSigma_old[-j,-j],p-j_len,p-j_len) + matrix(mSigma_old[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_old[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_old[j,-j]))
-      
-    }
+    # ## Local Update
+    # for (j in 1:length(zero_var))
+    # {
+    #   # Store parameter for previous iteration
+    #   vmu_old = vmu_glob
+    #   mSigma_old = mSigma_glob
+    #   
+    #   # Define some constant
+    #   j_len = length(vmu_glob[j])
+    #   mSigma_jj_inv = matrix(solve(mSigma_glob[j,j]),j_len,j_len)
+    #   mt = matrix(mSigma_glob[-j,j]) %*% mSigma_jj_inv
+    #   vs = matrix(vmu_glob[-j]) - mt %*% matrix(vmu_glob[j])
+    #   
+    #   # Local Update
+    #   ## Update local parameter
+    #   a = a_til/b_til*(matrix(XTX[j,j]) + t(XTX[j,-j]%*%mt))
+    #   b = a_til/b_til*t(mX[,j])%*%(vy-mX[,-j]%*%vs)
+    #   
+    #   
+    #   ## Calculate Local mean and variance
+    #   vlocal_mean = elasso(a,b,c)
+    #   mlocal_var = vlasso(a,b,c)
+    #   
+    #   
+    #   # Record local parameter
+    #   lma[j] = a
+    #   lvb[j] = b
+    #   # vZ[j] = zlasso(a,b,c)
+    #   
+    #   # Global Update
+    #   ## Update Mean
+    #   
+    #   vmu_glob[j] = vlocal_mean
+    #   vmu_glob[-j] = matrix(vmu_glob[-j]) + matrix(mSigma_glob[-j,j]) %*%  mSigma_jj_inv  %*% matrix(vlocal_mean - vmu_old[j])
+    #   
+    #   ## Update Covariance
+    #   mSigma_glob[j,j] = mlocal_var
+    #   mSigma_glob[j,-j] = mlocal_var %*% mSigma_jj_inv %*%  t(matrix(mSigma_old[j,-j]))
+    #   mSigma_glob[-j,j] = t(mSigma_glob[j,-j])
+    #   mSigma_glob[-j,-j] = matrix(mSigma_old[-j,-j],p-j_len,p-j_len) + matrix(mSigma_old[-j,j]) %*% mSigma_jj_inv %*% (mlocal_var - matrix(mSigma_old[j,j]))  %*%mSigma_jj_inv %*% t(matrix(mSigma_old[j,-j]))
+    #   
+    # }
     
     
     
