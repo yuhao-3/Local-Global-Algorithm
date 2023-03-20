@@ -157,7 +157,7 @@ sbvlasso <- function(mA_val,vb_val,c_val)
 
 # Function to calculate the normalizing constant of the bivariate lasso distribution
 
-zbvlasso <- function(mA_val,vb_val,c_val, logarithm) 
+zbvlasso <- function(mA_val,vb_val,c_val, logarithm=FALSE) 
 {
   res <- sbvlasso(mA_val,vb_val,c_val)
   log_Z <- logSumExp(res$veta) 
@@ -173,7 +173,7 @@ zbvlasso <- function(mA_val,vb_val,c_val, logarithm)
 
 library(tmvtnorm)
 
-ebvlasso <- function(mA_val,vb_val,c_val) 
+ebvlasso <- function(mA_val,vb_val,c_val,verbose=FALSE) 
 {
   res <- sbvlasso(mA_val,vb_val,c_val)
   vw <- res$vw
@@ -190,8 +190,31 @@ ebvlasso <- function(mA_val,vb_val,c_val)
                     lower=c(-Inf,0), upper=c(0,Inf))$tmean
   ve_mm <- mtmvnorm(as.vector(res$vmu_mm), res$mSigma, doComputeVariance=FALSE, 
                     lower=c(-Inf,-Inf), upper=c(0,0))$tmean
+  
+  TOL <- 1.0E-6
+  val <- rep(0,length(ve_pp))
+  if (vw[1]>TOL) val <- val + vw[1]*ve_pp
+  if (vw[2]>TOL) val <- val + vw[2]*ve_pm
+  if (vw[3]>TOL) val <- val + vw[3]*ve_mp
+  if (vw[4]>TOL) val <- val + vw[4]*ve_mm
+  
+  if (verbose) {
+    print("ebvlasso")
+    cat("vw=",vw,"\n")
+    cat("vmu_pp=",res$vmu_pp,"\n")
+    cat("vmu_pm=",res$vmu_pm,"\n")
+    cat("vmu_mp=",res$vmu_mp,"\n")
+    cat("vmu_mm=",res$vmu_mm,"\n")
+    cat("mSigma=",res$mSigma,"\n")
+    
+    cat("ve_pp=",ve_pp,"\n")
+    cat("ve_pm=",ve_pm,"\n")
+    cat("ve_mp=",ve_mp,"\n")
+    cat("ve_mm=",ve_mm,"\n")
+    cat("val=",val,"\n")
+  }
 
-  val <- vw[1]*ve_pp + vw[2]*ve_pm + vw[3]*ve_mp + vw[4]*ve_mm
+  
   return(val)  
 }
 
@@ -200,10 +223,12 @@ ebvlasso <- function(mA_val,vb_val,c_val)
 
 # Calculate the variance of the bivariate lasso
 
-vbvlasso <- function(mA_val,vb_val,c_val) 
+vbvlasso <- function(mA_val,vb_val,c_val,verbose=FALSE) 
 {
   res <- sbvlasso(mA_val,vb_val,c_val)
   vw <- res$vw
+  
+  d <- length(res$vmu_pp)
   
   #print(res)
   
@@ -228,13 +253,90 @@ vbvlasso <- function(mA_val,vb_val,c_val)
   ve2_mp <- res_mp$tvar + ve_mp%*%t(ve_mp)
   ve2_mm <- res_mm$tvar + ve_mm%*%t(ve_mm)
   
-  ve  <- vw[1]*ve_pp  + vw[2]*ve_pm  + vw[3]*ve_mp  + vw[4]*ve_mm
-  ve2 <- vw[1]*ve2_pp + vw[2]*ve2_pm + vw[3]*ve2_mp + vw[4]*ve2_mm
+  TOL <- 1.0E-6
+  ve <- rep(0,d)
+  if (vw[1]>TOL) ve <- ve + vw[1]*ve_pp
+  if (vw[2]>TOL) ve <- ve + vw[2]*ve_pm
+  if (vw[3]>TOL) ve <- ve + vw[3]*ve_mp
+  if (vw[4]>TOL) ve <- ve + vw[4]*ve_mm
+  ve <- matrix(ve,d,1)
   
+  ve2 <- rep(0,d,d)
+  if (vw[1]>TOL) ve2 <- ve2 + vw[1]*ve2_pp
+  if (vw[2]>TOL) ve2 <- ve2 + vw[2]*ve2_pm
+  if (vw[3]>TOL) ve2 <- ve2 + vw[3]*ve2_mp
+  if (vw[4]>TOL) ve2 <- ve2 + vw[4]*ve2_mm
+  ve2 <- matrix(ve2,d,d)
+ 
   mV <- ve2 - ve%*%t(ve)
+  
+  
+  if (verbose) {
+    print("vbvlasso")
+    cat("vw=",vw,"\n")
+    cat("vmu_pp=",res$vmu_pp,"\n")
+    cat("vmu_pm=",res$vmu_pm,"\n")
+    cat("vmu_mp=",res$vmu_mp,"\n")
+    cat("vmu_mm=",res$vmu_mm,"\n")
+    cat("mSigma=",res$mSigma,"\n")
+    
+    cat("ve_pp=",ve_pp,"\n")
+    cat("ve_pm=",ve_pm,"\n")
+    cat("ve_mp=",ve_mp,"\n")
+    cat("ve_mm=",ve_mm,"\n")
+    cat("ve2_pp=",ve2_pp,"\n")
+    cat("ve2_pm=",ve2_pm,"\n")
+    cat("ve2_mp=",ve2_mp,"\n")
+    cat("ve2_mm=",ve2_mm,"\n")
+    cat("ve=",ve,"\n")
+    cat("ve2=",ve2,"\n")
+    cat("mV=",mV,"\n")
+  }
   
   return(mV)  
 }
 
 
+dmmlasso1 <- function(x,A,b,c,logarithm = FALSE)
+{
+  sigma2 = 1/A[2,2]
+  Z <- zbvlasso(A,b,c)
+  k = exp(-0.5*A[1,1]*x^2+b[1]*x-c*abs(x))/Z
+  mu1 = -0.5*((A[1,2]+A[2,1])/A[2,2])*x + (b[2]-c)/A[2,2]
+  mu2 = 0.5*((A[1,2]+A[2,1])/A[2,2])*x - (b[2]+c)/A[2,2]
+  
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  
+  M <- max(c(log_partI,log_partII))
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + M +log(exp(log_partI - M)+exp(log_partII - M))
+  
+  if (logarithm) {
+    return(log_mpdf)
+  }
+  return(exp(log_mpdf))
+  
+}
 
+
+# Get marginal distribution of x_2
+dmmlasso2 <- function(x,A,b,c,logarithm = FALSE)
+{
+  sigma2 = 1/A[1,1]
+  Z <- zbvlasso(A,b,c)
+  k = exp(-0.5*A[2,2]*x^2+b[2]*x-c*abs(x))/Z
+  mu1 = -0.5*((A[1,2]+A[2,1])/A[1,1])*x + (b[1]-c)/A[1,1]
+  mu2 = 0.5*((A[1,2]+A[2,1])/A[1,1])*x - (b[1]+c)/A[1,1]
+  
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  
+  M <- max(c(log_partI,log_partII))
+  log_mpdf =  log(sqrt(sigma2)) + log(k) + M + log(exp(log_partI - M)+exp(log_partII - M))
+  
+  if (logarithm) {
+    return(log_mpdf)
+  }
+  return(exp(log_mpdf))
+  
+}

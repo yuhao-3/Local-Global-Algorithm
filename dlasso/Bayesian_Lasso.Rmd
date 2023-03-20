@@ -1,0 +1,815 @@
+---
+title: "Bayesian Lasso"
+output: html_document
+date: '2022-05-14'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Bayesian Lasso
+
+```{r}
+library(ISLR)
+library(glmnet)
+library(dplyr)
+library(tidyr)
+library(here)
+```
+
+```{r, eval=FALSE}
+dat = read.csv(here("data","Kakadu.csv"))
+
+y <- as.vector(dat$income)
+x <- dat[,c(2:21,23)]
+varnames1 <- colnames(x)
+x <- model.matrix(~.,data=x)[,-1]
+varnames <- colnames(x)
+
+colnames(x) <- c(
+  "lower",          
+  "upper",           
+  "answer_ny",        
+  "answer_yy",
+  "recparks",        
+  "jobs",            
+  "lowrisk",
+  "wildlife",
+  "future",
+  "aboriginal",
+  "finben",
+  "mineparks",
+  "moreparks",
+  "gov",
+  "envcon",
+  "vparks",
+  "tvenv",
+  "conservation", 
+  "sex",
+  "age",
+  "schooling",
+  "major")
+
+varnames <- colnames(x)
+
+
+dataset_name <- "Kakadu.csv"
+```
+
+
+```{r, eval=FALSE}
+dat <- read.csv(here("data","bodyfat.txt"), sep="\t")
+
+library(janitor)
+dat <- clean_names(dat)
+y <- dat$pct_bf 
+x <- dat[,-2]
+
+ 
+dataset_name <- "bodyfat"
+```
+
+
+
+```{r, eval=TRUE}
+dat <- read.csv(here("data","prostate.data"), sep="\t")
+
+library(janitor)
+dat <- clean_names(dat)
+y <- dat$lpsa 
+x <- dat[,-c(1,10,11)]
+
+ 
+dataset_name <- "prostate"
+```
+
+
+
+```{r, eval=TRUE}
+data("Credit")
+
+library(janitor)
+dat <- clean_names(Credit)
+y <- dat$income
+x <- model.matrix(income~.-1-id, dat )[,-7]
+```
+
+ 
+
+
+```{r, eval=FALSE}
+load(here("data","comData.Rdata"))
+
+mX <- t(t(X) %>% na.omit())  
+mX <- mX[,-which(colnames(X)%in%c("ownHousQrange","rentUpperQ"))]
+varnames <- colnames(mX)
+vy <- Y[,"murders"]
+
+x <- mX
+y <- vy
+
+
+dataset_name <- "comData"
+```
+
+
+```{r, eval=FALSE}
+Hitters = na.omit(Hitters)
+
+str(Hitters)
+
+x = model.matrix(Salary~., Hitters)[,-1] # trim off the first column
+                                         # leaving only the predictors
+y = Hitters %>%
+  select(Salary) %>%
+  unlist() %>%
+  as.numeric()
+
+summary(Hitters)
+
+dataset_name <- "Hitters"
+```
+
+```{r, eval=FALSE}
+library(flare)
+data(eyedata)
+
+dataset_name <- "eyedata"
+```
+ 
+```{r, eval=FALSE}
+source(here("code","normalize.R"))
+ 
+#res <- normalize(vy,mX)
+y <- vy
+x <- mX 
+p <- ncol(mX)
+```
+
+
+```{r}
+vy <- (y - mean(y))/sd(y)
+mX <- scale(x, center = TRUE, scale = TRUE)
+
+n <- nrow(mX)
+p <- ncol(mX)
+```
+
+### Use a short MCMC run with a prior to choose lambda
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+nburn <- 5000
+nkeep <- 5000
+nsamples <- nburn + nkeep
+
+lambda_prior <- list(lambda_start=1, prior="gamma",u=1,v=1)
+
+res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
+```
+
+```{r}
+lambda2 <- mean( res_gibbs$vlambda2 )
+lambda <- sqrt(lambda2)
+
+lambda2 <- quantile(res_gibbs$vlambda2, probs=0.999)
+lambda <- sqrt(lambda2)
+
+lambda 
+
+plot(density(res_gibbs$vlambda2))
+```
+
+
+### Fit Bayesian EM with standard errors
+
+```{r}
+source(here("code","bayesian_em_lasso.R")) 
+
+time_bem <- system.time({
+  res_bem <-
+    bayesian_lasso_em(vy,
+                      mX,
+                      lambda = lambda,
+                      vbeta_init = rep(0,p),
+                      sigma2_init = 1,
+                      VERBOSE=FALSE)
+})
+```
+
+### Fit standard Lasso regression
+
+```{r}
+
+
+res_lm <- lm(vy~-1+mX)
+
+vbeta_lm <- matrix(res_lm$coef,p,1)
+sigma2_lm <- sum((vy - mX%*%vbeta_lm)^2)/n
+
+
+lambda_glmnet <- 2*n*lambda*sqrt(res_bem$sigma2)
+lasso_mod = glmnet(mX, 
+                   vy, 
+                   alpha = 1, 
+                   lambda = lambda_glmnet) # Fit lasso model on training data
+```
+
+
+
+
+
+### Longer MCMC run with lambda fixed
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+nburn <- 5000
+nkeep <- 50000
+nsamples <- nburn + nkeep
+
+lambda_prior <- lambda
+
+library(profvis)
+
+#profvis({
+#time_gibbs2 <- system.time({
+  res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
+#})
+
+```
+
+
+
+
+```{r}
+library(posterior)
+ess1 <- c()
+
+for (j in 1:ncol(res_gibbs$mBeta)) { 
+  ess1[j] <- ess_basic(res_gibbs$mBeta[-c(1:nburn),j])
+}
+ess1[j+1] <- ess_basic(res_gibbs$vsigma2[-c(1:nburn)])
+cbind(ess1)
+```
+
+```{r}
+#plot(res_gibbs$mBeta[,1],type="l")
+```
+```{r}
+#source(here("code","bayesian_lasso_twoblockgibbs.R"))
+#res_2bg <- bayesian_lasso_twoblockgibbs(vy, mX, lambda, nsamples=nsamples)
+```
+
+```{r}
+# library(posterior)
+# ess2 <- c()
+# 
+#  
+# for (j in 1:ncol(res_2bg$mBeta)) {
+#   ess2[j] <- ess_basic(res_2bg$mBeta[-c(1:nburn),j])
+# }
+# ess2[j+1] <- ess_basic(res_2bg$vsigma2[-c(1:nburn)])
+# cbind(c(res_bem$vbeta,res_bem$sigma2), ess1, ess2)
+```
+
+```{r, eval=FALSE}
+source(here("code","fast_lasso.R"))
+
+time_bl_slow <- system.time({
+  res_bl_slow <- run.bl(X = mX,
+             Y = vy,
+             lambda = lambda,
+             K = 1000,
+             M = 1,
+             outfile.stem = paste(dataset_name,"slow",sep=""),
+             fast = F,
+             keep.beta = T,
+             write.each = F) 
+})
+
+time_bl_fast <- system.time({
+  res_bl_fast <- run.bl(X = mX,
+             Y = vy,
+             lambda = lambda,
+             K = 1000,
+             M = 1,
+             outfile.stem = paste(dataset_name,"fast",sep=""),
+             fast = T,
+             keep.beta = T,
+             write.each = F) 
+})
+    
+```
+
+
+
+
+### Generate Bootstrap distribution
+ 
+```{r, eval=TRUE}
+source(here("code","lasso_bootstrap.R"))
+mBeta_boot1 <- lasso_naive_bootstrap(vy,mX,lambda,B=50000,VERBOSE=FALSE)
+```
+
+```{r}
+mBeta_boot2 <- lasso_modified_bootstrap(vy,mX,lambda,B=50000,a=0.1,VERBOSE=FALSE)
+```
+
+
+```{r, eval=TRUE}
+vind_boot1   <- apply(mBeta_boot1!=0,2,mean)
+vmu_boot1    <- apply(mBeta_boot1,2,mean)
+vsigma_boot1 <- apply(mBeta_boot1,2,sd)
+
+mQ1 <- apply(mBeta_boot1,2,quantile,c(0.025,0.05,0.95,0.975))
+```
+
+
+```{r, eval=TRUE}
+vind_boot2   <- apply(mBeta_boot2!=0,2,mean)
+vmu_boot2    <- apply(mBeta_boot2,2,mean)
+vsigma_boot2 <- apply(mBeta_boot1,2,sd)
+
+mQ2 <- apply(mBeta_boot2,2,quantile,c(0.025,0.05,0.95,0.975))
+```
+
+```{r, eval=TRUE}
+#pdf("prostate_SEs.pdf", width=12, height=10)
+jpeg("prostate_SEs.jpg")
+
+xlim <- range(c(mQ1, mQ2))
+ylim <- range(1:p)
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, xlab="95% CI", ylab="variable", main="Prostate - lambda=1.62, a=0.1")
+for (i in 1:p) {
+#  lines(c(mQ_bem[1,i],mQ_bem[4,i]),c(i,i)+0.15, lwd=5, col="red")
+#  points(res_bem$vbeta[i], i+0.1, pch=16, col="red", cex=2)
+  
+  lines(c(mQ1[1,i],mQ1[4,i]),c(i,i)-0.15, lwd=5, col="blue")
+  points(vmu_boot1[i], i-0.15, pch=16, col="blue", cex=2)
+  
+  lines(c(mQ2[1,i],mQ2[4,i]),c(i,i)-0.15, lwd=5, col="green")
+  points(vmu_boot2[i], i-0.15, pch=16, col="green", cex=2)
+}
+
+lines(c(0,0),c(-100,100),lwd=2,col="black")
+
+legend("topleft",
+           legend=c("NP-Boot","Mod-Boot"),
+           text.col=c("blue","green"),
+           border = FALSE)
+
+dev.off()
+```
+
+
+```{r}
+reegrerg
+```
+
+
+```{r}
+source(here("code","bayesian_lasso_mfvb.R")) 
+  
+res_mfvb <- bayesian_lasso_mfvb(vy, mX, lambda, 1) 
+```
+
+```{r}
+source("univariate_local_global.R")
+
+res <- univariate_local_global(vy, mX, lambda, 
+                              vmu_init=res_mfvb$vmu_til, 
+                              mSigma_init=res_mfvb$mSigma_til, 
+                              a_til=res_mfvb$a_til, 
+                              b_til=res_mfvb$b_til)
+```
+
+
+```{r}
+source("bivariate_local_global.R")
+
+res_bv <- bivariate_local_global(vy, mX, lambda, 
+                              vmu_init=res$vmu_til, 
+                              mSigma_init=res$mSigma_til, 
+                              a_til=res_mfvb$a_til, 
+                              b_til=res_mfvb$b_til, 
+                              damp=0.5)
+```
+
+```{r}
+
+source("bivariate_lasso_distribution.R")
+
+ind <- 8
+ 
+ 
+dens <- density(res_gibbs$mBeta[-c(1:nburn),ind])
+x <- dens$x
+
+inds <- which(res_bv$mPairs==ind, arr.ind = TRUE)
+
+for (i in 1:nrow(inds)) 
+{
+  j <- inds[i,1]
+ 
+  mA_val <- res_bv$lmA[[j]]
+  vb_val <- res_bv$lvb[[j]]
+  c_val <- res_bv$c_val
+  
+  if (inds[i,2]==1) {
+    y <- dmmlasso1(x,mA_val,vb_val,c_val,logarithm = FALSE)
+  } else {
+    y <- dmmlasso2(x,mA_val,vb_val,c_val,logarithm = FALSE)
+  }
+  
+  xlim <- range(x)
+  ylim <- range(c(y,dens$y))
+  
+  plot(NA,xlim=xlim,ylim=ylim)
+  lines(dens,lwd=2,col="black")
+  lines(x,y,lwd=2,col="blue")
+}
+
+
+
+
+
+
+```
+
+
+```{r}
+source(here("jackson_code","EP-lasso-fixed-auxiliaries.R"))
+
+mu.tau.eg <- 0
+sigma.2.tau.eg <- 10000
+kappa.eg <- log(lambda)
+X.eg <- mX
+y.eg <- vy
+
+
+
+
+pep.res <- pep.approx(X.eg, y.eg, mu.tau.eg, sigma.2.tau.eg, 
+                      kappa = kappa.eg, n.i = 2, alpha = 1, lambda.init = 0.5,
+                      max.passes = 200, tol.factor = Inf, stop.factor = Inf , abs.thresh = 0.01, 
+                      rel.thresh = 0.9, delta.limit = Inf, patience = 40, verbose = TRUE)
+pep.mu <- pep.res$mu
+pep.Sigma <- pep.res$Sigma
+
+```
+
+
+
+
+```{r}
+f0_fun <- function(mu,sigma) {
+  mu_til <- mu/sigma
+  val <- mu*(pnorm(mu_til) - pnorm(-mu_til)) + 2*sigma*dnorm(mu_til)
+  return(val)
+}
+
+f1_fun <- function(mu,sigma) {
+  mu_til <- mu/sigma
+  val <- (pnorm(mu_til) - pnorm(-mu_til))  
+  return(val)
+}
+
+f2_fun <- function(mu,sigma) {
+  mu_til <- mu/sigma
+  val <-  2*dnorm(mu_til)/sigma
+  return(val)
+}
+
+g1_fun <- function(mu,sigma,eps) {
+  val_p <- f0_fun(mu+eps,sigma)
+  val_m <- f0_fun(mu-eps,sigma)
+  val <- (val_p - val_m)/(2*eps)
+  return(val)
+}  
+
+g2_fun <- function(mu,sigma,eps) {
+  val_p <- f1_fun(mu+eps,sigma)
+  val_m <- f1_fun(mu-eps,sigma)
+  val <- (val_p - val_m)/(2*eps)
+  return(val)
+} 
+
+jpeg("penalties.jpg", width= 800, height=600)
+
+par(mfrow=c(1,2))
+mu_g <- seq(-10,10,length=1000)
+sigma <- 1
+
+plot(mu_g,f0_fun(mu_g,sigma),type="l",ylim=c(0,5), main="Penalty", xlab="", ylab="", lwd=3, col="red")
+lines(mu_g, abs(mu_g),col="black", lwd=3)
+lines(mu_g,f0_fun(mu_g,sigma),col="red", lwd=3)
+
+
+  methods <- c("Lasso","SPVB", "VB", "BEM")
+ 
+legend("bottomleft",
+        legend=methods,
+        text.col=c("black","red","green","blue"),
+        border = FALSE)
+  
+
+#plot(mu_g,f1_fun(mu_g,sigma),type="l", main="Penalty")
+#lines(mu_g, g1_fun(mu_g,sigma,1.0E-8),col="red")
+
+plot(mu_g,f2_fun(mu_g,sigma),type="l",ylim=c(0,2),main="Djj", xlab ="", ylab="")
+lines(mu_g, 1/abs(mu_g),col="blue", lwd=3)
+lines(mu_g, 1/sqrt(mu_g^2 + sigma*sigma),col="green", lwd=3)
+lines(mu_g, g2_fun(mu_g,sigma,1.0E-8),col="red", lwd=3)
+
+dev.off() 
+```
+
+
+```{r}
+source("code/bayesian_lasso_spvb.R")
+
+res_spvb <- bayesian_lasso_spvb(vy, mX, lambda, res_mfvb$vmu_til, res_mfvb$mSigma_til, res_bem$sigma2) 
+
+
+```
+
+ 
+
+
+
+```{r}
+source(here("code","dlasso.R")) 
+
+
+
+trapint <- function(xgrid, fgrid) 
+{
+  ng <- length(xgrid)
+  xvec <- xgrid[2:ng] - xgrid[1:(ng - 1)]
+  fvec <- fgrid[1:(ng - 1)] + fgrid[2:ng]
+  integ <- sum(xvec * fvec)/2
+  return(integ)
+}
+
+zero_remove_density <- function(vbeta, eps) {
+  return(density(vbeta[abs(vbeta)>eps]))
+} 
+
+vb_phc <- function(mu, sigma, N, nsd, a_til, b_til, vmu_til, mSigma_til, XTX, XTy, lambda, j ) 
+{
+  x <- seq(mu - nsd*sigma, mu + nsd*sigma, length=N)
+  y <- 0*x
+  
+  lambda2 <- lambda*lambda
+  
+  mQ <- solve(XTX + lambda2*res_mfvb$vd, tol=1.0E-99)
+  vmu <- mQ%*%XTy
+  
+  m  <- XTy[j] - XTX[j,-j]%*%vmu[-j]
+  s2 <- XTX[j,-j]%*%mQ[-j,-j]%*%XTX[-j,j]
+  s  <- sqrt(s2)
+  
+  m  <- as.vector(m)
+  s2 <- as.vector(s2)
+  s  <- as.vector(s)
+  
+  K <- 5000
+  mBeta <- t(rmvnorm(K, vmu_til, sigma=mSigma_til))
+  vB <- (XTy[j] - XTX[j,-j]%*%mBeta[-j,])
+  
+  for (i in 1:K) {
+    
+    sigma2 <- rinvgamma(1, shape=a_til, rate=b_til)
+    sigma  <- sqrt(sigma2)
+ 
+    A <-  XTX[j,j]/sigma2
+    B <-  vB[i]/sigma2
+    B <- as.vector(B)
+    C <- -lambda/sigma
+    
+    y <- y + dlasso(x,A,B,C)
+    
+  }
+  y <- y/K
+ 
+  
+  return(list(x=x,y=y))
+} 
+
+vb_phc_grad <- function(x, a_til, b_til, vmu_til, mSigma_til, XTX, XTy, lambda, j )
+{
+  vs <- vmu_til[-j] - mSigma_til[-j,j]*vmu_til[j]/mSigma_til[j,j]
+  vt <- mSigma_til[-j,j]/mSigma_til[j,j]
+    
+    
+  c0 <- (a_til/b_til)*(XTy[j] - XTX[j,-j]%*%vs)
+  c1 <- (a_til/b_til)*(XTX[j,j] + XTX[j,-j]%*%vt)
+  c2 <- lambda*exp(lgamma(a_til + 1/2) - lgamma(a_til) - 0.5*log(b_til))
+  
+  c0 <- as.vector(c0)
+  c1 <- as.vector(c1)
+  c2 <- as.vector(c2)
+  
+  cat("c0=",c0,"\n")
+  cat("c1=",c1,"\n")
+  cat("c2=",c2,"\n")
+  
+  y <- dlasso(x,c1,c0,-c2)
+  
+  return(list(x=x,y=y))
+}
+
+
+vb_phc_grad2 <- function(x, E_sigma2inv, E_sigmainv, vmu_til, mSigma_til, XTX, XTy, lambda, j )
+{
+  vs <- vmu_til[-j] - mSigma_til[-j,j]*vmu_til[j]/mSigma_til[j,j]
+  vt <- mSigma_til[-j,j]/mSigma_til[j,j]
+    
+    
+  c0 <- E_sigma2inv*(XTy[j] - XTX[j,-j]%*%vs)
+  c1 <- E_sigma2inv*(XTX[j,j] + XTX[j,-j]%*%vt)
+  c2 <- lambda*E_sigmainv
+  
+  c0 <- as.vector(c0)
+  c1 <- as.vector(c1)
+  c2 <- as.vector(c2)
+  
+  y <- dlasso(x,c1,c0,-c2)
+  
+  return(list(x=x,y=y))
+}
+```
+
+```{r}
+save.image(here("results",paste("results",dataset_name,".Rdata",sep="")))
+#load(here("results",paste("results",dataset_name,".Rdata",sep="")))
+```
+
+```{r}
+plot_densities <- function(ldens, cols, exclude, gold) 
+{
+  vacc <- c()
+  
+  xlim <- c()
+  ylim <- c()
+  for (k in 1:length(ldens)) {
+    if (!(k%in%exclude)) {
+      xlim <- range(c(xlim,ldens[[k]]$x), finite = TRUE)
+      ylim <- range(c(ylim,ldens[[k]]$y), finite = TRUE)
+    }
+  }
+  plot(NA,type="n", xlim=xlim, ylim=ylim, xlab="", ylab="") 
+  for (k in 1:length(ldens)) {
+    lines(ldens[[k]]$x,ldens[[k]]$y, col=cols[k], lwd=2) 
+    
+    acc <- 1 - 0.5*trapint(ldens[[gold]]$x, abs(ldens[[gold]]$y - ldens[[k]]$y))
+    vacc[k] <- acc
+  }
+  
+  return(vacc)
+}
+
+N <- 10000
+nsd <- 5
+
+vmu_lm <- vbeta_lm
+vsigma_lm <- summary(res_lm)$coefficients[,2]
+
+vmu_bem <- res_bem$vbeta
+vsigma_bem <- res_bem$vse[-(p+1)]
+
+vmu_mfvb    <- res_mfvb$vmu_til
+vsigma_mfvb <- sqrt(diag(res_mfvb$mSigma_til))
+
+vmu_spvb    <- res_spvb$vmu_til
+vsigma_spvb <- sqrt(diag(res_spvb$mSigma_til))
+
+
+vmu_ep    <- pep.res$mu
+vsigma_ep <- sqrt(diag(pep.res$Sigma))
+
+pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
+
+ 
+
+
+cols <- c("red", "blue", "green", "orange","purple", "black","darkgray")
+exclude <- c(1,2)
+
+XTX <- t(mX)%*%mX
+XTy <- t(mX)%*%vy
+
+
+mai.dft <- c(1.02,0.82,0.82,0.42) #par("mai") # Defaults
+op <- par(mai=mai.dft)
+pcntB <- 0.3
+pcntL <- 0.3
+pcntT <- 0.3
+pcntR <- 0.3
+mai.new <- c(pcntB,pcntL,pcntT,pcntR) #*c(1.02,0.82,0.82,0.42)
+par(mfrow=c(3,3),mai=mai.new) 
+
+ranges <- apply( res_gibbs$mBeta[-c(1:nburn),], 2, range)
+
+mAcc <- matrix(0,7,p)
+
+for (j in 1:p) {
+  
+  #if (!is.nan(vsigma_bem[j])) {
+  #  L <- min(c(ranges[1,j],qnorm(0.001,vmu_bem[j], vsigma_bem[j])))
+  #  R <- max(c(ranges[2,j],qnorm(0.999,vmu_bem[j], vsigma_bem[j])))
+  #} else {
+    L <- ranges[1,j]
+    R <- ranges[2,j]
+  #}
+  
+  dens <- density(res_gibbs$mBeta[-c(1:nburn),j], from = L, to=R, n=N)
+  
+  xg <- dens$x
+  
+  ldens <- list()
+  ldens[[1]] <- list(x=xg,y=dnorm(xg,vmu_bem[j], vsigma_bem[j]))
+  ldens[[2]] <- list(x=xg,y=dens$y)
+  ldens[[3]] <- list(x=xg,y=dnorm(xg,vmu_mfvb[j], vsigma_mfvb[j]))
+  ldens[[4]] <- list(x=xg,y=dnorm(xg,vmu_spvb[j], vsigma_spvb[j]))
+
+  # ldens[[5]] <-
+  #   vb_phc(mu = res_mfvb$vmu_til[j],
+  #                 sigma = sqrt(res_mfvb$mSigma_til[j,j]),
+  #                 N = N, 
+  #                 nsd = nsd, 
+  #                 res_mfvb$a_til, res_mfvb$b_til, res_mfvb$vmu_til, res_mfvb$mSigma_til, XTX, XTy, lambda,j )
+  
+  
+  # ldens[[6]] <-
+  #   vb_phc(mu = res_mfvb$vmu_til[j],
+  #                 sigma = sqrt(res_mfvb$mSigma_til[j,j]),
+  #                 N = N, 
+  #                 nsd = nsd, 
+  #                 res_mfvb$a_til, res_mfvb$b_til, vmu, mSigma, XTX, XTy, lambda,j )
+  
+  #if (j==49)
+  #  ans <- readline()
+  
+  ldens[[5]] <-
+    vb_phc_grad(
+      xg,
+      res_mfvb$a_til,
+      res_mfvb$b_til,
+      res_mfvb$vmu_til,
+      res_mfvb$mSigma_til,
+      XTX,
+      XTy,
+      lambda,
+      j
+    )
+  
+  
+  ldens[[6]] <-
+    vb_phc_grad2(
+      xg,
+      res_spvb$E_sigma2inv,
+      res_spvb$E_sigmainv,
+      res_spvb$vmu_til,
+      res_spvb$mSigma_til,
+      XTX,
+      XTy,
+      lambda,
+      j
+    )
+  
+  
+  ldens[[7]] <- list(x=xg,y=dnorm(xg,vmu_ep[j], vsigma_ep[j]))
+  
+  
+  vacc <- plot_densities(ldens, cols, exclude, gold=2)
+  
+  mAcc[,j] <- vacc
+  
+  methods <- c("BEM+SE","MCMC", "VB", "SPVB", "VB-PHC1", "VB-PHC2","EP")
+  
+  if (j==1) {
+    legend("topright",
+           legend=methods,
+           text.col=cols[1:7],
+           border = FALSE)
+  }
+}
+
+dev.off()
+
+summ <- cbind(round(100*apply(mAcc[-1,],1,summary),1))
+colnames(summ) <- methods[-1]
+summ
+```
+
+```{r}
+save.image(paste("results",dataset_name,".Rdata",sep=""))
+#load(paste("results",dataset_name,".Rdata",sep=""))
+```
+
+ 

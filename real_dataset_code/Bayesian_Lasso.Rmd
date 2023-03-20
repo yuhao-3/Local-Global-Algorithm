@@ -382,7 +382,7 @@ time_LG1 <- system.time({
 })
 ```
 
-## Test effectiveness of Local-Global ALgorithm 2
+## Test effectiveness of Local-Global Algorithm 2
 
 ```{r}
 source(here("code","local_global_algorithms.R")) 
@@ -412,7 +412,7 @@ if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
 }else
 {
   time_LG2_new <- system.time({
-    res_LG2_new = bivariate_local_global(vy, mX, lambda, res_mfvb$vmu_til,res_mfvb$mSigma_til,res_mfvb$a_til,res_mfvb$b_til) 
+    res_LG2_new = bivariate_local_global(vy, mX, lambda, res_mfvb$vmu_til,res_mfvb$mSigma_til,res_mfvb$a_til,res_mfvb$b_til,damp = 0.5) 
   })
   save.image(paste("res_LG2_new",dataset_name,".Rdata",sep=""))
 }
@@ -421,7 +421,7 @@ if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
 
 # Algorithm 3
 ```{r}
-source(here("code","local_global_algorithms.R"))
+source(here("code","local_global_algorithms3.R"))
 
 if(file.exists(paste("res_LG3_new",dataset_name,".Rdata",sep="")))
 {

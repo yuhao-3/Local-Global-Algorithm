@@ -1,0 +1,159 @@
+---
+title: "bivariate lasso distribution"
+output: html_document
+date: "2023-02-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+source("bivariate_lasso_distribution.R")
+
+mA_val <- matrix(c(28.3854, 1.041974, 1.041974, 8.244157 ),2,2)
+vb_val <- matrix(c(-9.782652, 10.89526 ),2,1)
+c_val <- 2.944113 
+
+ 
+
+# For testing log Phi_2(z,rho)
+mSigma <- solve(mA_val, tol=1.0E-99)
+vmu    <- as.vector(mSigma%*%vb_val)
+
+sigma1 <- sqrt(mSigma[1,1])
+sigma2 <- sqrt(mSigma[2,2])
+vsigma <- c(sigma1,sigma2)
+rho <- mSigma[1,2]/(sigma1*sigma2)
+
+mR <- matrix(c(1,rho,rho,1),2,2)
+
+vz <- -vmu/vsigma
+```
+
+
+```{r}
+# Calculate the probabilities of each orthant
+library(tmvtnorm)
+
+p1 <- pmvnorm(mean=vmu, sigma=mSigma, lower=0, upper=Inf)
+p2 <- pmvnorm(mean=vmu, sigma=mSigma, lower=-Inf, upper=0)
+p3 <- pmvnorm(mean=vmu, sigma=mSigma, lower=c(0,-Inf), upper=c(Inf,0))
+p4 <- pmvnorm(mean=vmu, sigma=mSigma, lower=c(-Inf,0), upper=c(0,Inf))
+
+attributes(p1) <- NULL
+attributes(p2) <- NULL
+attributes(p3) <- NULL
+attributes(p4) <- NULL
+
+p1 + p2 + p3 + p4
+log(p1)
+log(p2)
+log(p3)
+log(p4)
+```
+
+
+```{r}
+# Calculate the probabilities of each orthant using after standardizing
+q1 <- pmvnorm(mean=0, sigma=mR, lower=vz, upper=Inf)
+q2 <- pmvnorm(mean=0, sigma=mR, lower=-Inf, upper=vz)
+q3 <- pmvnorm(mean=0, sigma=mR, lower=c(vz[1],-Inf), upper=c(Inf,vz[2]))
+q4 <- pmvnorm(mean=0, sigma=mR, lower=c(-Inf,vz[2]), upper=c(vz[1],Inf))
+
+attributes(q1) <- NULL
+attributes(q2) <- NULL
+attributes(q3) <- NULL
+attributes(q4) <- NULL
+
+q1 + q2 + q3 + q4
+log(q1)
+log(q2)
+log(q3)
+log(q4)
+```
+
+```{r}
+
+source("bivariate_lasso_distribution.R")
+
+r0 = log_pbvnorm(c(0,0), rho) 
+# should equal log(asin(rho)/(2*pi) + 0.25)
+
+r0_check <- log(asin(rho)/(2*pi) + 0.25)
+
+r1 = log_pbvnorm(vz, rho)                 # corresponds to p2 or q2
+r2 = log_pbvnorm(c(vz[1],-vz[2]), -rho)   # corresponds to p4 or q4
+r3 = log_pbvnorm(c(-vz[1],vz[2]), -rho)   # corresponds to p3 or q3
+r4 = log_pbvnorm(-vz, rho)                # corresponds to p1 or q1
+
+r1
+r2
+r3
+r4
+```
+
+```{r}
+# Calculate probability of lower orthant using Taylor series around rho=0
+# This appears to agree with p2/q2
+
+library(weightedScores)
+log(approxbvncdf(r=rho,
+            x1=vz[1],x2=vz[2],
+            x1s=vz[1]^2,x2s=vz[2]^2,
+            x1c=vz[1]^3,x2c=vz[2]^3,
+            x1f=vz[1]^4,x2f=vz[2]^4,
+            t1=prod(pnorm(vz)),
+            t2=prod(dnorm(vz))))
+
+
+log(approxbvncdf(r=rho,
+            x1=0,x2=0,
+            x1s=0,x2s=0,
+            x1c=0,x2c=0,
+            x1f=0,x2f=0,
+            t1=prod(pnorm(c(0,0))),
+            t2=prod(dnorm(c(0,0)))))
+```
+
+
+```{r}
+source("bivariate_lasso_distribution.R")
+
+sbvlasso(mA_val,vb_val,c_val) 
+
+log_Z <- zbvlasso(mA_val,vb_val,c_val, logarithm=TRUE) 
+log_Z
+```
+
+
+
+```{r}
+#install.packages("tmvtnorm")
+
+ebvlasso(mA_val,vb_val,c_val,verbose = TRUE) 
+vbvlasso(mA_val,vb_val,c_val,verbose = TRUE) 
+```
+
+
+
+```{r}
+source("Multi-Lasso.R")
+
+zmlasso(mA_val,vb_val,c_val,logarithm=TRUE)
+emlasso(mA_val,vb_val,c_val)
+vmlasso(mA_val,vb_val,c_val)
+```
+
+
+
+```{r}
+source("lasso_distribution.R")
+
+elasso(mA_val[1,1],vb_val[1],c_val)
+elasso(mA_val[2,2],vb_val[2],c_val)
+
+vlasso(mA_val[1,1],vb_val[1],c_val)
+vlasso(mA_val[2,2],vb_val[2],c_val)
+```

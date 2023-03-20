@@ -1,6 +1,7 @@
 ###############################################################################
-source(here("code","lasso_distribution","bivariate_lasso_distribution.R"))
-source(here("code","lasso_distribution","myLasso.R"))
+
+source("bivariate_lasso_distribution.R")
+
 ###############################################################################
 
 check_posdef <- function(mA) {
@@ -21,9 +22,12 @@ check_posdef <- function(mA) {
 }
 
 
+###############################################################################
 
-# When bem coefficient is 0, then use univariate, otherwise, use bivariate for other pairs
-local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til, b_til, damp, vbem_beta)
+# Bivariate Local and Global Iterations 
+# (Update each pair of variables at a time) 
+
+bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til, b_til, damp)
 {
   ## Initialization
   MAXITER = 500
@@ -53,77 +57,18 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
   # Record the local parameter
   lmA = list()
   lvb = list()
-  
-  # Record the local parameter
-  va = c()
-  vb = c()
-  vZ = c()
-  
+ 
   
   # Initial value Local parameters
   vtheta = c(vmu_glob)
   
-  # Get index of variable with zero coefficient
-  zero_var = which(vbem_beta == 0)
-  
-  # Get unique pair of non-zero variable combination
-  mPairs = t(combn(unique(setdiff(c(1:p),zero_var)),2))
+  # Get unique pair of variable combination
+  mPairs = t(combn(unique(c(1:p)),2))
   
   
   for (ITER in 1:MAXITER)
   {
     ## Local Update
-    for (j in 1:p)
-    {
-      ##########################################################################
-      if(j %in% zero_var)
-      {
-      
-        
-        # Store parameter for previous iteration
-        vmu_old = vmu_glob
-        mSigma_old = mSigma_glob
-        
-        vt = matrix(mSigma_glob[-j,j])/mSigma_glob[j,j]
-        vs = matrix(vmu_glob[-j]) - vt*vmu_glob[j]
-        
-        ## Update local parameters
-        a_val = E_inv_sigma2*(XTX[j,j] + XTX[j,-j]%*%vt)
-        b_val = E_inv_sigma2*(XTy[j] - XTX[j,-j]%*%vs)
-        
-        
-        ## Calculate Local mean and variance
-        mu_star = elasso(a_val,b_val,c_val)
-        sigma2_star = vlasso(a_val,b_val,c_val)
-        
-        mu_star <- as.vector(mu_star)
-        sigma2_star <- as.vector(sigma2_star)
-        
-        # Record local parameter
-        va[j] = a_val
-        vb[j] = b_val
-        vZ[j] = zlasso(a_val,b_val,c_val)
-        
-        ##########################################################################
-        
-        # Global Update
-        ## Update Mean
-        
-        vmu_glob[j] = mu_star
-        vmu_glob[-j] = vmu_glob[-j] + mSigma_glob[j,-j]*(mu_star - vmu_old[j])/mSigma_glob[j,j]
-        
-        ## Update Covariance
-        mSigma_glob[j,j] = sigma2_star
-        mSigma_glob[j,-j] = (sigma2_star/mSigma_old[j,j])*matrix(mSigma_old[j,-j])
-        mSigma_glob[-j,j] = t(mSigma_glob[j,-j])
-        mSigma_glob[-j,-j] = matrix(mSigma_old[-j,-j],p-1,p-1) + matrix(mSigma_old[-j,j])%*%((sigma2_star - matrix(mSigma_old[j,j]))/(mSigma_old[j,j]^2))%*%t(matrix(mSigma_old[j,-j]))
-        
-        # Damping
-        # mSigma_adjust = rho* mSigma_adjust + (1-rho)*mSigma_old\
-      }
-    }
-    
-    
     for (j in 1:nrow(mPairs))
     {
       vmu_old <- vmu_glob
@@ -138,7 +83,7 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
       # Local update
       
       PASS <- TRUE
-      
+
       if (!check_posdef(mSigma_glob[pair,pair])) {
         print("Something has gone terribly wrong 1")
         print(mSigma_glob[pair,pair])
@@ -173,9 +118,13 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
         PASS <- FALSE
       }
       
+    
+
+      
+      #
       
       if (PASS) {
-        
+      
         # Calculate normalizing constant of the bivariate lasso distribution
         #log_Z <- zbvlasso(mA_val,vb_val,c_val, logarithm=TRUE) 
         
@@ -226,20 +175,20 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
           lmA[[j]] = mA_val
           lvb[[j]] = vb_val
           #vZ[j] = log_Z
-          
+            
           ##########################################################################
-          
+            
           # Global update
-          
+            
           ## Update Mean
           vmu_glob[pair] = vmu_star
           vmu_glob[-pair] = vmu_glob[-pair] + mSigma_glob[-pair,pair]%*%mOmega%*%(vmu_star - vmu_glob[pair])
-          
+            
           ## Update Covariance
           mSigma_glob[pair,pair] = mSigma_star
           mSigma_glob[pair,-pair] = mSigma_star%*%mOmega%*% mSigma_old[pair,-pair]
           mSigma_glob[-pair,pair] = t(mSigma_glob[pair,-pair])
-          
+            
           mSigma_glob[-pair,-pair] = mSigma_glob[-pair,-pair] + 
             mSigma_old[-pair,pair]%*%mOmega%*%(mSigma_star - mSigma_old[pair,pair])%*%mOmega%*%mSigma_old[pair,-pair]      
           
@@ -264,16 +213,9 @@ local_global_algorithm_3 <- function(vy, mX, lambda, vmu_init, mSigma_init, a_ti
       break;
     }
     
-    
+     
   }
   # Return Local and Global parameter
   return(list("vmu_til" = vmu_glob, "mSigma_til" = mSigma_glob, "lmA" = lmA,"lvb" = lvb,"c_val"= c_val, mPairs=mPairs))
   
 }
-
-
-
-
-
-
-

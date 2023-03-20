@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  14 MAR 2023 13:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  21 MAR 2023 00:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -529,46 +529,83 @@ LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
+(D:\Program Files (x86)\MiKTeX\tex/latex/algorithms\algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(D:\Program Files (x86)\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks29
+\c@algorithm=\count304
+)
+(D:\Program Files (x86)\MiKTeX\tex/latex/algorithmicx\algpseudocode.sty
+Package: algpseudocode 
+
+(D:\Program Files (x86)\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count305
+\c@ALG@rem=\count306
+\c@ALG@nested=\count307
+\ALG@tlm=\skip70
+\ALG@thistlm=\skip71
+\c@ALG@Lnr=\count308
+\c@ALG@blocknr=\count309
+\c@ALG@storecount=\count310
+\c@ALG@tmpcounter=\count311
+\ALG@tmplength=\skip72
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+)
 \symrsfs=\mathgroup9
  (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-
-(D:\Program Files (x86)\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+ (D:\Program Files (x86)\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count304
+\scratchcounter=\count312
 \scratchdimen=\dimen197
 \scratchbox=\box62
-\nofMPsegments=\count305
-\nofMParguments=\count306
-\everyMPshowfont=\toks29
-\MPscratchCnt=\count307
+\nofMPsegments=\count313
+\nofMParguments=\count314
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count315
 \MPscratchDim=\dimen198
-\MPnumerator=\count308
-\makeMPintoPDFobject=\count309
-\everyMPtoPDFconversion=\toks30
+\MPnumerator=\count316
+\makeMPintoPDFobject=\count317
+\everyMPtoPDFconversion=\toks31
 ) (D:\Program Files (x86)\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+
+(D:\Program Files (x86)\MiKTeX\tex/latex/grfext\grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
 
 (D:\Program Files (x86)\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
@@ -577,7 +614,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 16.
+Package hyperref Info: Link coloring ON on input line 18.
  (main.out) (main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
@@ -618,7 +655,7 @@ Package hyperref Info: Link coloring ON on input line 16.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=139, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=131, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
@@ -679,7 +716,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.26 \listoftables
+l.28 \listoftables
                    [1
 
 ] (main.lot)
@@ -708,43 +745,46 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.59 \end{equation}
-                    [2] [3] [4]
-<VIoptimization.jpg, id=309, 1361.085pt x 1002.74625pt>
+l.59 
+      [2] [3] [4]
+<VIoptimization.jpg, id=297, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
-Package pdftex.def Info: VIoptimization.jpg  used on input line 90.
+Package pdftex.def Info: VIoptimization.jpg  used on input line 86.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=332, 196.735pt x 93.34875pt>
+<VIdemo.png, id=322, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
-Package pdftex.def Info: VIdemo.png  used on input line 135.
+Package pdftex.def Info: VIdemo.png  used on input line 133.
 (pdftex.def)             Requested size: 462.64183pt x 219.53621pt.
  [6] [7 <./VIdemo.png>]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 148.
+(amsmath)                 on input line 146.
 
 [8]) (Chapter2.tex [9]
 Chapter 2.
 [10
 
 ]
-<lassodemo.png, id=386, 614.295pt x 388.45125pt>
+<lassodemo.png, id=375, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
-Package pdftex.def Info: lassodemo.png  used on input line 43.
+Package pdftex.def Info: lassodemo.png  used on input line 41.
 (pdftex.def)             Requested size: 462.64183pt x 292.55873pt.
  [11]
 
 LaTeX Warning: Reference `eq:lassosolution' on page 12 undefined on input line 
-49.
+47.
 
-[12 <./lassodemo.png>]) (Chapter3.tex [13]
+[12 <./lassodemo.png>] [13] [14] [15]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 174.
+ [16]) (Chapter3.tex [17]
 Chapter 3.
-) (Chapter4.tex [14
+) (Chapter4.tex [18
 
 ]
 Chapter 4.
@@ -753,15 +793,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [15
+) (Chapter5.tex [19
 
 ]
 Chapter 5.
-) (main.bbl [16
+) (main.bbl [20
 
-] [17
+] [21
 
-]) [18] (main.aux)
+]) [22] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -770,33 +810,36 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 1BC9FAB7B401D69A0C9809F7E381992B;5963.
+(rerunfilecheck)             Checksum: 26544FC12506A5BF9A64744A0DF83572;5575.
  ) 
 Here is how much of TeX's memory you used:
- 15607 strings out of 475385
- 260281 string characters out of 2783908
- 631276 words of memory out of 3000000
- 36610 multiletter control sequences out of 15000+600000
+ 16302 strings out of 475385
+ 271848 string characters out of 2783908
+ 646959 words of memory out of 3000000
+ 37269 multiletter control sequences out of 15000+600000
  479490 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,7n,80p,1198b,591s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 77i,10n,80p,1198b,591s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
-b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/
-Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Progra
-m Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files
- (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files (x86)/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX/
-fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmr6.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmr8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmsy8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt1
-2.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10
-.pfb>
-Output written on main.pdf (27 pages, 572259 bytes).
+b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><D:/P
+rogram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Program
+ Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><D:/Program F
+iles (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Program Files (
+x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files (x86)/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files (x86)/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files (x86)/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmr6.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmr8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
+Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
+ Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
+ (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (31 pages, 640307 bytes).
 PDF statistics:
- 530 PDF objects out of 1000 (max. 8388607)
- 101 named destinations out of 1000 (max. 500000)
- 293 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 600 PDF objects out of 1000 (max. 8388607)
+ 119 named destinations out of 1000 (max. 500000)
+ 277 words of extra memory for PDF output out of 10000 (max. 10000000)
 

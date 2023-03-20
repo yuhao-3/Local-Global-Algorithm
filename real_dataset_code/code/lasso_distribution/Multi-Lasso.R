@@ -21,10 +21,10 @@ zmlasso <- function(A,b,c,logarithm=FALSE)
   mu4 = as.vector(Sigma1 %*%(-b - c))
   
   # Get 4 parts of equation separately
-  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1))-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
-  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma =Sigma2))-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
-  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2))-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
-  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma=Sigma1))-log(dmvnorm(as.vector(A%*%mu4),sigma = A))
+  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1,algorithm = "TVPACK"))-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma =Sigma2,algorithm = "TVPACK"))-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
+  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2,algorithm = "TVPACK"))-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
+  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma=Sigma1,algorithm = "TVPACK"))-log(dmvnorm(as.vector(A%*%mu4),sigma = A))
 
   # Log Sum Exp Trick to prevent overflow and underflow    
   log_Z1 =  log(det(Sigma2)) + logSumExp(c(PartII[1],PartIII[1]))
@@ -64,10 +64,10 @@ emlasso<- function(A,b,c)
 
 
   # Get 4 parts of equation separately
-  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + tn_mean1-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
-  PartII =(log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)) + tn_mean2-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)))
-  PartIII = (log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)) + tn_mean3-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)))
-  PartIV = (log(pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)) + tn_mean4-log(dmvnorm(as.vector(A%*%mu4),sigma = A))) 
+  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1,algorithm = "TVPACK")) + tn_mean1-log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII =(log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2,algorithm = "TVPACK")) + tn_mean2-log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)))
+  PartIII = (log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2,algorithm = "TVPACK")) + tn_mean3-log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)))
+  PartIV = (log(pmvnorm(0,Inf,mean = mu4, sigma = Sigma1,algorithm = "TVPACK")) + tn_mean4-log(dmvnorm(as.vector(A%*%mu4),sigma = A))) 
 
 
 
@@ -122,10 +122,10 @@ vmlasso = function(A,b,c)
   
   
   
-  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)) + log(tn_xxt1) - log(dmvnorm(as.vector(A%*%mu1),sigma = A))
-  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)) + log(tn_xxt2) - log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
-  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)) + log(tn_xxt3) - log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)) 
-  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)) + log(tn_xxt4) - log(dmvnorm(as.vector(A%*%mu4),sigma = A))
+  PartI = log(pmvnorm(0,Inf,mean = mu1, sigma = Sigma1,algorithm = "TVPACK")) + log(tn_xxt1) - log(dmvnorm(as.vector(A%*%mu1),sigma = A))
+  PartII = log(pmvnorm(0,Inf,mean = mu2, sigma = Sigma2,algorithm = "TVPACK")) + log(tn_xxt2) - log(dmvnorm(as.vector(A_star%*%mu2),sigma = A_star))
+  PartIII = log(pmvnorm(0,Inf,mean = mu3, sigma = Sigma2,algorithm = "TVPACK")) + log(tn_xxt3) - log(dmvnorm(as.vector(A_star%*%mu3),sigma = A_star)) 
+  PartIV = log(pmvnorm(0,Inf,mean = mu4, sigma = Sigma1,algorithm = "TVPACK")) + log(tn_xxt4) - log(dmvnorm(as.vector(A%*%mu4),sigma = A))
   
   
   
@@ -153,13 +153,13 @@ vmlasso = function(A,b,c)
   
   
   
-  EX2 = det(Sigma1)/Z * (tn_xxt1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1)
+  EX2 = det(Sigma1)/Z * (tn_xxt1* pmvnorm(0,Inf,mean = mu1, sigma = Sigma1,algorithm = "TVPACK")
                           /dmvnorm(as.vector(A%*%mu1),sigma = A)
-                          +tn_xxt4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1)
+                          +tn_xxt4* pmvnorm(0,Inf,mean = mu4, sigma = Sigma1,algorithm = "TVPACK")
                           /dmvnorm(as.vector(A%*%mu4),sigma = A)) +
-        det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_xxt2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2)
+        det(Sigma2)/Z *(matrix(c(1,-1,-1,1),2,2)*tn_xxt2* pmvnorm(0,Inf,mean = mu2, sigma = Sigma2,algorithm = "TVPACK")
                     /dmvnorm(as.vector(A_star%*%mu2),sigma = A_star)
-                    +matrix(c(1,-1,-1,1),2,2)*tn_xxt3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2)
+                    +matrix(c(1,-1,-1,1),2,2)*tn_xxt3* pmvnorm(0,Inf,mean = mu3, sigma = Sigma2,algorithm = "TVPACK")
                     /dmvnorm(as.vector(A_star%*%mu3),sigma = A_star))
   
   
@@ -201,8 +201,8 @@ dmmlasso1 <- function(x,A,b,c,logarithm = FALSE)
   mu1 = -0.5*((A[1,2]+A[2,1])/A[2,2])*x + (b[2]-c)/A[2,2]
   mu2 = 0.5*((A[1,2]+A[2,1])/A[2,2])*x - (b[2]+c)/A[2,2]
   
-  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
-  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE,algorithm = "TVPACK")  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE,algorithm = "TVPACK") - dnorm(mu2/sqrt(sigma2),log=TRUE)
   
   M <- max(c(log_partI,log_partII))
   log_mpdf =  log(sqrt(sigma2)) + log(k) + M +log(exp(log_partI - M)+exp(log_partII - M))
@@ -224,8 +224,8 @@ dmmlasso2 <- function(x,A,b,c,logarithm = FALSE)
   mu1 = -0.5*((A[1,2]+A[2,1])/A[1,1])*x + (b[1]-c)/A[1,1]
   mu2 = 0.5*((A[1,2]+A[2,1])/A[1,1])*x - (b[1]+c)/A[1,1]
   
-  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE)  - dnorm(mu1/sqrt(sigma2),log=TRUE)
-  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE) - dnorm(mu2/sqrt(sigma2),log=TRUE)
+  log_partI  <- pnorm(mu1/sqrt(sigma2),log=TRUE,algorithm = "TVPACK")  - dnorm(mu1/sqrt(sigma2),log=TRUE)
+  log_partII <- pnorm(mu2/sqrt(sigma2),log=TRUE,algorithm = "TVPACK") - dnorm(mu2/sqrt(sigma2),log=TRUE)
   
   M <- max(c(log_partI,log_partII))
   log_mpdf =  log(sqrt(sigma2)) + log(k) + M + log(exp(log_partI - M)+exp(log_partII - M))
