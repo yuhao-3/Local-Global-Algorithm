@@ -1,4 +1,4 @@
-\chapter{Definition and Literature Review}
+\chapter{Literature Review}
 \label{Chapter2}
 
 % 转折
@@ -6,7 +6,7 @@
 \section{Bayesian Inference Paradigm}
 \label{bayeisanP}
 \textbf{Why Bayesian}
-Bayesian Inference approaches shares numerous advantages in statistic community and applicationa areas, particularly for the circumstance when there is lack of data. An appropriate prior choice can be beneficial in aforementioned case, especially for medical problem where the amount of effective data is extremely rare and untenable. Additionally, unlike frequentist inference approaches which treat parameter estimate as a fixed value, Bayesian Inference approaches regard parameter estimate as a random variable that have probability distribution, which means interval estimate and error variance would be generated for capturing uncertainty, offering  belief and confidence for interpretating parameter estimates.
+Bayesian Inference approaches shares numerous advantages in statistic community and application areas, particularly for the circumstance when there is lack of data. An appropriate prior choice can be beneficial in aforementioned case, especially for medical problem where the amount of effective data is extremely rare and untenable. Additionally, unlike frequentist inference approaches which treat parameter estimate as a fixed value, Bayesian Inference approaches regard parameter estimate as a random variable that have probability distribution, which means interval estimate and error variance would be generated for capturing uncertainty, offering  belief and confidence for interpretating parameter estimates.
 
 \textbf{Bayesian Inference Intuition}
 Bayesian inference approach stems from the Bayes rule, which is defined as Equation (\ref{eq:Bayesrule}) based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the likelihood conditioning on the data $\mathcal{D}$.
@@ -92,26 +92,26 @@ Finally, the hierarchical bayesian lasso model functional form can be written as
 
 \subsection{Bayesian Lasso Gibbs Sampler}
 \subsubsection{Gibbs Sampler}
-Gibbs sampler is a Markov Chain Monte Carlos sampling algorithm for efficient sampling of any probability density function, given corresponing conditioal distribution form with an reasonable burn-in period. For each iteration, each parameter of interest will be sampled once by conditional distribution for the current iteration. After reasonable burn-in period, it will return an exact posterior distribution after discarding samples generated before burn-in period.
-After completion, the combination of each component of samples can formulate full samples of posterior distribution. As a result, the functional form of conditional distribution given any other parameter of interest has to be acquired. For the bayesian lasso model, this means the following exact functional form has to be derived
+\cite{4767596} introduced an special case of MetropolisHastings algorithm called Gibbs sampler, as a Markov Chain Monte Carlos sampling algorithm it can used for efficient sampling of any probability density function, given the posterior form from corresponding conditional distribution. For each iteration, each parameter of interest will be sampled once by conditional distribution for the current iteration. After reasonable burn-in period, it will return posterior distribution samples with descent approximation accuracy after discarding samples generated before burn-in period.
+After completion, the combination of each component of samples can formulate full samples of posterior distribution. As a result, the functional form of conditional distribution given any other parameter of interest has to be acquired. For the bayesian lasso model, given the parameter of interest: $(\beta,\sigma^2,\tau)$. This means the following exact functional form has to be derived
 \begin{equation}
 	\begin{multlined}
-	p(\mathbf{\beta}|\mathcal{D},\sigma^2,\mathbf{\tau})\\
-	p(\mathbf{\sigma}|\mathcal{D},\sigma^2,\mathbf{\tau})\\
-	p(\mathbf{\tau_j}|\mathcal{D},\sigma^2,\mathbf{\tau})\\
+	p(\mathbf{\beta}|\mathcal{D},\sigma^2,\mathbf{\tau}^2)\\
+	p(\mathbf{\sigma}|\mathcal{D},\beta,\mathbf{\tau}^2)\\
+	p(\tau|\mathcal{D},\beta,\sigma^2)\\
 	\end{multlined}
 \end{equation}
 After getting functional form and ignoring the normalizing constant, we can infer their category of probability distribution for each expression, and we can sample from the corresponding distribution.
 
 \textbf{Initial Setting}:
 Before derivation, we would like to formulate our initial setting: $\lambda$ is fixed, $\pi(\sigma^2) = \frac{b^a}{\Gamma(a)} (\sigma^2)^{-a-1}e^{-b^2/\sigma^2},\sigma^2>0,a>0,b>0$ follows an Gamma distribution with parameter $a$ and $b$. \\
-Our first step is to write full posterior distribution: $p(\mathbf{\beta},\mathbf{\tau},\sigma^{2},\mathcal{D})$
+Our first step is to write full posterior distribution: $p(\mathbf{\beta},\mathbf{\tau}^2,\sigma^{2},\mathcal{D})$
 
 \textbf{Joint distributional form}:
 Given Equation \ref{eq:blassocond}, we can write joint distribution form as
 \begin{equation}
 	\begin{multlined}
-		p(\tilde{y},\beta,\tau,\sigma^2) = p(\tilde{y}|\beta,\sigma^2,\tau)p(\sigma^2)\prod_{j=1}^p p(\beta|\sigma^2,\tau_j)p(\tau_j^2)\\
+		p(\tilde{y},\beta,\tau^2,\sigma^2) = p(\tilde{y}|\beta,\sigma^2,\tau)p(\sigma^2)\prod_{j=1}^p p(\beta|\sigma^2,\tau_j)p(\tau_j^2)\\
 		=\frac{1}{(2\pi\sigma^2)^{\frac{n}{2}}} e^{\frac{-(\tilde{y} -X\beta)^T(\tilde{y}-X\beta)}{2\sigma^2}}
 		\frac{b^a}{\Gamma(a)} (\sigma^2)^{-a-1}e^{-b^2/\sigma^2}
 		\prod_{j=1}^p \frac{1}{(2\sigma^2\tau_j^2)^{1/2}}e^{-\frac{-1}{2\sigma^2\tau_j^2}\beta_j^2}\frac{\lambda^2}{2}e^{-\lambda^2\tau_j^2/2}
@@ -128,7 +128,7 @@ Given Equation \ref{eq:blassocond}, we can write joint distribution form as
 Recognizing the term without $\beta$ as constant, the conditional distribution of $\beta$ can be simplified to
 \begin{equation}
 	\begin{multlined}
-	p(\beta|\tilde{y},\sigma^2,\tau) \propto \textnormal{exp}(\frac{\beta^TX^TX\beta - 2y^TX\beta +\lambda^2\beta^TA^{-1}\beta}{-2\sigma^2}), A = diag(\tau)\\
+	p(\beta|\tilde{y},\sigma^2,\tau^2) \propto \textnormal{exp}(\frac{\beta^TX^TX\beta - 2y^TX\beta +\lambda^2\beta^TA^{-1}\beta}{-2\sigma^2}), A = diag(\tau)\\
 	=  \textnormal{exp}(-\frac{1}{2}\beta^T(\frac{X^TX + \lambda^2A^{-1}}{-2\sigma^2})\beta + \frac{\tilde{y}^TX\beta}{\sigma^2})\\
 	\sim \textnormal{MVN}(\mu^*,\Sigma^*)\\
 	\textnormal{where } \mu^* = (X^TX+\lambda^2A^{-1})^{-1}X^Ty, \Sigma^* = (X^TX+\lambda^2A^{-1})^{-1}\sigma^2\\
@@ -140,7 +140,7 @@ So we can sample $\beta$ from a multivariate normal distribution with its corres
 
 \begin{equation}
 	\begin{multlined}
-		p(\sigma^2|\tilde{y},\beta,\tau) \propto  	p(\tilde{y},\beta,\tau,\sigma^2)  \\
+		p(\sigma^2|\tilde{y},\beta,\tau^2) \propto  	p(\tilde{y},\beta,\tau^2,\sigma^2)  \\
 		= (\sigma^2)^{-\frac{n}{2}-\frac{p}{2}-a-1}\textnormal{exp}(-\frac{1}{2\sigma^2}(\tilde{y}-X\beta)^T(\tilde{y}-X\beta)+\frac{1}{2\sigma^2}\beta^TD_{\tau}\beta+\frac{b}{\sigma^2}).\\
 		\sim \textnormal{Inverse-Gamma}(\alpha^*,\beta^*)\\
 		\textnormal{where } \alpha^* = \frac{n}{2}+\frac{p}{2}+a, \beta^* = 
@@ -148,12 +148,12 @@ So we can sample $\beta$ from a multivariate normal distribution with its corres
 	\end{multlined}
 \end{equation}
 
-\textbf{Formulation of $\tau_j$}:
+\textbf{Formulation of $\tau_j^2$}:
 
 \begin{equation}
 	\begin{multlined}
-		p(\tau_j|\tilde{y},\beta,\sigma^2) \propto  	p(\tilde{y},\beta,\tau,\sigma^2)  \\
-		= \frac{1}{\sqrt{\frac{2\pi\sigma^2\tau_j}{\lambda^2}}}\textnormal{exp}(-\frac{-\beta_j^2\lambda^2}{2\sigma^2\tau_j})\textnormal{exp}(-\frac{1}{2}\tau_j)]
+		p(\tau_j^2|\tilde{y},\beta,\sigma^2) \propto  	p(\tilde{y},\beta,\tau^2,\sigma^2)  
+		= \frac{1}{\sqrt{\frac{2\pi\sigma^2\tau_j}{\lambda^2}}}\textnormal{exp}(-\frac{-\beta_j^2\lambda^2}{2\sigma^2\tau_j})\textnormal{exp}(-\frac{1}{2}\tau_j)]\\
 		\sim GIG(a^*,b^*,p^*)\\
 		\textnormal{where GIG is generalized inverse gaussian distribution } a^* = 1, b^* = \frac{\beta_j^2\lambda^2}{\sigma^2}, p = \frac{1}{2}
 	\end{multlined}
@@ -164,9 +164,9 @@ In summary, each conditional distribution can be written in the following equati
 \begin{equation}
 	\label{eq:lassoposteriorsummary}
 	\begin{multlined}
-		p(\beta |y,\sigma^2,a): \textnormal{MVN}((X^TX+\lambda^2A^{-1})^{-1}X^Ty,(X^TX+\lambda^2A^{-1})^{-1}\sigma^2)\\
-		p(\sigma^2 |y,\beta,\tau_j):\textnormal{Inverse-Gamma}(\frac{n}{2}+\frac{p}{2}+a,\frac{||y-X\beta||_2^2}{2}+\frac{\lambda^2\sum_j{\beta_j^2}}{2\tau_j}+b)\\	
-		p(\tau_j|y,\beta,\sigma^2): GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},1/2)\\
+		p(\beta |y,\sigma^2,\tau^2): \textnormal{MVN}((X^TX+\lambda^2A^{-1})^{-1}X^Ty,(X^TX+\lambda^2A^{-1})^{-1}\sigma^2)\\
+		p(\sigma^2 |y,\beta,\tau_j^2):\textnormal{Inverse-Gamma}(\frac{n}{2}+\frac{p}{2}+a,\frac{||y-X\beta||_2^2}{2}+\frac{\lambda^2\sum_j{\beta_j^2}}{2\tau_j}+b)\\	
+		p(\tau_j^2|y,\beta,\sigma^2): GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},1/2)\\
 	\end{multlined}
 \end{equation}
 The gibbs sampler can be established by the following algorithm.
@@ -180,7 +180,7 @@ The gibbs sampler can be established by the following algorithm.
 		\State Sampling $\mathbf{\beta}^{(t+1)} \sim \textnormal{MVN}((X^TX+\lambda^2A^{-1})^{-1}X^Ty,(X^TX+\lambda^2A^{-1})^{-1}\sigma^2) $  \Comment{Generate sample $\beta$}
 		\State Sampling $\sigma^{2(t+1)} \sim IG(\frac{n}{2}+\frac{p}{2}+a,\frac{||y-X\beta||_2^2}{2}+\frac{\lambda^2\sum_j{\beta_j^2}}{2\tau_j}+b)$ \Comment{Generate sample $\sigma^2$}
 		\For{$j$=1,...,$p$}
-		\State Sampling $\mathbf{\tau}_j^{(t+1)} \sim GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},1/2)$ \Comment{Generate sample $\tau_j$}
+		\State Sampling $\mathbf{\tau}_j^{2(t+1)} \sim GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},1/2)$ \Comment{Generate sample $\tau_j$}
 		\EndFor
 		\State $t \leftarrow t + 1$
 		\EndWhile  \label{roy's loop}
@@ -192,36 +192,141 @@ The gibbs sampler can be established by the following algorithm.
 % \section{Bayesian Paradigm}
 \textbf{Automatic selection of the penalty parameter $\lambda$}
 Common choice of penalty parameter $\lambda$ in the non-bayesian paradigm involves cross-validation approach, which is time-consuming and computational challenging especially for large datasets.
-\cite{park_casella_2008} arrange a hyperprior to $\lambda^2$ from Gamma distribution as \ref{eq:hyperprior}. 
+\cite{park_casella_2008} arrange a hyperprior to $\lambda^2$ from Gamma distribution as \ref{eq:hyperprior}, instaed of $\lambda$ to facilitate conjugacy.
 According to \cite{park_casella_2008}, there are some additional notification of choosing prior, which involves: firstly, to avoid mixing issue, the prior distribution for $\lambda^2$ should reach zero asymptotically with a descent speed as $\lambda^2 $ goes to infinity, Secondly, the density at maximum likelihood estimate should be assigned with enough probability density with a overall flat distribution.
 \begin{equation}
 	\label{eq:hyperprior}
-	\pi(\sigma^2) = \frac{\delta^\gamma}{\Gamma(\gamma)}(\lambda^2)^{\gamma-1}e^{-\delta\lambda^2}, \textnormal{for } \delta>0, \gamma>0, \lambda^2>0
+	\pi(\lambda^2) = \frac{\delta^\gamma}{\Gamma(\gamma)}(\lambda^2)^{\gamma-1}e^{-\delta\lambda^2}, \textnormal{for } \delta>0, \gamma>0, \lambda^2>0
 \end{equation}
 
  The penalty parameter is the extent of penalization of non-zero coefficient, which is also a compromise between model simplicity and fitting capability to data in the frequentist lasso setting. According to the posterior form of $\tau_j$, $\lambda$ controls the shape of generalized inverse-Gaussian posterior distribution of $\tau_j$ as shown in the \ref{eq:lassoposteriorsummary}.
 
 To obtain the posterior form of $\lambda$, we need to incorpoate a proper hyperprior distribution to the joint distribution $p(y,\beta,\sigma^2,\tau)$ first, assuming the gamma distribution has shape $\theta$ and rate parameter $\gamma$.
 \begin{equation}
-\end{equation}
-\begin{equation}
 	\label{eq:hyperpriorGamma}
 	\begin{multlined}
-	p(\lambda|\tilde{y},\beta,\sigma^2,\tau) \propto  	p(\tilde{y},\beta,\tau,\sigma^2,\lambda)  \\
+	p(\lambda|\tilde{y},\beta,\sigma^2,\tau^2) \propto  	p(\tilde{y},\beta,\tau^2,\sigma^2,\lambda)  \\
 	= (\prod_{j=1}^p \frac{\lambda^2}{2} e^{-\lambda^2\tau_j^2/2})(\lambda^2)^{\gamma-1}e^{-\delta\lambda^2}\\
 	= (\lambda^2)^{p+\gamma-1}e^{-\lambda^2(\frac{1}{2}\sum_{j=1}^p \tau_j^2+\delta)}
 \end{multlined}
 \end{equation} 
-Thus, the posterior distribution of $\lambda$ is still following a Gamma distribution, with a shape parameter $p+\gamma-1$ and rate parameter $\sum_{j=1}^p \tau_j^2+\delta)$. The $\lambda^2$ can be sampled by \ref{eq:hyperpriorGamma}, based on using an Augmented Gibbs sampler.
+Thus, the posterior distribution of $\lambda$ is still following a Gamma distribution, with a shape parameter $p+\gamma-1$ and rate parameter $\sum_{j=1}^p \tau_j^2+\delta$. The $\lambda^2$ can be sampled by \ref{eq:hyperpriorGamma}, based on using an augmented Gibbs sampler.
 
 \section{Expectation Maximization}
+Even though the posterior distribution can be sampled by Gibbs sampler in the last subsection, the sparsity nature of the Bayesian lasso is not captured by  posterior mean given by Gibbs Sampler. The posterior mode calculated by Bayesian Expectation Maximization, however, could capture the posterior mode and preserve the sparsity feature of the basic lasso.
+
+\subsection{Classical Expectation Maximization}
+The expectation maximization algorithm was proposed by \cite{EM}, which is an iterative approach for seeking for the maximum likelihood estimate of parameter for probabilistic model that have missing data or the latent variables.
+The application of EM algorithm includes the inference of the parameters of the Gaussian Mixture model etc. The Expectation-Maximization algorithm involves two main steps, which are E-steps and M-steps.
+Suppose $Z$ is the set of latent variable $X$ is the set of entire set of observed variables, $\theta$ is parameter. $t$ refers to the step during iteration, $\textnormal{log}(P(X,Z|\theta)))$ refers to complete log-likelihood of data, and $\textnormal{log}(P(X|\theta)))$ refers to incomplete log-likelihood of data without considering the hidden variables.
+\subsubsection{E-steps}
+By calculating the posterior distribution of the hidden variable given by the observed data and current parameter estimates, the purpose of this step is to compute the expectation of the latent variables by observed data, which is equivalent to calculate the expected value of the complete log-likelihood given the current parameter estimation and observed data
+Mathematically, the E-step involves calculating the expectation of the complete data log-likelihood with respect to the conditional distribution of the hidden data given the observed data and current parameter estimates:
+\begin{equation}
+	Q(\theta,\theta^{(t-1)}) = E_{Z|X,\theta^{(t-1)}}[\textnormal{log}(P(X,Z|\theta))].
+\end{equation}
+Overall, the purpose of this step is to use the observed data to estimate and update the values of the missing data
+
+\subsubsection{M-steps}
+The purpose of this step is to update the parameters that could maximize the expected complete data log-likelihood generated by the E-step, according to the current estimates
+\begin{equation}
+	\theta^{(t)} = \textnormal{argmax}_{\theta} Q(\theta,\theta^{(t-1)}).
+\end{equation}
+The algorithm will then stop until the difference between $\theta^{(t)}$ and $\theta^{(t-1)}$ is within an acceptable tolerance.
+There are advantages and disadvantages for EM algorithm: EM algorithm guarantees the increase of likelihood for each iteration according to \cite{EM}, which enable EM algorithm becoming a greedy algorithm. However, it might suffer from slow convergence speed, sensitiveness with initial parameter value, and the convergence to a local optima if there are multiple local optimas existing in the optimisation error surface.
+
+
 \subsection{Bayesian Expectation Maximization}
+The Bayesian Expectation Maximization algorithm incorporates the idea of Expectation Maximization algorithm and Bayesian inference for estimation of the probabilistic model when the data has missing or hidden. As opposed to the traditional EM approach, the Bayesian EM approach incorporate prior knowledge about the parameter, for the estimation of the posterior mode $p(\theta|\mathcal{D})$, considering the prior distribution as $p(\theta)$, the bayes rule can be written in the log scale
+\begin{equation}
+	\label{eq:logbayesrule}
+	\textnormal{ln} p(\theta|\mathcal{D}) = \textnormal{ln}(p(\mathcal{D}|\theta)) + \textnormal{ln}(p(\theta)) - \textnormal{ln}(p(\mathcal{D}))
+\end{equation}
+We can then further expand \autoref{eq:logbayesrule} to \autoref{eq:expansionBR}
+\begin{equation}
+	\label{eq:expansionBR}
+	\textnormal{ln} p(\theta|\mathcal{D}) = Q(\theta,\theta^{(old)}) + \textnormal{KL}(q||p(Z|X)) + \textnormal{ln}(p(\theta)) - \textnormal{ln}(p(\mathcal{D}))
+\end{equation}
+, where KL$(P||Q)$ is defined by \autoref{eq:KL2}
+
+\subsection{Bayesian EM for Bayesian Lasso model}
+In order to deploy Bayesian EM algorithm to the bayesian lasso model for attaining the posterior mode, our purpose is to iteratively calcualte 
+\begin{equation}
+	\theta_1^{(t+1)} = \textnormal{argmax}_{\theta_1}[E_{\theta_2|\tilde{y},\theta_1^{(t)}}[\textnormal{log}p(y,\theta_1,\theta_2)]].
+\end{equation}
+
+\subsubsection{E-step}
+Using the same notation as before, firstly, the complete log-likelihood can be written by \autoref{eq:CompleteLL}
+\begin{equation}
+	\label{eq:CompleteLL}
+	\textnormal{log}(p(\theta_1,\theta_2,\tilde{y})) \propto -\frac{n+p}{2}\textnormal{log}(\sigma^2) - \frac{||\tilde{y}-X\beta||_2^2}{2\sigma^2} - \frac{1}{2\sigma^2}\beta^TE_{\theta_2|\tilde{y},\theta_1^{(t)}}[D_{\tau}]\beta - \frac{b}{\sigma^2}
+\end{equation}
+given $\theta_1 = (\beta,\sigma^2)$ as set of observed variables, $\theta_2 = \tau^2 = (\tau_1^2,..,\tau_j^2)$ as set of latent variables, y is response variable.
 
 
+\begin{equation}
+	\label{eq:nextloglL}
+	E_{\theta_2|\tilde{y},\theta_1^{(t)}}[\textnormal{log}p(y,\theta_1,\theta_2)] = -\frac{n}{2} \textnormal{log}(\sigma^{2(t)}) - \frac{||y-X\beta^{(t)}||_2^2}{2\sigma^{2(t)}} - E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\sum_{j=1}^p \frac{\lambda^2\beta_j^2}{2\sigma^2\tau_j^2}] -(a+1)\textnormal{log}(\sigma^{2(t)})) - \frac{b}{\sigma^{2(t)}}.
+\end{equation}
+Next, we need to take expectation of hidden variables: $E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\sum_{j=1}^p \frac{\lambda^2\beta_j^2}{2\sigma^2\tau_j^2}]$. After extracting constant with respect to $\theta_2$, required formulation is $E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\frac{1}{\tau_j}]$. Given the fact that $\tau_j^2|\sigma^2,\tilde{y},\beta \sim GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},\frac{1}{2})$ and the special property of Generalized Inverse Gaussian distribution that if $X \sim GIG(a,b,p)$, then $\frac{1}{X} \sim GIG(b,a,-p)$, the distribution of $\frac{1}{\tau_j^2}$ can be rearranged to  $\frac{1}{\tau_j^2}|\sigma^2,\tilde{y},\beta \sim GIG(\frac{\beta_j^2\lambda^2}{\sigma^2},1,-\frac{1}{2})$.
+However, taking expectation with respect to Generalized Gaussian Distribution is still complicated and require advanced mathematical operation and functional properties such as modified Bessel function. Thus, we can continue converting the distribution into a Inverse Gaussian distribution family, which render $\frac{1}{\tau_j^2}|\sigma^2,\theta_1,\tilde{y} \sim InverseGaussian(b^{-\frac{1}{2}},1)$. After continue rewriting \autoref{eq:nextloglL}, the final conditional expectation form can be written as the following equation:
+\begin{equation}
+	Q(\theta,\theta^{(t)}) = -(\frac{n}{2}+\frac{p}{2}+a+1)log(\sigma^2)-\frac{b}{\sigma^2}-\frac{||y-X\beta||_2^2}{2\sigma^2}-\frac{\lambda^2}{2\sigma^2}\sum_{j=1}^{p}(\beta_j^2 E[\frac{1}{\tau_j^2}]),\
+	E[\frac{1}{\tau_j^2}] = \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda}
+\end{equation}
+During the iteration, the $E[\frac{1}{\tau_j^2}]$ will be iteratively updated according to the updated $\beta^{(t)}$ and $\sigma^{2(t)}$
+
+
+\subsubsection{M-step}
+In order to maximize the expectation of complete log likelihood, taking derivative with respect to each target variable and set them to 0 respectively provides a closed-form solution for updating observed parameter repeatedly:
+\begin{equation}
+	\label{eq:beta}
+	\frac{\partial Q}{\partial \beta} = -\frac{1}{2\sigma^2}(-X^Ty+2X^TX\beta)-\frac{\lambda^2}{2\sigma^2}X^TX\beta = 0
+\end{equation}
+Rearranging the \autoref{eq:beta}, the updated formula for $\beta^{(t)}$ can be written in the following equation:
+\begin{equation}
+	\beta^{(t)} = (X^TX + \lambda^2 A)^{-1}X^Ty,\text{where } A = \textnormal{diag}(\frac{\sigma}{|\beta|\lambda})
+\end{equation}
+Similarly, set $\frac{\partial Q}{\partial \sigma^2} = 0$:
+\begin{equation}
+	\label{eq:sigma2}
+	\frac{\partial Q}{\partial \sigma^2} = -\frac{(\frac{n+p}{2}+a+1)}{\sigma^2} + \frac{b + \frac{||y-X\beta||_2^2}{2} +\frac{\frac{\lambda^2(\beta^TA\beta)}{2}}{2}}{\sigma^4} = 0
+\end{equation}
+Rearranging the \autoref{eq:sigma2}, the updated formula for $\sigma^{2(t)}$ can be written in the following equation:
+\begin{equation}
+	\sigma^{2(t)} = \frac{\frac{||y-X\beta||_2^2 + \lambda^2 (\beta^TA\beta)}{2} + b}{\frac{n+p}{2}+a+1}
+\end{equation}
+
+
+
+\begin{algorithm}
+	\caption{Bayesian Expectation Maximization algorithm for the Bayesian Lasso}
+	\begin{algorithmic}[1]
+		
+		\State Given initial value $\theta_1^{(0)} =(\beta^{(0)}.\sigma^{2(0)})$, $\theta_2^0 = \mathbf{1}_p$, $t=1$
+		\While{$||\theta_1^{(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$}
+		\State $\beta^{(t)} = (X^TX + \lambda^2 A)^{-1}X^Ty,\text{where } A = \textnormal{diag}(\frac{\sigma}{|\beta|\lambda})$ \Comment{Update $\beta$}
+		\State $\sigma^{2(t)} = \frac{\frac{||y-X\beta||_2^2 + \lambda^2 (\beta^TA\beta)}{2} + b}{\frac{n+p}{2}+a+1}$ \Comment{Update $\sigma^2$}
+		\State $A = diag( \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda})$\Comment{Estimate expectation of hidden variable $E[\frac{1}{\tau_j^2}]$}
+		\State $t \leftarrow t + 1$
+		\EndWhile  
+		
+		
+	\end{algorithmic}
+\end{algorithm}
+After completing the iteration process of bayesian lasso, the posterior mode of Bayesian Lasso posterior distribution can be extracted from $\beta$ generated by Bayesian Lasso algorithm, as a posterior model retaining variable selection nature
 \section{Variational Inference}
 \label{VI}
+\subsection{Introduction}
+One of the core challenges of statistician is to approximate over-complex probability density function in fast and efficient manner. Variational Inference severs as an effective alternative to MCMC algorithm especially for large datasets as mentioned in the last chapter. As the indispensable foundation of our proposed methodlogy, the purpose of this section is to provide detailed derivation and mathematical reasoning behind Variational Inference.
+\subsection{Evidence Lower Bound(ELBO)}
+
+\subsection{KL-divergence}
+
+
 
 \subsection{Mean Field Variational Bayes(MFVB)}
+
 Suppose there are $n$ number of parameters, then MFVB assumes target distribution $q(\theta)$ is the product of single factorization of each parameter distribution $q_i(\theta_i)$, due to simplicity of product density form. 
 \begin{equation}
 	q(\theta) = \prod_{i=1}^{n} q_i(\theta_i)

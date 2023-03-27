@@ -66,10 +66,10 @@
 \newlabel{cont}{{1.2}{8}{Contribution}{section.1.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.3}Thesis Organization}{9}{section.1.3}\protected@file@percent }
 \citation{Beech1959}
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}Definition and Literature Review}{10}{chapter.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Literature Review}{10}{chapter.2}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter2}{{2}{10}{Definition and Literature Review}{chapter.2}{}}
+\newlabel{Chapter2}{{2}{10}{Literature Review}{chapter.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Bayesian Inference Paradigm}{10}{section.2.1}\protected@file@percent }
 \newlabel{bayeisanP}{{2.1}{10}{Bayesian Inference Paradigm}{section.2.1}{}}
 \newlabel{eq:simBayesrule}{{2.1}{10}{Bayesian Inference Paradigm}{equation.2.1}{}}
@@ -84,6 +84,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2.3}Bayesian Lasso}{12}{section.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Bayesian Lasso model}{12}{subsection.2.3.1}\protected@file@percent }
 \newlabel{eq:expandLasso}{{2.4}{12}{Bayesian Lasso model}{equation.2.4}{}}
+\citation{4767596}
 \newlabel{eq:fullCondLasso}{{2.5}{13}{Bayesian Lasso model}{equation.2.5}{}}
 \newlabel{eq:lassocondprior}{{2.6}{13}{Bayesian Lasso model}{equation.2.6}{}}
 \newlabel{eq:lassoprior}{{2.7}{13}{Bayesian Lasso model}{equation.2.7}{}}
@@ -97,54 +98,71 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Gibbs Sampler for the Bayesian Lasso\relax }}{16}{algorithm.1}\protected@file@percent }
 \newlabel{roy's loop}{{7}{16}{Gibbs Sampler for the Bayesian Lasso\relax }{algorithm.1}{}}
 \newlabel{eq:hyperprior}{{2.17}{16}{Gibbs Sampler}{equation.2.17}{}}
-\newlabel{eq:hyperpriorGamma}{{2.19}{17}{Gibbs Sampler}{equation.2.19}{}}
+\citation{EM}
+\newlabel{eq:hyperpriorGamma}{{2.18}{17}{Gibbs Sampler}{equation.2.18}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Expectation Maximization}{17}{section.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Bayesian Expectation Maximization}{17}{subsection.2.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Variational Inference}{17}{section.2.5}\protected@file@percent }
-\newlabel{VI}{{2.5}{17}{Variational Inference}{section.2.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Mean Field Variational Bayes(MFVB)}{17}{subsection.2.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}MFVB for Bayesian Lasso}{17}{subsection.2.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Methodlogy}{18}{chapter.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Classical Expectation Maximization}{17}{subsection.2.4.1}\protected@file@percent }
+\citation{EM}
+\@writefile{toc}{\contentsline {subsubsection}{E-steps}{18}{subsubsection*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{M-steps}{18}{subsubsection*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Bayesian Expectation Maximization}{18}{subsection.2.4.2}\protected@file@percent }
+\newlabel{eq:logbayesrule}{{2.21}{19}{Bayesian Expectation Maximization}{equation.2.21}{}}
+\newlabel{eq:expansionBR}{{2.22}{19}{Bayesian Expectation Maximization}{equation.2.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.3}Bayesian EM for Bayesian Lasso model}{19}{subsection.2.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{E-step}{19}{subsubsection*.10}\protected@file@percent }
+\newlabel{eq:CompleteLL}{{2.24}{19}{E-step}{equation.2.24}{}}
+\newlabel{eq:nextloglL}{{2.25}{19}{E-step}{equation.2.25}{}}
+\@writefile{toc}{\contentsline {subsubsection}{M-step}{20}{subsubsection*.11}\protected@file@percent }
+\newlabel{eq:beta}{{2.27}{20}{M-step}{equation.2.27}{}}
+\newlabel{eq:sigma2}{{2.29}{20}{M-step}{equation.2.29}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Bayesian Expectation Maximization algorithm for the Bayesian Lasso\relax }}{21}{algorithm.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Variational Inference}{21}{section.2.5}\protected@file@percent }
+\newlabel{VI}{{2.5}{21}{Variational Inference}{section.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Introduction}{21}{subsection.2.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Mean Field Variational Bayes(MFVB)}{21}{subsection.2.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}MFVB for Bayesian Lasso}{21}{subsection.2.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Methodlogy}{22}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter3}{{3}{18}{Methodlogy}{chapter.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Lasso distribution}{18}{section.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Univariate Lasso Distribution}{18}{subsection.3.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{18}{subsubsection*.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation}{18}{subsubsection*.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Multivariate Lasso Distribution}{18}{subsection.3.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{18}{subsubsection*.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation}{18}{subsubsection*.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Local-Global Algorithm}{18}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Experiment Result and Analysis}{19}{chapter.4}\protected@file@percent }
+\newlabel{Chapter3}{{3}{22}{Methodlogy}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Lasso distribution}{22}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Univariate Lasso Distribution}{22}{subsection.3.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{22}{subsubsection*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation}{22}{subsubsection*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Multivariate Lasso Distribution}{22}{subsection.3.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{22}{subsubsection*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation}{22}{subsubsection*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Local-Global Algorithm}{22}{section.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Experiment Result and Analysis}{23}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter4}{{4}{19}{Experiment Result and Analysis}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setting}{19}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Parameter selection}{19}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Evaluation metric}{19}{subsection.4.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Experimental datasets}{19}{subsection.4.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Experimental Result}{19}{section.4.2}\protected@file@percent }
+\newlabel{Chapter4}{{4}{23}{Experiment Result and Analysis}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setting}{23}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Parameter selection}{23}{subsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Evaluation metric}{23}{subsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Experimental datasets}{23}{subsection.4.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Experimental Result}{23}{section.4.2}\protected@file@percent }
 \bibstyle{elsarticle-harv}
 \bibdata{references}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{20}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{24}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter5}{{5}{20}{Discussion and Conclusion}{chapter.5}{}}
+\newlabel{Chapter5}{{5}{24}{Discussion and Conclusion}{chapter.5}{}}
 \bibcite{attias_1999}{{1}{1999}{{Attias}}{{}}}
 \bibcite{beck_teboulle_2009}{{2}{2009}{{Beck and Teboulle}}{{}}}
 \bibcite{Beech1959}{{3}{1959}{{Beech et~al.}}{{Beech, Kendall and Stuart}}}
 \bibcite{bishop_2006}{{4}{2006}{{Bishop}}{{}}}
 \bibcite{blei_kucukelbir_mcauliffe_2017}{{5}{2017}{{Blei et~al.}}{{Blei, Kucukelbir and McAuliffe}}}
 \bibcite{Blei2003LDA}{{6}{2003}{{Blei et~al.}}{{Blei, Ng and Jordan}}}
-\bibcite{efron_hastie_johnstone_tibshirani_2004}{{7}{2004}{{Efron et~al.}}{{Efron, Hastie, Johnstone and Tibshirani}}}
-\bibcite{friedman_hastie_tibshirani_2010}{{8}{2010}{{Friedman et~al.}}{{Friedman, Hastie and Tibshirani}}}
-\bibcite{jordan_ghahramani_jaakkola_saul_1998}{{9}{1998}{{Jordan et~al.}}{{Jordan, Ghahramani, Jaakkola and Saul}}}
-\bibcite{khare_hobert_2013}{{10}{2013}{{Khare and Hobert}}{{}}}
-\bibcite{park_casella_2008}{{11}{2008}{{Park and Casella}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{21}{chapter*.12}\protected@file@percent }
-\bibcite{FastBL}{{12}{2015a}{{Rajaratnam and Sparks}}{{}}}
-\bibcite{rajaratnam_sparks_2015}{{13}{2015b}{{Rajaratnam and Sparks}}{{}}}
-\bibcite{tibshirani_1996}{{14}{1996}{{Tibshirani}}{{}}}
-\bibcite{nan_zhang_shuqing_zeng_2005}{{15}{2005}{{Zhang and Zeng}}{{}}}
-\gdef \@abspage@last{31}
+\bibcite{EM}{{7}{1977}{{Dempster et~al.}}{{Dempster, Laird and Rubin}}}
+\bibcite{efron_hastie_johnstone_tibshirani_2004}{{8}{2004}{{Efron et~al.}}{{Efron, Hastie, Johnstone and Tibshirani}}}
+\bibcite{friedman_hastie_tibshirani_2010}{{9}{2010}{{Friedman et~al.}}{{Friedman, Hastie and Tibshirani}}}
+\bibcite{jordan_ghahramani_jaakkola_saul_1998}{{10}{1998}{{Jordan et~al.}}{{Jordan, Ghahramani, Jaakkola and Saul}}}
+\bibcite{khare_hobert_2013}{{11}{2013}{{Khare and Hobert}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{25}{chapter*.16}\protected@file@percent }
+\bibcite{park_casella_2008}{{12}{2008}{{Park and Casella}}{{}}}
+\bibcite{FastBL}{{13}{2015a}{{Rajaratnam and Sparks}}{{}}}
+\bibcite{rajaratnam_sparks_2015}{{14}{2015b}{{Rajaratnam and Sparks}}{{}}}
+\bibcite{tibshirani_1996}{{15}{1996}{{Tibshirani}}{{}}}
+\bibcite{nan_zhang_shuqing_zeng_2005}{{16}{2005}{{Zhang and Zeng}}{{}}}
+\gdef \@abspage@last{35}
