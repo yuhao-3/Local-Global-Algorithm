@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  28 MAR 2023 00:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  28 MAR 2023 18:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -655,7 +655,7 @@ Package hyperref Info: Link coloring ON on input line 18.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=139, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=159, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
@@ -747,13 +747,13 @@ been already used, duplicate ignored
                    \relax 
 l.59 
       [2] [3] [4]
-<VIoptimization.jpg, id=307, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=332, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 86.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=332, 196.735pt x 93.34875pt>
+<VIdemo.png, id=357, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 133.
@@ -769,7 +769,7 @@ Chapter 2.
 [10
 
 ]
-<lassodemo.png, id=385, 614.295pt x 388.45125pt>
+<lassodemo.png, id=410, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -788,7 +788,7 @@ Package natbib Warning: Citation `4767596' on page 13 undefined on input line 9
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 174.
  [16] [17] [18]
-Overfull \hbox (42.87175pt too wide) detected at line 270
+Overfull \hbox (42.87175pt too wide) detected at line 271
 [][][]\OML/cmm/m/it/12 E[]\OT1/cmr/m/n/12 [[]\OML/cmm/m/it/12 p\OT1/cmr/m/n/12 
 (\OML/cmm/m/it/12 y; ^^R[]; ^^R[]\OT1/cmr/m/n/12 )] = \OMS/cmsy/m/n/12 ^^@[][]\
 OT1/cmr/m/n/12 (\OML/cmm/m/it/12 ^^[[]\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^@ []
@@ -799,7 +799,7 @@ r/m/n/12 )) \OMS/cmsy/m/n/12 ^^@ []\OML/cmm/m/it/12 :
 
 [19]
 ! Extra }, or forgotten \endgroup.
-l.307 ...(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$}
+l.308 ...(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$}
                                                   
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -807,9 +807,9 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-[20]) (Chapter3.tex [21]
+[20] [21]) (Chapter3.tex [22]
 Chapter 3.
-) (Chapter4.tex [22
+) (Chapter4.tex [23
 
 ]
 Chapter 4.
@@ -818,19 +818,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [23
+) (Chapter5.tex [24
 
 ]
 Chapter 5.
-) (main.bbl [24
+) (main.bbl [25
 
-] [25
+] [26
 
 ])
 
 Package natbib Warning: There were undefined citations.
 
-[26] (main.aux)
+[27] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -838,20 +838,14 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were undefined references.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 40C21DF53E687E534E96F0836CFDD712;5989
-(rerunfilecheck)             After:  72026AE466153541835B14748E314241;6111.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 58177BA37571C7725ADF72120798B985;6980.
  ) 
 Here is how much of TeX's memory you used:
- 16337 strings out of 475385
- 272301 string characters out of 2783908
+ 16347 strings out of 475385
+ 272462 string characters out of 2783908
  650280 words of memory out of 3000000
- 37280 multiletter control sequences out of 15000+600000
+ 37285 multiletter control sequences out of 15000+600000
  479490 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,10n,80p,1198b,593s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -872,9 +866,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (35 pages, 664378 bytes).
+Output written on main.pdf (36 pages, 668514 bytes).
 PDF statistics:
- 659 PDF objects out of 1000 (max. 8388607)
- 143 named destinations out of 1000 (max. 500000)
- 293 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 689 PDF objects out of 1000 (max. 8388607)
+ 148 named destinations out of 1000 (max. 500000)
+ 333 words of extra memory for PDF output out of 10000 (max. 10000000)
 
