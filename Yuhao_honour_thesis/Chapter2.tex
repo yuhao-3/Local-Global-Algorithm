@@ -291,13 +291,12 @@ Rearranging the \autoref{eq:beta}, the updated formula for $\beta^{(t)}$ can be 
 Similarly, set $\frac{\partial Q}{\partial \sigma^2} = 0$:
 \begin{equation}
 	\label{eq:sigma2}
-	\frac{\partial Q}{\partial \sigma^2} = -\frac{(\frac{n+p}{2}+a+1)}{\sigma^2} + \frac{b + \frac{||y-X\beta||_2^2}{2} +\frac{\lambda^2(\beta^TA\beta)}{4}}{\sigma^4} = 0
+	\frac{\partial Q}{\partial \sigma^2} = -\frac{(n+p+2a+2)}{2\sigma^2} + \frac{4b + 2||y-X\beta||_2^2{2} + \lambda^2(\beta^TA\beta)}{4\sigma^4} = 0
 \end{equation}
 Rearranging the \autoref{eq:sigma2}, the updated formula for $\sigma^{2(t)}$ can be written in the following equation:
 \begin{equation}
 	\sigma^{2(t)} = \frac{||y-X\beta^{(t)}||_2^2 + \lambda^2 (\beta^{T(t)}A\beta^{(t)}) + 2b}{n+p+2a+2}
 \end{equation}
-
 
 
 \begin{algorithm}
@@ -343,7 +342,6 @@ Apart from the equivalence of optimization system, the explanation of why it is 
 	\textnormal{log}(p(\mathcal{D})) = KL(q(\theta)||p(\theta|\mathcal{D})) + ELBO(q(\theta)),
 \end{equation}
 Given the fact that $KL(.|.)$ is greater than 0, this explains log evidence is bounded below by $ELBO$, i.e: $\textnormal{log}(p(\mathcal{D})) \geq ELBO(q(\theta))$.
-\subsubsection{ELBO properties}
 
 \subsection{The Mean-Field Variational Family} 
 Motivated by statistical mean-field theory proposed by \cite{parisi1988statistical}, the mean-field variational family is the most common choice that are easier to optimize with a tractable solution form.
@@ -354,18 +352,14 @@ The two dimensional visualization of mean-field variational family can be observ
 
 
 
+\subsection{Coordinate Ascent Variational Inference (CAVI) / Mean Field Variational Bayes(MFVB)}
+After introducing the concept of ELBO and mean field variational family, the current goal is to find a optimum $q^*(\theta)$ to maximize the ELBO, and the most fundamental frequent choice for optimization algorithm is the Coordinate Ascent Variational Inference (CAVI) algorithm due to its simplicity in understanding and computational efficiency. Note the MFVB algorithm Coordinate ascent is an optimization algorithm used to maximize or minimize a multivariate function. The main intuition behind coordinate ascent is to optimize the function with respect to one variable each time while fixing other variables fixed, iteratively update until convergence. The algorithm won't stop until either the differences between current function value and previous function value is less than a predefined threshold or when a maximum number of iterations is reached.
+Similarly, the CAVI works by iteratively maximizing each component of $q(\theta)$: $q_i(\theta_i)$, while maintaining other factor of distribution unchanged $q_{-i}(\theta_{-i})$, enforcing the final distribution can achieve a local optimum of the ELBO. 
+Tiny changes regarding stopping criterion has also be proposed, where the stopping criterion has been transformed from difference of function value into difference of ELBO.
+Finally, we want to make note that VB belongs to a broader category of Variational Inference approaches, which can also serve as a purpose in the frequentist setting for maximum likelihood estimation. The CAVI algorithm is equivalent to MFVB algorithm in our setting.
 
-
-
-
-
-
-
-\subsection{Coordinate ascent Variational Inference(CAVI)}
-After introducing the concept of ELBO and mean field variational family, the current goal is to find a optimum $q^*(\theta)$ to maximize the ELBO, and the most fundamental frequent choice for optimization algorithm is the Coordinate Ascent Variational Inference (CAVII) algorithm due to its simplicity in understanding and computational efficiency. Coordinate ascent is an optimization algorithm used to maximize or minimize a multivariate function. The main intuition behind coordinate ascent is to optimize the function with respect to one variable each time while fixing other variables fixed, iteratively update until convergence. The algorithm won't stop until either the differences between current function value and previous function value is less than a predefined threshold or when a maximum number of iterations is reached.
-Similarly, the CAVI works by iteratively maximizing  each component of $q(\theta)$: $q_i(\theta_i)$, while maintaining other factor of distribution unchanged $q_{-i}(\theta_{-i})$, enforcing the final distribution can achieve a local optimum of the ELBO. 
 \subsubsection{Derivation}
-Substituting the family of factorized target distribution $\prod_i q_i$, the ELBO can be rewritten as 
+Substituting the family of factorized target distribution $\prod_i q_i$, the ELBO can be rewritten as:
 \begin{equation}
 	\label{eq:ELBOderive}	
 	\begin{aligned}
@@ -407,7 +401,7 @@ The algorithm then iteratively replace $q_j(\theta_j)$ using the current estimat
 \end{algorithm}
 
 
-
+\newpage
 \subsection{MFVB for Bayesian Lasso}
 We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem.
 \subsubsection{Log likelihood}
