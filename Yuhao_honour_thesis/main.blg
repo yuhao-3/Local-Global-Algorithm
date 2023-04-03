@@ -7,47 +7,47 @@ Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
 Warning--I didn't find a database entry for "4767596"
 Reallocating 'singl_function' (item size: 4) to 100 items.
-Warning--empty chapter and pages in attias_1999
+Warning--empty journal in parisi1988statistical
 Warning--empty journal in FastBL
 You've used 16 entries,
             2990 wiz_defined-function locations,
-            745 strings with 8048 characters,
-and the built_in function-call counts, 9862 in all, are:
-= -- 769
-> -- 336
+            741 strings with 7794 characters,
+and the built_in function-call counts, 9522 in all, are:
+= -- 736
+> -- 328
 < -- 10
-+ -- 141
-- -- 114
-* -- 1025
-:= -- 1442
-add.period$ -- 56
++ -- 136
+- -- 111
+* -- 1000
+:= -- 1408
+add.period$ -- 55
 call.type$ -- 16
-change.case$ -- 116
+change.case$ -- 115
 chr.to.int$ -- 15
 cite$ -- 18
-duplicate$ -- 766
-empty$ -- 742
-format.name$ -- 168
-if$ -- 1846
+duplicate$ -- 742
+empty$ -- 718
+format.name$ -- 171
+if$ -- 1764
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 138
-newline$ -- 103
+missing$ -- 135
+newline$ -- 102
 num.names$ -- 64
 pop$ -- 280
 preamble$ -- 1
-purify$ -- 102
+purify$ -- 101
 quote$ -- 0
-skip$ -- 246
+skip$ -- 225
 stack$ -- 0
-substring$ -- 385
-swap$ -- 509
-text.length$ -- 1
+substring$ -- 342
+swap$ -- 481
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 138
 warning$ -- 2
-while$ -- 59
+while$ -- 57
 width$ -- 0
-write$ -- 251
+write$ -- 248
 (There were 3 warnings)

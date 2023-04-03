@@ -305,7 +305,7 @@ Rearranging the \autoref{eq:sigma2}, the updated formula for $\sigma^{2(t)}$ can
 	\begin{algorithmic}[1]
 		
 		\State Given initial value $\theta_1^{(0)} =(\beta^{(0)}.\sigma^{2(0)})$, $\theta_2^0 = \mathbf{1}_p$, $t=1$
-		\While{$||\theta_1^{(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$}
+		\While{$||\theta_1^{(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$
 		\State $\beta^{(t)} = (X^TX + \lambda^2 A)^{-1}X^Ty,\text{where } A = \textnormal{diag}(\frac{\sigma^{(t-1)}}{|\beta^{(t-1)}|\lambda})$ \Comment{Update $\beta$}
 		\State 	$\sigma^{2(t)} = \frac{||y-X\beta^{(t)}||_2^2 + \lambda^2 (\beta^{T(t)}A\beta^{(t)}) + 2b}{n+p+2a+2}$ \Comment{Update $\sigma^2$}
 		\State $A = diag( \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda})$\Comment{Estimate expectation of hidden variable $E[\frac{1}{\tau_j^2}]$}
@@ -321,35 +321,100 @@ After completing the iteration process of bayesian lasso, the posterior mode of 
 \section{Variational Inference}
 \label{VI}
 \subsection{Introduction}
-One of the core challenges of statistician is to approximate over-complex probability density function in fast and efficient manner. Variational Inference severs as an effective alternative to MCMC algorithm especially for large datasets as mentioned in the last chapter. As the indispensable foundation of our proposed methodlogy, the purpose of this section is to provide detailed derivation and mathematical reasoning behind Variational Inference.
-\subsection{Evidence Lower Bound(ELBO)}
+One of the core challenges of statistician is to approximate over-complex probability density function in fast and efficient manner. Variational Inference severs as an effective alternative to MCMC algorithm especially for large datasets as mentioned in the last chapter. A proxy of exact posterior distribution can be fitted by addressing an optimization-based system. As the indispensable foundation of our proposed methodlogy, the purpose of this section is to provide detailed derivation and mathematical reasoning behind Variational Inference according to the detailed Variational Inference overview from \cite{blei_kucukelbir_mcauliffe_2017} and \cite{bishop_2006}.
+\subsection{KL divergence and Evidence Lower Bound(ELBO)}
+Under the Variational Inference setting, the purpose of it is to find a candidate approxiamation  $Q(\theta) \in Q$ after specifying a specific family of posterior distribution $Q$ that minimize the $KL$ divergence to the exact posterior distribution as shwon in \autoref{eq:VI1} for each subelement of parameter $\theta$. The complexity for finding optimal distribution relies heavily on the complexity of $Q$. Nevertheless, due to difficulty for computing marginal logarithm evidence $p(\mathcal{D}) = \int_{\theta} P(\mathcal{D},\theta)$, as well as implicity dependency nature of $p(\mathcal{D})$ to KL divergence as explained in \autoref{eq:KLeq}, therefore, additional conversion is required for further processing this optimization system, which transform \autoref{eq:VI1} to \autoref{eq:KL}. 
+\begin{equation}
+	\label{eq:KLeq}
+	\begin{aligned}
+		KL(q(\theta||p(\theta|\mathcal{D}))) &= \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}(q(\theta))] - \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}(p(\theta|\mathcal{D}))]\\
+		& = 
+		\mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}(q(\theta))] - \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}(p(\theta,\mathcal{D}))]+ \textnormal{log}[p(\mathcal{D})].\\
+	\end{aligned}
+\end{equation}
+\subsubsection{KL divergence}
+We haven't introduced the KL-divergence formally even though this term is repeated several times. KL-divergence defined by \autoref{eq:KLeq} is a distance metric for measuring the discrepancy of two probability distribution. Several important theoretical property includes non-negativity, and asymmetric property of $KL(q||p)$ and $KL(p||q)$.
+
+\subsubsection{ELBO}
+In addition, the definition of the Evidence Lower bound is defined by \autoref{eq:ELBO}, which is equivalent to the negative KL divergence despite of adding constant $p(\mathcal{D})$ with respect to $q(\theta)$. 
+Apart from the equivalence of optimization system, the explanation of why it is called $"$Evidence lower bound$"$ can be shown in \autoref{eq:ELBOevidence}.
+\begin{equation}
+	\label{eq:ELBOevidence}
+	\textnormal{log}(p(\mathcal{D})) = KL(q(\theta)||p(\theta|\mathcal{D})) + ELBO(q(\theta)),
+\end{equation}
+Given the fact that $KL(.|.)$ is greater than 0, this explains log evidence is bounded below by $ELBO$, i.e: $\textnormal{log}(p(\mathcal{D})) \geq ELBO(q(\theta))$.
+\subsubsection{ELBO properties}
+
+\subsection{The Mean-Field Variational Family} 
+Motivated by statistical mean-field theory proposed by \cite{parisi1988statistical}, the mean-field variational family is the most common choice that are easier to optimize with a tractable solution form.
+The mean field variational family represents a group of probability distributions employed in variational inference. Its objective is to estimate intricate, infeasible distributions, such as the genuine posterior distribution within a Bayesian model, by using more tractable and simpler distributions.
+The generic member of mean field variational family is as described in \autoref{eq:MFVBassume}, assuming mutual independence of each target parameter $\theta_j$, and the joint distribution is factorized as a product of individual distributions. Finally, no further assumption has been arranged to each individual distribution $q(\theta_i)$.
+The two dimensional visualization of mean-field variational family can be observed from \autoref{fig:VIdemo}, while the contour of mean-field variational family member forms a concentric contour line over the optimization surface.
 
 
-\subsection{KL-divergence}
 
 
-\subsection{The Mean-Field Variational Family}
+
+
+
+
+
+
 
 \subsection{Coordinate ascent Variational Inference(CAVI)}
-
-
-
-
-\subsection{Mean Field Variational Bayes(MFVB)}
-
-Suppose there are $n$ number of parameters, then MFVB assumes target distribution $q(\theta)$ is the product of single factorization of each parameter distribution $q_i(\theta_i)$, due to simplicity of product density form. 
+After introducing the concept of ELBO and mean field variational family, the current goal is to find a optimum $q^*(\theta)$ to maximize the ELBO, and the most fundamental frequent choice for optimization algorithm is the Coordinate Ascent Variational Inference (CAVII) algorithm due to its simplicity in understanding and computational efficiency. Coordinate ascent is an optimization algorithm used to maximize or minimize a multivariate function. The main intuition behind coordinate ascent is to optimize the function with respect to one variable each time while fixing other variables fixed, iteratively update until convergence. The algorithm won't stop until either the differences between current function value and previous function value is less than a predefined threshold or when a maximum number of iterations is reached.
+Similarly, the CAVI works by iteratively maximizing  each component of $q(\theta)$: $q_i(\theta_i)$, while maintaining other factor of distribution unchanged $q_{-i}(\theta_{-i})$, enforcing the final distribution can achieve a local optimum of the ELBO. 
+\subsubsection{Derivation}
+Substituting the family of factorized target distribution $\prod_i q_i$, the ELBO can be rewritten as 
 \begin{equation}
-	q(\theta) = \prod_{i=1}^{n} q_i(\theta_i)
+	\label{eq:ELBOderive}	
+	\begin{aligned}
+		\textnormal{ELBO}(q(\theta)) &= \int q(\theta)\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}d\theta \\
+		&= \int \prod_i q_i(\theta_i) [\log[p(\mathcal{D},\theta) - \sum_i \log(q_i(\theta_i))]]d\theta \\
+		&= \int q_j(\theta_j)[\int \log p(\mathcal{D},\theta) \prod_{i\neq j}q_i d\theta_j]d\theta_j - \int q_j(\theta_j) \log[q_j(\theta_j)]d\theta_j + const\\
+		&= \int q_j(\theta_j) \log[\tilde{p}(\mathcal{D},\theta_j)] - \int q_j(\theta_j) \log[q_j(\theta_j)]d\theta_j
+	\end{aligned}
 \end{equation}
-To measure the similarity between true distribution and target distribution, KL divergence metric is selected to produce
-
+where $\log[\tilde{p}(\mathcal{D},\theta_j)] = \mathbb{E}_{i \neq j}[\log[p(\mathcal{D},\theta)]] + const$, and $\mathbb{E}_{i\neq j} = \int \log[p(\mathcal{D},\theta)]\prod_{i\neq j}q_j(\theta_j)d\theta_j$ assuming optimizing the $j$th posterior parameter $\theta_j$.
+Identifying the \ref{eq:ELBOderive} is negative KL-divergence between $q_j(\theta_j) $ and $\tilde{p}(\mathcal{D},\theta_j)$, the KL-divergence can be minimized when two distribution are same.
+As a consequence, the optimal $q^{*}(\theta_i)$ incidence of local maximum is achieved when $q_j(\theta_j) = \tilde{p}(\mathcal{D},\theta_j)$. Thus, the general optimum distribution can be written in the following equation,
 \begin{equation}
-	KL(q(x)||p(x|\mathcal{D})) 
+	\label{eq:logoptimumQ}
+	\log[q_j^*(\theta_j)] = \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)] + const
 \end{equation}
+Recovering from log scale and remove additional constant by normalization of $q_j^*(\theta_j)$, the optimum $q_j^*(\theta_j)$ can be written as:
+\begin{equation}
+	q_j^*(\theta_j) = \frac{\mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]}{\int \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)d\theta_j} \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]
+\end{equation}
+The algorithm then iteratively replace $q_j(\theta_j)$ using the current estimation for all of other factors, and convergence critera is break when differences of ELBOs changes less than a predefined tolerance. Theoretically, it is proved that the convergence of CAVI algorithm is guaranteed given the fact the optimization problem is convex according to \cite{boyd2004convex}. The following pseudo-algorithm demonstrates the entire procedure for CAVI.
+
+\begin{algorithm}
+	\caption{Coordinate Ascent Variational Inference (CAVI)}
+	\begin{algorithmic}[1]
+		
+		\State Input: $p(\mathcal{D},\theta)$, data $\mathcal{D}$, Initialize Variational factor $q_j(\theta_j)$
+		\While{ELBO has not converged} 
+		\For{$j$=1,...,$p$}
+		\State $q_j(\theta_j) \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]$
+		\EndFor
+		\State Compute $ELBO(q(\theta)) = \mathbb{E}[\log[p(\mathcal{D},\theta)]] + \mathbb{E}[\log[q(\theta)]]$
+		\EndWhile 
+		\State return $q(\theta)$
+		
+		
+		
+	\end{algorithmic}
+\end{algorithm}
+
+
 
 \subsection{MFVB for Bayesian Lasso}
+We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem.
+\subsubsection{Log likelihood}
 
+\subsubsection{Assumption}
 
+\subsubsection{Derivation}
 
 
 

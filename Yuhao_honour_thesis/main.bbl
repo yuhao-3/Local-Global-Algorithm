@@ -11,12 +11,6 @@
 \providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
 \providecommand{\bibinfo}[2]{#2}
 \ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
-%Type = Inbook
-\bibitem[{Attias(1999)}]{attias_1999}
-\bibinfo{author}{Attias, H.}, \bibinfo{year}{1999}.
-\newblock \bibinfo{title}{Inferring Parameters and Structure of Latent Variable
-  Models byVariational Bayes}.
-\newblock p. \bibinfo{pages}{21–30}.
 %Type = Article
 \bibitem[{Beck and Teboulle(2009)}]{beck_teboulle_2009}
 \bibinfo{author}{Beck, A.}, \bibinfo{author}{Teboulle, M.},
@@ -57,6 +51,12 @@
 \newblock \bibinfo{title}{Latent dirichlet allocation}.
 \newblock \bibinfo{journal}{the Journal of machine Learning research}
   \bibinfo{volume}{3}, \bibinfo{pages}{993--1022}.
+%Type = Book
+\bibitem[{Boyd and Vandenberghe(2004)}]{boyd2004convex}
+\bibinfo{author}{Boyd, S.}, \bibinfo{author}{Vandenberghe, L.},
+  \bibinfo{year}{2004}.
+\newblock \bibinfo{title}{Convex optimization}.
+\newblock \bibinfo{publisher}{Cambridge university press}.
 %Type = Article
 \bibitem[{Dempster et~al.(1977)Dempster, Laird and Rubin}]{EM}
 \bibinfo{author}{Dempster, A.P.}, \bibinfo{author}{Laird, N.M.},
@@ -86,16 +86,6 @@
   \bibinfo{volume}{33}.
 \newblock \DOIprefix\doi{10.18637/jss.v033.i01}.
 %Type = Article
-\bibitem[{Jordan et~al.(1998)Jordan, Ghahramani, Jaakkola and
-  Saul}]{jordan_ghahramani_jaakkola_saul_1998}
-\bibinfo{author}{Jordan, M.I.}, \bibinfo{author}{Ghahramani, Z.},
-  \bibinfo{author}{Jaakkola, T.S.}, \bibinfo{author}{Saul, L.K.},
-  \bibinfo{year}{1998}.
-\newblock \bibinfo{title}{An introduction to variational methods for graphical
-  models}.
-\newblock \bibinfo{journal}{Learning in Graphical Models} ,
-  \bibinfo{pages}{105–161}\DOIprefix\doi{10.1007/978-94-011-5014-9_5}.
-%Type = Article
 \bibitem[{Khare and Hobert(2013)}]{khare_hobert_2013}
 \bibinfo{author}{Khare, K.}, \bibinfo{author}{Hobert, J.P.},
   \bibinfo{year}{2013}.
@@ -103,6 +93,11 @@
 \newblock \bibinfo{journal}{Electronic Journal of Statistics}
   \bibinfo{volume}{7}.
 \newblock \DOIprefix\doi{10.1214/13-ejs841}.
+%Type = Article
+\bibitem[{Parisi and Shankar(1988)}]{parisi1988statistical}
+\bibinfo{author}{Parisi, G.}, \bibinfo{author}{Shankar, R.},
+  \bibinfo{year}{1988}.
+\newblock \bibinfo{title}{Statistical field theory} .
 %Type = Article
 \bibitem[{Park and Casella(2008)}]{park_casella_2008}
 \bibinfo{author}{Park, T.}, \bibinfo{author}{Casella, G.},

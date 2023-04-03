@@ -104,15 +104,21 @@ In practice, the minimization of $\textnormal{KL}$ divergence from Equation (\re
 	q^*(\theta) = \underset{q_{\theta} \in Q}{\operatorname{ argmax}} \textnormal{ELBO}(q(\theta)),
 \end{equation}
 \begin{equation}
-	\label{eq:ELBO}
-	\textnormal{ELBO}(q(\theta)) = \int q(\theta)\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)} = \mathop{\mathbb{E}_{q(\theta)}}\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}).
+	\label{eq:ELBO}	
+	\begin{aligned}
+	\textnormal{ELBO}(q(\theta)) &= \int q(\theta)\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}d\theta = \mathop{\mathbb{E}_{q(\theta)}}\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}).\\
+	& = \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}p(\theta,\mathcal{D})]
+	- \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}[q(\theta)]]\\
+	&= \mathop{\mathbb{E}_{q(\theta)}}[\textnormal{log}p(\theta,\mathcal{D})]
+	- \textnormal{KL}(q(\theta)||p(\theta))\\
+	\end{aligned}
 \end{equation}
 
 \textbf{Mean Field Variational Bayes, History and introduction}
 % Change reference
 
 The most traditional Variational Inference algorithm is known as Mean-Field Variational Bayes motivated by mean-field Theory in statistical physics yielded by 
-\cite{jordan_ghahramani_jaakkola_saul_1998} and \cite{attias_1999}, which assume the approximated distribution is from independent product of parameter distribution from set $Q$ as in Equation (\ref{eq:MFVBassume}) if assuming there are $k$ sub-parameter of target parameter $\theta$.
+\cite{parisi1988statistical}, which assume the approximated distribution is from independent product of parameter distribution from set $Q$ as in Equation (\ref{eq:MFVBassume}) if assuming there are $k$ sub-parameter of target parameter $\theta$.
 \begin{equation}
 	\label{eq:MFVBassume}
 	q(\theta) = \prod_{i=1}^{k} q_i(\theta)
