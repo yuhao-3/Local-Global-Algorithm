@@ -31,17 +31,18 @@
 \contentsline {subsection}{\numberline {2.5.4}Coordinate Ascent Variational Inference (CAVI) / Mean Field Variational Bayes(MFVB)}{23}{subsection.2.5.4}%
 \contentsline {subsubsection}{Derivation}{24}{subsubsection*.14}%
 \contentsline {subsection}{\numberline {2.5.5}MFVB for Bayesian Lasso}{25}{subsection.2.5.5}%
-\contentsline {subsubsection}{Log likelihood}{25}{subsubsection*.15}%
+\contentsline {subsubsection}{Basic Setting}{25}{subsubsection*.15}%
 \contentsline {subsubsection}{Assumption}{25}{subsubsection*.16}%
 \contentsline {subsubsection}{Derivation}{25}{subsubsection*.17}%
+\contentsline {subsubsection}{$q_{\beta }^*(\beta )$}{25}{subsubsection*.18}%
 \contentsline {chapter}{\numberline {3}Methodlogy}{26}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Lasso distribution}{26}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Univariate Lasso Distribution}{26}{subsection.3.1.1}%
-\contentsline {subsubsection}{Basic Property}{26}{subsubsection*.18}%
-\contentsline {subsubsection}{Derivation}{26}{subsubsection*.19}%
+\contentsline {subsubsection}{Basic Property}{26}{subsubsection*.19}%
+\contentsline {subsubsection}{Derivation}{26}{subsubsection*.20}%
 \contentsline {subsection}{\numberline {3.1.2}Multivariate Lasso Distribution}{26}{subsection.3.1.2}%
-\contentsline {subsubsection}{Basic Property}{26}{subsubsection*.20}%
-\contentsline {subsubsection}{Derivation}{26}{subsubsection*.21}%
+\contentsline {subsubsection}{Basic Property}{26}{subsubsection*.21}%
+\contentsline {subsubsection}{Derivation}{26}{subsubsection*.22}%
 \contentsline {section}{\numberline {3.2}Local-Global Algorithm}{26}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Experiment Result and Analysis}{27}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Experimental Setting}{27}{section.4.1}%
@@ -50,4 +51,4 @@
 \contentsline {subsection}{\numberline {4.1.3}Experimental datasets}{27}{subsection.4.1.3}%
 \contentsline {section}{\numberline {4.2}Experimental Result}{27}{section.4.2}%
 \contentsline {chapter}{\numberline {5}Discussion and Conclusion}{28}{chapter.5}%
-\contentsline {chapter}{Bibliography}{29}{chapter*.22}%
+\contentsline {chapter}{Bibliography}{29}{chapter*.23}%

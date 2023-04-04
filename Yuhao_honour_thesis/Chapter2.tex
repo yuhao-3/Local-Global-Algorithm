@@ -378,6 +378,7 @@ As a consequence, the optimal $q^{*}(\theta_i)$ incidence of local maximum is ac
 \end{equation}
 Recovering from log scale and remove additional constant by normalization of $q_j^*(\theta_j)$, the optimum $q_j^*(\theta_j)$ can be written as:
 \begin{equation}
+	\label{eq:optimalSolution}
 	q_j^*(\theta_j) = \frac{\mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]}{\int \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)d\theta_j} \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]
 \end{equation}
 The algorithm then iteratively replace $q_j(\theta_j)$ using the current estimation for all of other factors, and convergence critera is break when differences of ELBOs changes less than a predefined tolerance. Theoretically, it is proved that the convergence of CAVI algorithm is guaranteed given the fact the optimization problem is convex according to \cite{boyd2004convex}. The following pseudo-algorithm demonstrates the entire procedure for CAVI.
@@ -386,7 +387,7 @@ The algorithm then iteratively replace $q_j(\theta_j)$ using the current estimat
 	\caption{Coordinate Ascent Variational Inference (CAVI)}
 	\begin{algorithmic}[1]
 		
-		\State Input: $p(\mathcal{D},\theta)$, data $\mathcal{D}$, Initialize Variational factor $q_j(\theta_j)$
+		\State Input: $p(\mathcal{D},\theta)$, data $\mathcal{D}$, Initialize Variational parameters for each $q_j(\theta_j)$
 		\While{ELBO has not converged} 
 		\For{$j$=1,...,$p$}
 		\State $q_j(\theta_j) \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]$
@@ -399,17 +400,23 @@ The algorithm then iteratively replace $q_j(\theta_j)$ using the current estimat
 		
 	\end{algorithmic}
 \end{algorithm}
-
+Similar, Mean-Field-Variational Bayes has a similiar updating rule, while the only modification is that it convert the stopping criterion from using consecutive difference of ELBO into variation in the parameter $\theta$ in two consecutive update is less than certain tolerance $\epsilon$
 
 \newpage
 \subsection{MFVB for Bayesian Lasso}
-We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem.
-\subsubsection{Log likelihood}
+We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem. Our goal is to attain Bayesian Lasso posterior approximation in a faster and efficient manner than that of three-step gibbs sampler.
+\subsubsection{Basic Setting}
 
 \subsubsection{Assumption}
+The assumption of tractable distribution family $Q$ can be written as the following equation:
+\begin{equation}
+	q(\theta) = q(\beta)q(\sigma^2)\prod_{i=1}^p q(\tau_j^2).
+\end{equation}
 
+$$$$
 \subsubsection{Derivation}
-
+In addition, we would like to derive the optimal variational distribution for each parameter: ie. $q_{\beta}^*(\beta)$, $q_{\sigma^2}^*(\sigma^2)$, $q_{\tau_j^2}^*(\tau_j^2)$ according to \autoref{eq:optimalSolution}.\\
+\subsubsection{$q_{\beta}^*(\beta)$}
 
 
 
