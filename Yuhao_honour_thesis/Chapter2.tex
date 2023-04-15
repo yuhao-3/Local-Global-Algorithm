@@ -363,7 +363,7 @@ Substituting the family of factorized target distribution $\prod_i q_i$, the ELB
 \begin{equation}
 	\label{eq:ELBOderive}	
 	\begin{aligned}
-		\textnormal{ELBO}(q(\theta)) &= \int q(\theta)\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}d\theta \\
+		\textnormal{ELBO}(q(\theta)) &= \int q(\theta)\log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)})d\theta \\
 		&= \int \prod_i q_i(\theta_i) [\log[p(\mathcal{D},\theta) - \sum_i \log(q_i(\theta_i))]]d\theta \\
 		&= \int q_j(\theta_j)[\int \log p(\mathcal{D},\theta) \prod_{i\neq j}q_i d\theta_j]d\theta_j - \int q_j(\theta_j) \log[q_j(\theta_j)]d\theta_j + const\\
 		&= \int q_j(\theta_j) \log[\tilde{p}(\mathcal{D},\theta_j)] - \int q_j(\theta_j) \log[q_j(\theta_j)]d\theta_j

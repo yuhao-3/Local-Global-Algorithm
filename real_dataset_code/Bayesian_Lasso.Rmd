@@ -58,7 +58,7 @@ dataset_name <- "Kakadu.csv"
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dat <- read.csv(here("data","bodyfat.txt"), sep="\t")
 
 library(janitor)
@@ -114,7 +114,7 @@ dataset_name <- "comData"
 ```
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 Hitters = na.omit(Hitters)
 
 str(Hitters)
@@ -384,7 +384,7 @@ time_LG1 <- system.time({
 
 ## Test effectiveness of Local-Global Algorithm 2
 
-```{r}
+```{r, eval=FALSE}
 source(here("code","local_global_algorithms.R")) 
 
 if(file.exists(paste("res_LG2",dataset_name,".Rdata",sep="")))
@@ -403,7 +403,8 @@ if(file.exists(paste("res_LG2",dataset_name,".Rdata",sep="")))
 
 
 
-```{r}
+```{r, eval=FALSE}
+
 source(here("code","bivariate_local_global.R"))
 
 if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
@@ -420,7 +421,7 @@ if(file.exists(paste("res_LG2_new",dataset_name,".Rdata",sep="")))
 ```
 
 # Algorithm 3
-```{r}
+```{r, eval=FALSE}
 source(here("code","local_global_algorithms3.R"))
 
 if(file.exists(paste("res_LG3_new",dataset_name,".Rdata",sep="")))
@@ -446,7 +447,7 @@ cat("\nMCMC running time = ",time_gibbs2[3],"s")
 cat("\nMFVB running time = ",time_mfvb[3],"s")
 cat("\nLG1 running time =",time_LG1[3],"s")
 cat("\nLG2 running time =",time_LG2[3],"s")
-cat("\nLG2 new running time =",time_LG2_new[3],"s")
+# cat("\nLG2 new running time =",time_LG2_new[3],"s")
 ```
 
 ```{r}
@@ -503,20 +504,20 @@ vb = res_LG1$b
 cc = res_LG1$c
 
 # Paraemter for LG2
-vmu_LG2 <- res_LG2$vmu_til
-vsigma_LG2 <- sqrt(diag(res_LG2$mSigma_til))
+# vmu_LG2 <- res_LG2$vmu_til
+# vsigma_LG2 <- sqrt(diag(res_LG2$mSigma_til))
   
 # vA = res_LG2$A
 # vb2 = res_LG2$b
 # cc2 = res_LG2$c
 
 # Paraemter for LG2 new
-vmu_LG2 <- res_LG2_new$vmu_til
-vsigma_LG2 <- sqrt(diag(res_LG2_new$mSigma_til))
+# vmu_LG2 <- res_LG2_new$vmu_til
+# vsigma_LG2 <- sqrt(diag(res_LG2_new$mSigma_til))
 #   
-vA = res_LG2_new$A
-vb2 = res_LG2_new$b
-cc2 = res_LG2_new$c
+# vA = res_LG2_new$A
+# vb2 = res_LG2_new$b
+# cc2 = res_LG2_new$c
  
 
 pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
@@ -540,7 +541,7 @@ par(mfrow=c(3,3),mai=mai.new)
 
 ranges <- apply(res_gibbs$mBeta[-c(1:nburn),], 2, range)
 
-mAcc <- matrix(0,9,p)
+mAcc <- matrix(0,6,p)
 
 for (j in 1:p) {
   
@@ -574,15 +575,16 @@ for (j in 1:p) {
     )
   ldens[[5]] <- list(x=xg, y = dlasso(xg,va[j],vb[j],cc))
   ldens[[6]] <- list(x=xg, y = dnorm(xg,vmu_LG[j], vsigma_LG[j]))
-  ldens[[7]] <- list(x=xg, y = dmmlasso1(xg,vA[[j]],vb2[[j]],cc2))
-  ldens[[8]] <- list(x=xg, y = dmmlasso2(xg,vA[[j]],vb2[[j]],cc2))
-  ldens[[9]] <- list(x=xg, y = dnorm(xg,vmu_LG2[j], vsigma_LG2[j]))
+  # ldens[[7]] <- list(x=xg, y = dmmlasso1(xg,vA[[j]],vb2[[j]],cc2))
+  # ldens[[8]] <- list(x=xg, y = dmmlasso2(xg,vA[[j]],vb2[[j]],cc2))
+  # ldens[[9]] <- list(x=xg, y = dnorm(xg,vmu_LG2[j], vsigma_LG2[j]))
   
   vacc <- plot_densities(ldens, cols, exclude, gold=2)
   
   mAcc[,j] <- vacc
   
   methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
+  methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
   
   if (j==1) {
     legend("topright",

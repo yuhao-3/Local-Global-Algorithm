@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{17}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -85,6 +85,14 @@
 \newblock \bibinfo{journal}{Journal of Statistical Software}
   \bibinfo{volume}{33}.
 \newblock \DOIprefix\doi{10.18637/jss.v033.i01}.
+%Type = Article
+\bibitem[{Geman and Geman(1984)}]{4767596}
+\bibinfo{author}{Geman, S.}, \bibinfo{author}{Geman, D.}, \bibinfo{year}{1984}.
+\newblock \bibinfo{title}{Stochastic relaxation, gibbs distributions, and the
+  bayesian restoration of images}.
+\newblock \bibinfo{journal}{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence} \bibinfo{volume}{PAMI-6}, \bibinfo{pages}{721--741}.
+\newblock \DOIprefix\doi{10.1109/TPAMI.1984.4767596}.
 %Type = Article
 \bibitem[{Khare and Hobert(2013)}]{khare_hobert_2013}
 \bibinfo{author}{Khare, K.}, \bibinfo{author}{Hobert, J.P.},

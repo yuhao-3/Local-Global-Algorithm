@@ -5,49 +5,48 @@ Reallocating 'name_of_file' (item size: 1) to 16 items.
 The style file: elsarticle-harv.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-Warning--I didn't find a database entry for "4767596"
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Warning--empty journal in parisi1988statistical
 Warning--empty journal in FastBL
-You've used 16 entries,
+You've used 17 entries,
             2990 wiz_defined-function locations,
-            741 strings with 7794 characters,
-and the built_in function-call counts, 9522 in all, are:
-= -- 736
-> -- 328
-< -- 10
-+ -- 136
-- -- 111
-* -- 1000
-:= -- 1408
-add.period$ -- 55
-call.type$ -- 16
-change.case$ -- 115
-chr.to.int$ -- 15
-cite$ -- 18
-duplicate$ -- 742
-empty$ -- 718
-format.name$ -- 171
-if$ -- 1764
+            749 strings with 8013 characters,
+and the built_in function-call counts, 10165 in all, are:
+= -- 789
+> -- 346
+< -- 11
++ -- 143
+- -- 117
+* -- 1070
+:= -- 1499
+add.period$ -- 59
+call.type$ -- 17
+change.case$ -- 122
+chr.to.int$ -- 16
+cite$ -- 19
+duplicate$ -- 791
+empty$ -- 768
+format.name$ -- 182
+if$ -- 1887
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 135
-newline$ -- 102
-num.names$ -- 64
-pop$ -- 280
+missing$ -- 144
+newline$ -- 108
+num.names$ -- 68
+pop$ -- 295
 preamble$ -- 1
-purify$ -- 101
+purify$ -- 107
 quote$ -- 0
-skip$ -- 225
+skip$ -- 239
 stack$ -- 0
-substring$ -- 342
-swap$ -- 481
+substring$ -- 374
+swap$ -- 516
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 138
+type$ -- 147
 warning$ -- 2
-while$ -- 57
+while$ -- 61
 width$ -- 0
-write$ -- 248
-(There were 3 warnings)
+write$ -- 264
+(There were 2 warnings)

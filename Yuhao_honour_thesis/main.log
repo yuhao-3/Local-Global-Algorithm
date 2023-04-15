@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  4 APR 2023 15:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  15 APR 2023 15:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -655,7 +655,7 @@ Package hyperref Info: Link coloring ON on input line 18.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=151, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=167, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
@@ -747,13 +747,13 @@ been already used, duplicate ignored
                    \relax 
 l.59 
       [2] [3] [4]
-<VIoptimization.jpg, id=323, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=343, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 86.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=346, 196.735pt x 93.34875pt>
+<VIdemo.png, id=366, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 139.
@@ -769,7 +769,7 @@ Chapter 2.
 [10
 
 ]
-<lassodemo.png, id=399, 614.295pt x 388.45125pt>
+<lassodemo.png, id=419, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -779,12 +779,7 @@ Package pdftex.def Info: lassodemo.png  used on input line 41.
 LaTeX Warning: Reference `eq:lassosolution' on page 12 undefined on input line 
 47.
 
-[12 <./lassodemo.png>]
-
-Package natbib Warning: Citation `4767596' on page 13 undefined on input line 9
-5.
-
-[13] [14] [15]
+[12 <./lassodemo.png>] [13] [14] [15]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 174.
  [16] [17] [18]
@@ -798,34 +793,72 @@ r/m/n/12 )) \OMS/cmsy/m/n/12 ^^@ []\OML/cmm/m/it/12 :
  []
 
 [19] [20] [21] [22] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 417--418
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
 
  []
 
 ) (Chapter3.tex [25]
 Chapter 3.
-) (Chapter4.tex [26
+[26
 
-]
+] [27] [28]
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
+
+ []
+
+
+Overfull \hbox (141.29243pt too wide) detected at line 258
+[]
+ []
+
+[29] [30] [31]
+Overfull \hbox (14.37817pt too wide) detected at line 315
+[]
+ []
+
+
+Overfull \hbox (60.5044pt too wide) detected at line 380
+[]
+ []
+
+[32] [33]
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 424--426
+\OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
+12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
+T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
+)$, $\OML/cmm/m/it/12 ^^[[] \OT1/cmr/m/n/12 = 1\OML/cmm/m/it/12 =a[]$\OT1/cmr/m
+/n/12 , $\OML/cmm/m/it/12 k \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 Z[]exp\OT1/cmr/m
+/n/12 (\OMS/cmsy/m/n/12 ^^@\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 5
+\OML/cmm/m/it/12 a[]x[] \OT1/cmr/m/n/12 +
+ []
+
+
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 454--456
+\OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
+12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
+T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
+)$, $\OML/cmm/m/it/12 ^^[[] \OT1/cmr/m/n/12 = 1\OML/cmm/m/it/12 =a[]$\OT1/cmr/m
+/n/12 , $\OML/cmm/m/it/12 k \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 Z[]exp\OT1/cmr/m
+/n/12 (\OMS/cmsy/m/n/12 ^^@\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 5
+\OML/cmm/m/it/12 a[]x[] \OT1/cmr/m/n/12 +
+ []
+
+[34]) (Chapter4.tex [35]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [27
+) (Chapter5.tex [36
 
 ]
 Chapter 5.
-) (main.bbl [28
+) (main.bbl [37
 
-] [29
+] [38
 
-])
-
-Package natbib Warning: There were undefined citations.
-
-[30] (main.aux)
+]) [39] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -833,47 +866,37 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were undefined references.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: D868A2E972BA8219B70C038FC9CDBBBA;6919
-(rerunfilecheck)             After:  E423E56A0B05192A6D7395B93BF18AC8;6919.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 6672C800661B5A590D039C5FB147109F;7776.
  ) 
 Here is how much of TeX's memory you used:
- 16364 strings out of 475385
- 272637 string characters out of 2783908
- 650496 words of memory out of 3000000
- 37288 multiletter control sequences out of 15000+600000
+ 16397 strings out of 475385
+ 273041 string characters out of 2783908
+ 667604 words of memory out of 3000000
+ 37296 multiletter control sequences out of 15000+600000
  479490 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,10n,80p,1198b,593s stack positions out of 10000i,1000n,20000p,200000b,80000s
-
-pdfTeX warning (dest): name{chapter*.22} has been referenced but does not exist
-, replaced by a fixed one
-
- <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm12
-00.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-<D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><D:/Pro
-gram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Program F
-iles (x86)/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><D:/Program Fil
-es (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Program Files (x8
-6)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files (x86)/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files (x86)/MiKTeX/font
-s/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1
-/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmr6.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-r8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/Pr
-ogram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program F
-iles (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files (
-x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (39 pages, 684465 bytes).
+ 77i,12n,80p,1198b,591s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
+1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
+b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><D:/P
+rogram Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Program
+ Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><D:/Program F
+iles (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/Program Files (
+x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files (x86)/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files (x86)/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files (x86)/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmr12.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmr6.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmr8.pfb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
+Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
+ Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
+ (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (48 pages, 730555 bytes).
 PDF statistics:
- 727 PDF objects out of 1000 (max. 8388607)
- 162 named destinations out of 1000 (max. 500000)
- 317 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 806 PDF objects out of 1000 (max. 8388607)
+ 187 named destinations out of 1000 (max. 500000)
+ 349 words of extra memory for PDF output out of 10000 (max. 10000000)
 
