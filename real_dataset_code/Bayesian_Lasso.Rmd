@@ -58,7 +58,7 @@ dataset_name <- "Kakadu.csv"
 ```
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 dat <- read.csv(here("data","bodyfat.txt"), sep="\t")
 
 library(janitor)
@@ -80,19 +80,20 @@ dat <- clean_names(dat)
 y <- dat$lpsa 
 x <- dat[,-c(1,10,11)]
 
- 
+
 dataset_name <- "prostate"
 ```
 
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 data("Credit")
 
 library(janitor)
 dat <- clean_names(Credit)
 y <- dat$income
 x <- model.matrix(income~.-1-id, dat )[,-7]
+dataset_name <- "Credit"
 ```
 
  
@@ -446,7 +447,7 @@ cat("BEM running time = ",time_bem[3],"s")
 cat("\nMCMC running time = ",time_gibbs2[3],"s")
 cat("\nMFVB running time = ",time_mfvb[3],"s")
 cat("\nLG1 running time =",time_LG1[3],"s")
-cat("\nLG2 running time =",time_LG2[3],"s")
+# cat("\nLG2 running time =",time_LG2[3],"s")
 # cat("\nLG2 new running time =",time_LG2_new[3],"s")
 ```
 
@@ -583,7 +584,7 @@ for (j in 1:p) {
   
   mAcc[,j] <- vacc
   
-  methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
+  # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
   methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
   
   if (j==1) {
