@@ -421,3 +421,22 @@ In addition, we would like to derive the optimal variational distribution for ea
 
 
 
+\begin{algorithm}
+	\caption{Mean Field Variational Bayes for Bayesian Lasso}
+	\begin{algorithmic}[1]
+		
+		\State Input: $p(\mathcal{D},\theta)$, data $\mathcal{D}$, Initialize Variational parameters for each $q_j(\theta_j)$
+		\While{ELBO has not converged} 
+		\For{$j$=1,...,$p$}
+		\State $q_j(\theta_j) \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]$
+		\EndFor
+		\State Compute $ELBO(q(\theta)) = \mathbb{E}[\log[p(\mathcal{D},\theta)]] + \mathbb{E}[\log[q(\theta)]]$
+		\EndWhile 
+		\State return $q(\theta)$
+		
+		
+		
+	\end{algorithmic}
+\end{algorithm}
+
+

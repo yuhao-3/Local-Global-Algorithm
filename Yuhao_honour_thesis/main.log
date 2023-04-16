@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  15 APR 2023 15:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  16 APR 2023 20:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -747,13 +747,13 @@ been already used, duplicate ignored
                    \relax 
 l.59 
       [2] [3] [4]
-<VIoptimization.jpg, id=343, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=355, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 86.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=366, 196.735pt x 93.34875pt>
+<VIdemo.png, id=378, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 139.
@@ -769,7 +769,7 @@ Chapter 2.
 [10
 
 ]
-<lassodemo.png, id=419, 614.295pt x 388.45125pt>
+<lassodemo.png, id=431, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -797,32 +797,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 418--419
 
  []
 
-) (Chapter3.tex [25]
+) (Chapter3.tex [25] [26]
 Chapter 3.
-[26
+[27
 
-] [27] [28]
-Underfull \hbox (badness 10000) in paragraph at lines 164--165
+] [28] [29]
+Underfull \hbox (badness 10000) in paragraph at lines 174--176
 
  []
 
-
-Overfull \hbox (141.29243pt too wide) detected at line 258
+[30]
+Overfull \hbox (141.29243pt too wide) detected at line 272
 []
  []
 
-[29] [30] [31]
-Overfull \hbox (14.37817pt too wide) detected at line 315
+[31] [32]
+Overfull \vbox (41.62706pt too high) has occurred while \output is active []
+
+
+[33] [34]
+Overfull \hbox (14.37817pt too wide) detected at line 329
 []
  []
 
 
-Overfull \hbox (60.5044pt too wide) detected at line 380
+Overfull \hbox (60.5044pt too wide) detected at line 394
 []
  []
 
-[32] [33]
-Overfull \hbox (0.83496pt too wide) in paragraph at lines 424--426
+[35] [36]
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 433--435
 \OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
 12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
 T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
@@ -833,7 +837,7 @@ T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12
  []
 
 
-Overfull \hbox (0.83496pt too wide) in paragraph at lines 454--456
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 463--465
 \OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
 12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
 T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
@@ -843,22 +847,57 @@ T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12
 \OML/cmm/m/it/12 a[]x[] \OT1/cmr/m/n/12 +
  []
 
-[34]) (Chapter4.tex [35]
+
+Overfull \hbox (7.00185pt too wide) in paragraph at lines 469--470
+\OT1/cmr/m/n/12 Continuing from [][]Equa-tion 3.5[][][], it is ev-i-dent to ob-
+serve that $\OML/cmm/m/it/12 p\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 ^^L[]\OMS/cmsy/
+m/n/12 jD\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 / \OML/cmm/m/it/12 p\OT1/cmr/m/n/12
+ (\OML/cmm/m/it/12 ^^L[]; \OMS/cmsy/m/n/12 D\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 
+^^X \OML/cmm/m/it/12 Lasso\OT1/cmr/m/n/12 ([](\OML/cmm/m/it/12 y \OMS/cmsy/m/n/
+12 ^^@
+ []
+
+[37]
+
+LaTeX Warning: Reference `' on page 38 undefined on input line 471.
+
+
+LaTeX Warning: Reference `' on page 38 undefined on input line 471.
+
+) (Chapter4.tex [38] [39]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-) (Chapter5.tex [36
 
-]
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+) (Chapter5.tex [40
+
+] [41] [42] [43]
 Chapter 5.
-) (main.bbl [37
+) (main.bbl [44
 
-] [38
+] [45
 
-]) [39] (main.aux)
+]) [46] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -867,13 +906,13 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6672C800661B5A590D039C5FB147109F;7776.
+(rerunfilecheck)             Checksum: 9C4D4C98EE541A2BC9BAF24635D2D9C7;7776.
  ) 
 Here is how much of TeX's memory you used:
- 16397 strings out of 475385
- 273041 string characters out of 2783908
- 667604 words of memory out of 3000000
- 37296 multiletter control sequences out of 15000+600000
+ 16425 strings out of 475385
+ 273379 string characters out of 2783908
+ 667231 words of memory out of 3000000
+ 37309 multiletter control sequences out of 15000+600000
  479490 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,12n,80p,1198b,591s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -894,9 +933,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (48 pages, 730555 bytes).
+Output written on main.pdf (55 pages, 750339 bytes).
 PDF statistics:
- 806 PDF objects out of 1000 (max. 8388607)
- 187 named destinations out of 1000 (max. 500000)
+ 857 PDF objects out of 1000 (max. 8388607)
+ 202 named destinations out of 1000 (max. 500000)
  349 words of extra memory for PDF output out of 10000 (max. 10000000)
 
