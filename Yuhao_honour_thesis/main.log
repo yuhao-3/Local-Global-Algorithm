@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  21 APR 2023 00:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  21 APR 2023 14:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -655,7 +655,7 @@ Package hyperref Info: Link coloring ON on input line 18.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=167, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=175, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
@@ -747,13 +747,13 @@ been already used, duplicate ignored
                    \relax 
 l.59 
       [2] [3] [4]
-<VIoptimization.jpg, id=355, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=365, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 86.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=378, 196.735pt x 93.34875pt>
+<VIdemo.png, id=388, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 139.
@@ -769,7 +769,7 @@ Chapter 2.
 [10
 
 ]
-<lassodemo.png, id=431, 614.295pt x 388.45125pt>
+<lassodemo.png, id=441, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -797,22 +797,22 @@ Chapter 3.
 [27
 
 ] [28] [29]
-Underfull \hbox (badness 10000) in paragraph at lines 176--178
+Underfull \hbox (badness 10000) in paragraph at lines 185--187
 
  []
 
 [30] [31]
-Overfull \hbox (14.37817pt too wide) detected at line 294
+Overfull \hbox (14.37817pt too wide) detected at line 303
 []
  []
 
 
-Overfull \hbox (60.5044pt too wide) detected at line 360
+Overfull \hbox (60.5044pt too wide) detected at line 369
 []
  []
 
 [32] [33]
-Overfull \hbox (0.83496pt too wide) in paragraph at lines 399--401
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 408--410
 \OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
 12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
 T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
@@ -823,7 +823,7 @@ T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12
  []
 
 
-Overfull \hbox (0.83496pt too wide) in paragraph at lines 429--431
+Overfull \hbox (0.83496pt too wide) in paragraph at lines 438--440
 \OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
 12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
 T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 
@@ -834,7 +834,7 @@ T1/cmr/m/n/12 = ([]\OML/cmm/m/it/12 x[] \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12
  []
 
 
-Overfull \hbox (6.65038pt too wide) in paragraph at lines 435--436
+Overfull \hbox (6.65038pt too wide) in paragraph at lines 444--445
 \OT1/cmr/m/n/12 Continuing from [][]Equa-tion 3.5[][][], it is ev-i-dent to ob-
 serve that $\OML/cmm/m/it/12 p\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 ^^L[]\OMS/cmsy/
 m/n/12 jD\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 / \OML/cmm/m/it/12 p\OT1/cmr/m/n/12
@@ -843,7 +843,7 @@ m/n/12 jD\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 / \OML/cmm/m/it/12 p\OT1/cmr/m/n/12
 12 ^^@
  []
 
-[34] [35] [36]) (Chapter4.tex [37]
+[34] [35] [36]) (Chapter4.tex [37] [38]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 6--8
@@ -868,27 +868,27 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (Chapter5.tex [38
+) (Chapter5.tex [39
 
-] [39] [40] [41]
+] [40] [41] [42]
 Chapter 5.
-) (main.bbl [42
+) (main.bbl [43
 
-] [43
+] [44
 
-]) [44] (main.aux)
+]) [45] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 704EF55983EE8CA4BB98091B854EE484;7779.
+(rerunfilecheck)             Checksum: 99B35B4841376E7A29F24EDCFAA67A16;8235.
  ) 
 Here is how much of TeX's memory you used:
- 16426 strings out of 475385
- 273408 string characters out of 2783908
- 660281 words of memory out of 3000000
- 37308 multiletter control sequences out of 15000+600000
+ 16435 strings out of 475385
+ 273604 string characters out of 2783908
+ 661317 words of memory out of 3000000
+ 37313 multiletter control sequences out of 15000+600000
  479490 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,12n,80p,1198b,591s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -909,9 +909,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (53 pages, 755964 bytes).
+Output written on main.pdf (54 pages, 759841 bytes).
 PDF statistics:
- 854 PDF objects out of 1000 (max. 8388607)
- 204 named destinations out of 1000 (max. 500000)
- 349 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 872 PDF objects out of 1000 (max. 8388607)
+ 208 named destinations out of 1000 (max. 500000)
+ 365 words of extra memory for PDF output out of 10000 (max. 10000000)
 

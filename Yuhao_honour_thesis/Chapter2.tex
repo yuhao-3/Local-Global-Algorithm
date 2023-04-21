@@ -403,7 +403,7 @@ Similar, Mean-Field-Variational Bayes has a similiar updating rule, while the on
 
 \newpage
 \subsection{MFVB for Bayesian Lasso}
-We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem. Our goal is to attain Bayesian Lasso posterior approximation in a faster and efficient manner than that of three-step gibbs sampler. Note in this section, slight modification has been imposed to the definition of $\tau_j$. $a_j \sim Gamma(1,1/2)\text{ for }1\leq j \leq p$, abandoning the dependence of $\lambda$ to $\tau$ to simplify the derivation and algorithm.
+We now propose Mean Field Variational Bayes algorithm for the Bayesian Lasso problem. Our goal is to attain Bayesian Lasso posterior approximation in a faster and efficient manner than that of three-step gibbs sampler under the framework of Variational Inference. Note in this section, slight modification has been imposed to the definition of $\tau_j$. $a_j \sim Gamma(1,1/2)\text{ for }1\leq j \leq p$, abandoning the dependence of $\lambda$ to $\tau$ to simplify the derivation and algorithm.
 \subsubsection{Basic Setting}
 
 \subsubsection{Assumption}
@@ -420,7 +420,7 @@ $\beta$  \autoref{eq:lassoposteriorsummary}, $q_{\beta}^{*}(\beta)$ can be deriv
 \begin{equation}
 	\begin{aligned}
 		q_{\beta}^{*}(\beta) & \propto \exp[\mathbb{E}_{-\beta}[\log(p(\beta|y,\mathbf{a},\sigma^2))]]\\
-		& \sim MVN(((X^TX + \lambda^2\mathbb{E}_q(A))^{-1}X^Ty, (X^TX+\lambda^2\mathbb{E}_q(A))^{-1}\mathbb{E}_{q}(\frac{1}{\sigma^2}))\\
+		& \sim MVN(((X^TX + \lambda^2\mathbb{E}_q(A))^{-1}X^Ty, (X^TX+\lambda^2\mathbb{E}_q(A))^{-1}\mathbb{E}_{q}(\sigma^2))\\
 	\end{aligned}
 \end{equation}
 where $A = diag(\mathbf{a})$, $\mathbb{E}_{\sigma^2}(\sigma^2) = \frac{\tilde{b}}{\tilde{a}}, \mathbb{E}_a(A) = diag(\frac{\sigma}{|\mathbf{\beta}|\lambda})$
@@ -463,10 +463,10 @@ $$
 
 		\While{$||\theta^{(t)}-\theta^{(t-1)}||_2^2 < \epsilon}$
 		\State $Q = X^TX + \lambda^2 A ,\text{where } A = diag(d)$
-		\State $\tilde{\mu} = Q^{-1}X^Ty$ \Comment{Update $\beta$}
-		\State $\tilde{\Sigma} = Q^{-1}\mathbb{E}_{q}[\sigma^2] $ \Comment{Update $\beta$}
-		\State $\tilde{a} = \frac{n+p}{2}$ \Comment{Update $\beta$}
-		\State $\tilde{b} = \frac{E_{q}||y-X\beta||^2 + \lambda^2 \mathbb{E}_{q}[\beta^TA\beta]}{2}$\Comment{Update $\beta$}
+		\State $\tilde{\mu} = Q^{-1}X^Ty$ \Comment{Update posterior parameter for $\beta$}
+		\State $\tilde{\Sigma} = Q^{-1}\mathbb{E}_{q}[\sigma^2] $ \Comment{Update posterior parameter for $\beta$}
+		\State $\tilde{a} = \frac{n+p}{2}$ \Comment{Update posterior parameter for $\sigma^2$}
+		\State $\tilde{b} = \frac{E_{q}||y-X\beta||^2 + \lambda^2 \mathbb{E}_{q}[\beta^TA\beta]}{2}$\Comment{Update posterior parameter for $\sigma^2$}
 		\EndWhile  
 		
 

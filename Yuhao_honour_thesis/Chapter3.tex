@@ -5,18 +5,18 @@ The main intuition behind the method is to adjust MFVB posterior parameter estim
 
 
 \section{Basic Setting for the Bayesian Lasso Problem}
-Firstly, the Bayesian Lasso Posterior can be estimated by mean field variational family:
+Firstly, the Bayesian Lasso Posterior approximation can be restricted by mean field variational family:
 \begin{equation}
 	\label{eq:assum}
 	p(\beta,\sigma^2|\mathcal{D})\approx q(\beta,\sigma^2) = q(\beta)q(\sigma^2)
 \end{equation}
 
-Under the same setting in Variational Inference in Mean-Field-Variational-Bayes:
-the parameter of interest $\theta$ can be divided up into two parts $\theta_1$ and $\theta_{2}$. The marginal log likelihood of $\theta_1$ can be divided up into ELBO part and KL divergence part as the following:
+Under the same setting in Variational Inference in Mean-Field-Variational-Bayes by \cite{Ormerod2010ExplainingVA}:
+the parameter of interest $\theta$ can be divided up into two parts $\theta_1$: $\beta_j$ current variable and $\theta_{2}: \beta_{-j}$, other variables. The marginal log likelihood of $\theta_1$ can be divided up into ELBO part and KL divergence part by the following derivation:
 \begin{equation}
 	\log(\mathcal{D},\theta_1) = \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})] + KL(q(\theta_{2}|\theta_1),p(\theta_{2}|\mathcal{D},\theta_1))
 \end{equation}
-Since the KL divergence is greater than 0, the marginal log likelihood of $\theta_1$ and $\mathcal{D}$ has Evidence Lower Bound 
+Since the KL divergence is greater than 0, the marginal log likelihood of $\theta_1$ and $\mathcal{D}$ has a more tractable Evidence Lower Bound: 
 \begin{equation}
 	\log(\mathcal{D},\theta_1) \geq \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})]
 \end{equation}
@@ -24,24 +24,33 @@ When $q(\theta_{2}|\theta_1) = p(\theta_{2}|\mathcal{D},\theta_1)$ then
 $$
 	\log(\mathcal{D},\theta_1) = \mathbb{E}_{p(\theta_{2}|\mathcal{D},\theta_1)}[\log p(\mathcal{D},\theta_2,\theta_{1})]
 $$
-In Bayesian Lasso: $\theta = (\beta,\sigma^2)$, however, the update for $\sigma$ will not be discussed further and therefore we will only discuss the an approach for updating $\beta$, assuming $q(\beta) \sim N(\mu,\Sigma)$. Thus,
+In Bayesian Lasso: $\theta = (\beta,\sigma^2)$, however, the update for $\sigma$ will not be discussed while we will only discuss the an approach for updating $\beta$, assuming $q(\beta) \sim N(\mu,\Sigma)$. Thus,
 the conditional distribution $q(\beta_{-j}|\beta_{j})$ for any $j_{th}$ variable can be derived by the fact that $q(\beta_{-j}|\beta_{j}) \propto q(\mathbf{\beta})$, resulting another multivariate normal distribution with dimension of $p-1$ as shown in \autoref{eq:condNormal}
 \begin{equation}
 	\label{eq:condNormal}
 	q(\beta_{-j}|\beta_{j}) = N_{p-1}(\mu_{-j}+\Sigma_{-j,j}\Sigma_{j,j}^{-1}(\beta_j-\mu_j), \Sigma_{-j,j} \Sigma_{-j,-j}^{-1}\Sigma_{j,j})
 \end{equation}
 
-With the mean field restriction in \autoref{eq:assum}, the result from \autoref{eq:condNormal}, the fact that the products of log density $Y|\beta,\sigma^2$, $\beta|\sigma^2,\lambda$ is a normal distribution, a gamma prior for $\sigma^2$, the estimated marginal log likelihood for each $\beta_j$ after taking expectation with respect to $q(\theta)$
+
+
+
+
+With the mean field restriction in \autoref{eq:assum}, the result from \autoref{eq:condNormal}, the fact that the products of log density $Y|\beta,\sigma^2$, $\beta|\sigma^2,\lambda$ and a Laplacian prior for $\beta|\sigma^2,\lambda$, the estimated marginal log likelihood for each $\beta_j$ after taking expectation with respect to $q(\theta)$:
 \begin{equation}
 	\label{eq:MarLike}
 	\begin{aligned}
 		\log p(\mathcal{D},\beta_j) &= \mathbb{E}_{\beta_{-j},\sigma^2|\mathcal{D},\beta_j} 	\log(p(\beta_j|\mathcal{D},\beta_{-j},\sigma^2))\\
 		& \approx \mathbb{E}_{q(\beta_{-j}|\beta_j)q(\sigma^2)}
 		 \log(p(\beta_j|\mathcal{D},\beta_{-j},\sigma^2))\\
-		&= \frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s)\beta_j^2 - \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t)\beta_j^2 - \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}}}|\beta_j|.\\
+		& \propto \mathbb{E}_{q(\beta_{-j}|\beta_j)q(\sigma^2)}[-\frac{||X_j||_2^2}{2\sigma^2}\beta_j^2 + \frac{X_j^T(y - X_{-j}\beta_{-j})}{\sigma^2}\beta_j - \frac{\lambda}{\sigma}|\beta_j|]\\
+		&= \frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s)\beta_j - \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t)\beta_j^2 - \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}}}|\beta_j|.\\
 	\end{aligned}
 \end{equation}
 where $s = \mu_{-j} - \Sigma_{-j,j}\Sigma_{j,j}^{-1}\mu_j$ and $t = \Sigma_{-j,j}\Sigma_{j,j}^{-1}$, $\tilde{a}$ and $\tilde{b}$ are posterior parameters for $\sigma^2$, $\mu,\Sigma$ are posterior parameters for $\beta$.
+
+
+
+
 
 
 
@@ -432,7 +441,7 @@ where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\m
 
 \section{Local-Global Algorithm}
 \subsection{Univariate local global algorithm}
-Continuing from \autoref{eq:MarLike}, it is evident to observe that $p(\beta_j|\mathcal{D}) \propto p(\beta_j,\mathcal{D}) \sim Lasso(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}  }}) $
+Continuing from \autoref{eq:MarLike}, it is evident to observe that $p(\beta_j|\mathcal{D}) \propto p(\beta_j,\mathcal{D}) \sim Lasso(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}  }}) $.
 
 The local approximation of mean $\mu_j^*$ and variance $\Sigma_{jj}^*$ can be obtained by the expression \autoref{eq:LassoMoment} with given Lasso parameter $a,b,c$. A marginal normal approximation to the conditional distribution $p(\theta_j|\mathcal{D})$: $q^*(\theta_j) \approx N(\mu_j^*,\Sigma_{jj}^*)$. 
 The optimal distribution can be updated via \autoref{eq:updateQ}
@@ -442,14 +451,13 @@ The optimal distribution can be updated via \autoref{eq:updateQ}
 \end{equation} 
 Since, both $q(\theta_{-j}|\theta_j)$ and $q(\theta_j)$ are Normal distribution, the joint distribution will also be a normal distribution as well.
 Additionally, the marginal mean and variance of the joint distribution for $\theta_j$ will be $\mu_j^*$ and $\Sigma_{jj}^*$
-The derivation for $\tilde{\mu}$ has been shown below using the property of the conditional expectation:
-
-We know that $q(\theta_2|\theta_1)$ and $q(\theta_1)$ are Gaussian. Hence, their joint distribution will also be Gaussian. The marginal 
+The derivation for $\tilde{\mu}$ has been shown below using the property of the conditional expectation trick.
+It is known that $q(\theta_2|\theta_1)$ and $q(\theta_1)$ are Gaussian. Hence, their joint distribution will also be Gaussian. The marginal 
 mean and variance of the joint distribution for $\theta_1$ will be $\mu_1^*$
 and $\Sigma_{11}^*$. Suppose the mean and covariance of the joint distribution
 are $\widetilde{\mu}$ and $\widetilde{\Sigma}$ respectively. Then
 $\widetilde{\mu}_1 = \mu_1^*$, and $\widetilde{\Sigma}_{11} = \Sigma_{11}^*$.
-All we need to do is determine $\widetilde{\mu}_{2}$, $\widetilde{\Sigma}_{22}$
+The rest of the derivation is to determine $\widetilde{\mu}_{2}$, $\widetilde{\Sigma}_{22}$
 and $\widetilde{\Sigma}_{12}$.
 
 \bigskip 
@@ -506,11 +514,19 @@ $$
 
 The derivation for $\tilde{\Sigma}$ has been shown below using the property of the conditional covariance:
 
+$$
+\widetilde{\Sigma} = 
+\left[ \begin{array}{cc}
+	\Sigma_{11}^* & \Sigma_{11}^* \Sigma_{11}^{-1}\Sigma_{12} \\
+	\Sigma_{21}  \Sigma_{11}^{-1}\Sigma_{11}^* & \Sigma_{22} 
+	+ \Sigma_{21}\Sigma_{11}^{-1}  ( \Sigma_{11}^* -\Sigma_{11})  \Sigma_{11}^{-1} \Sigma_{12}
+\end{array} \right].
+$$
 
 
 
 
-\noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $j$ is:
+\noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $\beta_j$ is:
 \begin{equation}
 	\widetilde{\mu} =
 	\left[ \begin{array}{c}
@@ -530,8 +546,7 @@ The derivation for $\tilde{\Sigma}$ has been shown below using the property of t
 \end{equation}
 
 
-		
-
+\newpage
 \begin{algorithm}
 	\caption{Univariate-Local-Global-Algorithm}
 	\begin{algorithmic}[1]
@@ -556,15 +571,13 @@ The derivation for $\tilde{\Sigma}$ has been shown below using the property of t
 		
 	\end{algorithmic}
 \end{algorithm}
-
-
 The following bullet points summarized the procedure of our method.
 \begin{itemize}
-	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
+	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
 	
 	
-	\item We can derive and calculate the mean of lasso distribution and variance of lasso distribution $a,b,c$: $q^*(\theta_1) \approx N(\mu_1^*,\Sigma_{11}^*)$
-	\item We can use the Expression $q^*(\theta) = q(\theta_{2}|\theta_1)\phi(\theta_1;\mu_1^*,\Sigma_{11}^*)$ to update $q(\theta)$
+	\item Compute the mean of lasso distribution and variance of lasso distribution with the current $a,b,c$: $q^*(\theta_1) \approx N(\mu_j^*,\Sigma_{jj}^*)$
+	\item We can use the update expression $q^*(\theta) = q(\theta_{-j}|\theta_j)\phi(\theta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\theta)$
 	\item Iterates through each variable $\theta_j$ and Update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
 \end{itemize}
 
