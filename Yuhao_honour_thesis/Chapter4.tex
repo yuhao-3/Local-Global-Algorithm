@@ -19,17 +19,17 @@ toy dataset
 \section{Experimental Result}
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
-		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
+		\begin{tabular}{|p{3cm}||c| c| c|c|c|c|}
 			\hline
-			Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
+			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
 			\hline
-			Min.   &   100 & 86.8  & 92.4   &  97.3   &   89.3\\
-			1st Qu. &  100 & 92.1 &  95.7  &   99.2  &    97.0\\
-			Median &  100 & 95.7  & 97.3   &  99.6   &   97.4\\
-			Mean  &   100 & 94.2 &  97.1   &  99.3  &    97.1\\
-			3rd Qu.&  100 &  97.4  & 98.9   &  99.7  &    99.0\\
-			Max.  &   100 & 98.7 &  99.6   &  99.8   &   99.7\\
-			Run Time(s) &  453.75  & 0.17 & 0.17  & 0.17  & 0.17 \\
+			Min.   &   100 & 86.8     &  97.3   &   89.3\\
+			1st Qu. &  100 & 92.1  &   99.2  &    97.0\\
+			Median &  100 & 95.7     &  99.6   &   97.4\\
+			Mean  &   100 & 94.2   &  99.3  &    97.1\\
+			3rd Qu.&  100 &  97.4     &  99.7  &    99.0\\
+			Max.  &   100 & 98.7    &  99.8   &   99.7\\
+			Run Time(s) &  453.75  & 0.17  & 0.17  & 0.17 \\
 			\hline
 	\end{tabular}}
 	\caption{Experiment Result on Hitters dataset}
@@ -38,18 +38,18 @@ toy dataset
 
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
-	\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
-	\hline
-		Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
-		\hline
-		Min.    & 100 &86.8  & 92.4  &   97.3   &   89.3\\
-		1st Qu. & 100 & 92.1 &  95.7  &   99.2  &    97.0\\
-		Median  & 100 & 95.7  & 97.3  &   99.6  &    97.4\\
-		Mean    & 100 & 94.2 &  97.1  &   99.3  &    97.1\\
-		3rd Qu. & 100 & 97.4  & 98.9 &    99.7  &    99.0\\
-		Max.    & 100 & 98.7 &  99.6 &    99.8  &    99.7\\
-		Run Time(s) &  6696.56  & 0.14 & 0.07  & 0.19  & 0.19 \\
-		\hline
+		\begin{tabular}{|p{3cm}||c| c| c|c|c|c|}
+			\hline
+			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
+			\hline
+			Min.   &  100 &93.2    &   95.9    &  92.2\\
+			1st Qu.&  100 & 98.9  &    99.8   &   99.2\\
+			Median &  100 & 99.2    &   99.8   &   99.4\\
+			Mean   &  100 &  98.6  &    99.4 &     98.8\\
+			3rd Qu.&  100 & 99.3  &   99.8 &     99.8\\
+			Max.   &  100 & 99.7  &   99.8  &    99.8\\
+			Run Time(s) &6696.56 & 0.14 &0.19 & 0.19\\
+			\hline
 	\end{tabular}}
 	\caption{Experiment Result on Kakadu dataset}
 	\label{table:Kakadu}
@@ -61,15 +61,15 @@ toy dataset
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 		\hline
-		Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
+		Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
 		\hline
-		Min.   &  100  & 91.3   & 95.1   &   96.3  &     90.7\\
-		1st Qu. & 100  & 97.0   & 98.8    &  99.6   &    97.6\\
-		Median  &  100  & 98.0  &  99.3   &   99.7  &     98.4\\
-		Mean    &  100 &  97.0  &  98.7   &   99.2   &    97.2\\
-		3rd Qu.  & 100  &  98.4   & 99.5   &   99.7  &     98.6\\
-		Max.    &  100 & 99.3  &  99.6   &   99.7    &   99.7\\
-		Run Time(s) &  398.59  & 0.14 & 0.06  & 0.17  & 0.17 \\
+		Min.   &  100  & 91.3     &   96.3  &     90.7\\
+		1st Qu. & 100  & 97.0      &  99.6   &    97.6\\
+		Median  &  100  & 98.0    &   99.7  &     98.4\\
+		Mean    &  100 &  97.0     &   99.2   &    97.2\\
+		3rd Qu.  & 100  &  98.4      &   99.7  &     98.6\\
+		Max.    &  100 & 99.3    &   99.7    &   99.7\\
+		Run Time(s) &  398.59  & 0.14   & 0.17  & 0.17 \\
 		\hline
 	\end{tabular}}
 	\caption{Experiment Result on bodyfat dataset}
@@ -82,15 +82,15 @@ toy dataset
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 			\hline
-			Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
+			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
 			\hline
-			Min.  &   100& 96.9&   99.1 &    99.5   &   97.4\\
-			1st Qu. & 100& 97.2 &  99.1 &    99.5   &   97.9\\
-			Median &  100& 97.6 &  99.2 &    99.6   &   98.9\\
-			Mean  &   100& 97.5 &  99.2 &    99.6  &    98.7\\
-			3rd Qu.&  100& 97.7 &  99.2  &   99.6  &    99.5\\
-			Max.   &  100& 98.4 &  99.4 &    99.6  &    99.6\\
-			Run Time(s) &  336.31  & 0.11 & 0.05  & 0.12  & 0.12 \\
+			Min.  &   100& 96.9 &    99.5   &   97.4\\
+			1st Qu. & 100& 97.2 &    99.5   &   97.9\\
+			Median &  100& 97.6  &    99.6   &   98.9\\
+			Mean  &   100& 97.5  &    99.6  &    98.7\\
+			3rd Qu.&  100& 97.7   &   99.6  &    99.5\\
+			Max.   &  100& 98.4  &    99.6  &    99.6\\
+			Run Time(s) &  336.31  & 0.11  & 0.12  & 0.12 \\
 			\hline
 	\end{tabular}}
 	\caption{Experiment Result on Prostate dataset}
@@ -104,15 +104,15 @@ toy dataset
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 			\hline
-			Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
+			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
 			\hline
-			Min.   &  100& 91.8 &  94.4  &   99.5   &   99.3\\
-			1st Qu. & 100& 98.3 &  98.7 &    99.7   &   99.5\\
-			Median &  100& 99.4 &  99.7  &   99.8   &   99.5\\
-			Mean   &  100& 97.9 &  98.8  &   99.7   &   99.6\\
-			3rd Qu.&  100 & 99.5 &  99.7  &  99.8   &   99.7\\
-			Max.  &   100 & 99.7  & 99.8 &    99.8   &   99.8\\
-			Run Time(s) &  359.92  & 0.05 & 0.1  & 0.11  & 0.11 \\
+			Min.   &  100& 91.8   &   99.5   &   99.3\\
+			1st Qu. & 100& 98.3 &    99.7   &   99.5\\
+			Median &  100& 99.4   &   99.8   &   99.5\\
+			Mean   &  100& 97.9   &   99.7   &   99.6\\
+			3rd Qu.&  100 & 99.5   &  99.8   &   99.7\\
+			Max.  &   100 & 99.7   &    99.8   &   99.8\\
+			Run Time(s) &  359.92  & 0.1  & 0.11  & 0.11 \\
 			\hline
 	\end{tabular}}
 	\caption{Experiment Result on Credit dataset}
@@ -125,15 +125,15 @@ toy dataset
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 			\hline
-			Algorithm  & MCMC  & VB & VB-PHC & LG\_Local & LG\_Global \\
+			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
 			\hline
-			Min.    & 100& 78.4  & 87.1  &   97.3   &   86.1\\
-			1st Qu. & 100& 86.9  & 93.9  &   98.6   &   90.4\\
-			Median &  100& 90.3  & 95.4  &   98.7  &    91.3\\
-			Mean   & 100 & 88.9 &  94.9  &   98.7  &    91.8\\
-			3rd Qu. & 100&91.2  & 96.3   &  98.8   &   92.3\\
-			Max.   &  100 &93.1 &  97.6  &   99.1  &    99.2\\
-			Run Time(s) &  18144.7  & 1.21 & 1.71  & 1.72  & 1.72 \\
+			Min.    & 100 & 78.4   &   97.3   &   86.1\\
+			1st Qu. & 100 & 86.9   &   98.6   &   90.4\\
+			Median &  100 & 90.3   &   98.7  &    91.3\\
+			Mean   & 100 & 88.9  &   98.7  &    91.8\\
+			3rd Qu. & 100 &91.2    &  98.8   &   92.3\\
+			Max.   &  100 &93.1  &   99.1  &    99.2\\
+			Run Time(s) &  18144.7  & 1.21  & 1.72  & 1.72 \\
 			\hline
 	\end{tabular}}
 	\caption{Experiment Result on Eyedata dataset}

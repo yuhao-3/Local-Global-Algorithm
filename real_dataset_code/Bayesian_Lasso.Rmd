@@ -58,7 +58,7 @@ dataset_name <- "Kakadu.csv"
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dat <- read.csv(here("data","bodyfat.txt"), sep="\t")
 
 library(janitor)
@@ -86,7 +86,7 @@ dataset_name <- "prostate"
 
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 data("Credit")
 
 library(janitor)
@@ -467,14 +467,14 @@ plot_densities <- function(ldens, cols, exclude, gold)
   
   xlim <- c()
   ylim <- c()
-  for (k in 1:length(ldens)) {
+  for (k in 2:length(ldens)) {
     if (!(k%in%exclude)) {
       xlim <- range(c(xlim,ldens[[k]]$x), finite = TRUE)
       ylim <- range(c(ylim,ldens[[k]]$y), finite = TRUE)
     }
   }
   plot(NA,type="n", xlim=xlim, ylim=ylim, xlab="", ylab="") 
-  for (k in 1:length(ldens)) {
+  for (k in 2:length(ldens)) {
     lines(ldens[[k]]$x,ldens[[k]]$y, col=cols[k], lwd=2) 
     
     acc <- 1 - 0.5*trapint(ldens[[gold]]$x, abs(ldens[[gold]]$y - ldens[[k]]$y))
@@ -524,8 +524,8 @@ cc = res_LG1$c
 pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
 
  
-cols <- c("red", "blue", "green", "orange","purple", "black","darkgray")
-exclude <- c(1,2)
+cols <- c("purple","green", "blue", "red", "purple")
+exclude <- c(1)
 
 XTX <- t(mX)%*%mX
 XTy <- t(mX)%*%vy
@@ -542,7 +542,7 @@ par(mfrow=c(3,3),mai=mai.new)
 
 ranges <- apply(res_gibbs$mBeta[-c(1:nburn),], 2, range)
 
-mAcc <- matrix(0,6,p)
+mAcc <- matrix(0,5,p)
 
 for (j in 1:p) {
   
@@ -562,20 +562,8 @@ for (j in 1:p) {
   ldens[[1]] <- list(x=xg,y=dnorm(xg,vmu_bem[j], vsigma_bem[j]))
   ldens[[2]] <- list(x=xg,y=dens$y)
   ldens[[3]] <- list(x=xg,y=dnorm(xg,vmu_mfvb[j], vsigma_mfvb[j]))
-  ldens[[4]] <-
-    vb_phc_grad(
-      xg,
-      res_mfvb$a_til,
-      res_mfvb$b_til,
-      res_mfvb$vmu_til,
-      res_mfvb$mSigma_til,
-      XTX,
-      XTy,
-      lambda,
-      j
-    )
-  ldens[[5]] <- list(x=xg, y = dlasso(xg,va[j],vb[j],cc))
-  ldens[[6]] <- list(x=xg, y = dnorm(xg,vmu_LG[j], vsigma_LG[j]))
+  ldens[[4]] <- list(x=xg, y = dlasso(xg,va[j],vb[j],cc))
+  ldens[[5]] <- list(x=xg, y = dnorm(xg,vmu_LG[j], vsigma_LG[j]))
   # ldens[[7]] <- list(x=xg, y = dmmlasso1(xg,vA[[j]],vb2[[j]],cc2))
   # ldens[[8]] <- list(x=xg, y = dmmlasso2(xg,vA[[j]],vb2[[j]],cc2))
   # ldens[[9]] <- list(x=xg, y = dnorm(xg,vmu_LG2[j], vsigma_LG2[j]))
@@ -585,12 +573,12 @@ for (j in 1:p) {
   mAcc[,j] <- vacc
   
   # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
-  methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
-  
+  # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
+  methods <- c("BEM+SE","MCMC", "VB", "LG_Local","LG_Global")
   if (j==1) {
     legend("topright",
-           legend=methods,
-           text.col=cols[1:7],
+           legend=methods[-1],
+           text.col=cols[2:5],
            border = FALSE)
   }
 }

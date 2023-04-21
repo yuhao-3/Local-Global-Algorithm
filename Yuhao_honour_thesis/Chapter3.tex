@@ -1,28 +1,28 @@
 \chapter{Methodlogy}
 \label{Chapter3}
 \section{Introduction}
-The main methodlogy is to utilize mean field factorization variational family $q(\theta) = \prod_i q(\theta_i)$ assumption and Gaussian Approximation: $q^*(\theta) \sim N(\mu^*,\Sigma^*)$  to approximate the global bayesian lasso posterior $p(\theta|\mathcal{D})$, with the correction of marginal approximation of $q(\theta_{j}|\theta_{-j})$. As a consequence, the goal of the problem is to seek for the mathematical expression of global mean parameter $\mu^{*}$ and global variance $\Sigma^{*}$ parameter of $q(\theta)$.
-It can also be shown that the marginal log likelihood can be consistent with the form of lasso distribution, leading to more precise local probability approximation that facilitate the global parameter correction.
+The main intuition behind the method is to adjust MFVB posterior parameter estimate result for posterior of regression coefficients $\beta$: $\tilde{\mu}$ and $\tilde{\Sigma}$. Continuing utilizing mean field variational family $q(\theta) = \prod_i q(\theta_i)$ assumption and Gaussian Approximation: $q^*(\theta) \sim N(\tilde{\mu},\tilde{\Sigma})$  to approximate the global Bayesian Lasso Posterior $p(\theta|\mathcal{D})$, with the correction of local parameter information that the marginal likelihood is approximately coincides with a lasso distribution if a Laplace prior is assigned. As a consequence, the goal is to seek for the mathematical expression of each of the local mean parameter $\mu_j^{*}$, local variance $\Sigma_{jj}^{*}$ from a lasso distribution locally, a global mean $\tilde{\mu}$ and global variance $\tilde{\Sigma}$ of $q^*(\theta)$ for Gaussian Approximation can be updated by iteratively to correct global parameter estimate by local parameter expression, for each $\beta_j$.
+
 
 \section{Basic Setting for the Bayesian Lasso Problem}
-Firstly, the bayesian lasso posterior can be estimated by mean field variational family:
+Firstly, the Bayesian Lasso Posterior can be estimated by mean field variational family:
 \begin{equation}
 	\label{eq:assum}
 	p(\beta,\sigma^2|\mathcal{D})\approx q(\beta,\sigma^2) = q(\beta)q(\sigma^2)
 \end{equation}
 
 Under the same setting in Variational Inference in Mean-Field-Variational-Bayes:
-the parameter of interest $\theta$ can be divided up into two parts $\theta_j$ and $\theta_{-j}$. The marginal log likelihood of $\theta_1$ can be divided up into ELBO part and KL divergence part as the following:
+the parameter of interest $\theta$ can be divided up into two parts $\theta_1$ and $\theta_{2}$. The marginal log likelihood of $\theta_1$ can be divided up into ELBO part and KL divergence part as the following:
 \begin{equation}
-	\log(\mathcal{D},\theta_j) = \mathbb{E}_{q(\theta_{-j}|\theta_j)}[\log(\frac{p(\mathcal{D},\theta_j,\theta_{-j})}{q(\theta_{-j}|\theta_j)})] + KL(q(\theta_{-j}|\theta_j),p(\theta_{-j}|\mathcal{D},\theta_j))
+	\log(\mathcal{D},\theta_1) = \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})] + KL(q(\theta_{2}|\theta_1),p(\theta_{2}|\mathcal{D},\theta_1))
 \end{equation}
 Since the KL divergence is greater than 0, the marginal log likelihood of $\theta_1$ and $\mathcal{D}$ has Evidence Lower Bound 
 \begin{equation}
-	\log(\mathcal{D},\theta_j) \geq \mathbb{E}_{q(\theta_{-j}|\theta_j)}[\log(\frac{p(\mathcal{D},\theta_j,\theta_{-j})}{q(\theta_{-j}|\theta_j)})]
+	\log(\mathcal{D},\theta_1) \geq \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})]
 \end{equation}
-When $q(\theta_{-j}|\theta_j) = p(\theta_{-j}|\mathcal{D},\theta_j)$ then 
+When $q(\theta_{2}|\theta_1) = p(\theta_{2}|\mathcal{D},\theta_1)$ then 
 $$
-	\log(\mathcal{D},\theta_j) = \mathbb{E}_{p(\theta_{-j}|\mathcal{D},\theta_j)}[\log p(\mathcal{D},\theta_j,\theta_{-j})]
+	\log(\mathcal{D},\theta_1) = \mathbb{E}_{p(\theta_{2}|\mathcal{D},\theta_1)}[\log p(\mathcal{D},\theta_2,\theta_{1})]
 $$
 In Bayesian Lasso: $\theta = (\beta,\sigma^2)$, however, the update for $\sigma$ will not be discussed further and therefore we will only discuss the an approach for updating $\beta$, assuming $q(\beta) \sim N(\mu,\Sigma)$. Thus,
 the conditional distribution $q(\beta_{-j}|\beta_{j})$ for any $j_{th}$ variable can be derived by the fact that $q(\beta_{-j}|\beta_{j}) \propto q(\mathbf{\beta})$, resulting another multivariate normal distribution with dimension of $p-1$ as shown in \autoref{eq:condNormal}
@@ -31,7 +31,7 @@ the conditional distribution $q(\beta_{-j}|\beta_{j})$ for any $j_{th}$ variable
 	q(\beta_{-j}|\beta_{j}) = N_{p-1}(\mu_{-j}+\Sigma_{-j,j}\Sigma_{j,j}^{-1}(\beta_j-\mu_j), \Sigma_{-j,j} \Sigma_{-j,-j}^{-1}\Sigma_{j,j})
 \end{equation}
 
-With the mean field restriction in \autoref{eq:assum}, the result from \autoref{eq:condNormal}, the fact that the products of log density $Y|\beta,\sigma^2$, $\beta|\sigma^2|\lambda$ is a normal distribution, a gamma prior for $\sigma^2$, the estimated marginal log likelihood for each $\beta_j$ can be written as the following:
+With the mean field restriction in \autoref{eq:assum}, the result from \autoref{eq:condNormal}, the fact that the products of log density $Y|\beta,\sigma^2$, $\beta|\sigma^2,\lambda$ is a normal distribution, a gamma prior for $\sigma^2$, the estimated marginal log likelihood for each $\beta_j$ after taking expectation with respect to $q(\theta)$
 \begin{equation}
 	\label{eq:MarLike}
 	\begin{aligned}
@@ -48,11 +48,11 @@ where $s = \mu_{-j} - \Sigma_{-j,j}\Sigma_{j,j}^{-1}\mu_j$ and $t = \Sigma_{-j,j
 
 
 \section{Lasso distribution}
-Before continuing presenting the methodlogy, the introductio of lasso distribution is pivotal and inevitable to mention and illustrate. 
+Before continuing presenting the methodlogy, the introductio of lasso distribution is essential for local approximation correction.
 \autoref{eq:MarLike} can be matched to an univariate lasso distribution as an local approximation of Bayesian Lasso posterior. In addition, the joint likelihood of a pair of variables can also be matched by a bivariate lasso distribution.
           
 \subsection{Univariate Lasso Distribution}
-If $x \sim Lasso(a,b,c)$, then the probability density function can be written as:
+If $x \sim $ Lasso(a,b,c), then the probability density function can be written as:
 \begin{equation}
 	p(x,a,b,c) = Z^{-1}\exp(-\frac{1}{2}ax^2+bx-c|x|)
 \end{equation}
@@ -100,48 +100,50 @@ $$
 	= 
 	\sigma \left[ \frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)}
 	+ \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \right] 
-	
-	
-	
 \end{array} 
 $$
+
 \subsubsection{Derivation of Moments}
 Note, the expectation is the first moment, and variance of lasso distribution can be computed by the property $\mathbb{V}(X) = \mathbb{E}[X^2]- \mathbb{E}[X]^2$.
-$$
-\begin{array}{rl}
-	E(x^r)
-	&  = Z^{-1} \int_{-\infty}^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + bx - c|x| \right] dx
-	\\ [2ex]
-	& 
-	= Z^{-1}  \int_0^\infty   x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
-	+ \int_{-\infty}^0 x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b + c)x \right] dx
-	\\ [2ex]
-	& 
-	=  Z^{-1}  \int_0^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
-	+ (-1)^r\int_0^\infty y^r \exp\left[ -\tfrac{1}{2}ay^2 - (b + c)y \right] dy
-	\\ [2ex]
-	& 
-	= Z^{-1}  \sqrt{2\pi\sigma^2}
-	\exp\left(  \frac{\mu_1^2}{2\sigma^2} \right) \int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx
-	\\ [2ex]
-	&  \qquad + (-1)^r    \sqrt{2\pi\sigma^2}   \exp\left(  \frac{\mu_2^2}{2\sigma^2} \right) \int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy
-	
-	\\ [2ex]
-	& 
-	= \frac{\sigma}{Z} \left[  
-	\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} \frac{\int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx}{\Phi(\mu_1/\sigma)}
-	+ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \frac{\int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy}{\Phi(\mu_2/\sigma)}
-	\right] 
-	
-	\\ [4ex]
-	& 
-	= \frac{\sigma}{Z} \left[  
-	\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} 
-	\mathbb{E}( A^r )
-	+ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \mathbb{E}( B^r )
-	\right] 
-\end{array} 
-$$
+\begin{equation}
+	\begin{array}{rl}
+		E(x^r)
+		&  = Z^{-1} \int_{-\infty}^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + bx - c|x| \right] dx
+		\\ [2ex]
+		& 
+		= Z^{-1}  \int_0^\infty   x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
+		+ \int_{-\infty}^0 x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b + c)x \right] dx
+		\\ [2ex]
+		& 
+		=  Z^{-1}  \int_0^\infty x^r \exp\left[ -\tfrac{1}{2}ax^2 + (b - c)x \right] dx
+		+ (-1)^r\int_0^\infty y^r \exp\left[ -\tfrac{1}{2}ay^2 - (b + c)y \right] dy
+		\\ [2ex]
+		& 
+		= Z^{-1}  \sqrt{2\pi\sigma^2}
+		\exp\left(  \frac{\mu_1^2}{2\sigma^2} \right) \int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx
+		\\ [2ex]
+		&  \qquad + (-1)^r    \sqrt{2\pi\sigma^2}   \exp\left(  \frac{\mu_2^2}{2\sigma^2} \right) \int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy
+		
+		\\ [2ex]
+		& 
+		= \frac{\sigma}{Z} \left[  
+		\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} \frac{\int_0^\infty x^r \phi(x;\mu_1,\sigma^2) dx}{\Phi(\mu_1/\sigma)}
+		+ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \frac{\int_0^\infty y^r \phi(y;\mu_2,\sigma^2) dy}{\Phi(\mu_2/\sigma)}
+		\right] 
+		
+		\\ [4ex]
+		& 
+		= \frac{\sigma}{Z} \left[  
+		\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} 
+		\mathbb{E}( A^r )
+		+ (-1)^r  \frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}  \mathbb{E}( B^r )
+		\right] 
+	\end{array} 
+	\label{eq:LassoMoment}
+\end{equation}
+
+
+
 
 
 \noindent where $A\sim TN_+(\mu_1,\sigma^2)$, $B\sim TN_+(\mu_2,\sigma^2)$ and $TN_+$ is denotes the positively truncated normal distribution.
@@ -173,7 +175,7 @@ If $\mathbf{x} \sim \mbox{Bilasso}(A,b,c)$ with then it has density given by
 	p(\mathbf{x}) = Z^{-1}\exp(-\frac{1}{2}\mathbf{x}^TA\mathbf{x}+b^T\mathbf{x}-c||\mathbf{x}||_1)
 \end{equation}
  where $A \in S_d^+$: positive definite matrix with dimension $d$, $b \in \mathbb{R}^2$, $c > 0$\\
-\subsubsection{Finding Normalizing Constant}
+\subsubsection{Derivation of Normalizing Constant}
 $$
 \begin{array}{rl}
 	Z(a,b,c)
@@ -190,58 +192,19 @@ $$
 	+ \int_{-\infty}^0\int_{-\infty}^0 \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}
 	
 	\\ [2ex]
-	& \qquad
+	&
 	= \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T - c\textbf{1}^T)x \right] d\textbf{x}\\
 	& \qquad
-	+ \int^\infty_0\int^{\infty}_0 \exp\left[ 
-	-\frac{1}{2}x^TA\otimes \begin{bmatrix}
-		1 & -1\\
-		-1 & 1\\
-	\end{bmatrix}x + (b_1-c,-b_2-c)^Tx \right] d\textbf{x}\\
-	& \qquad
-	+ \int_0^\infty\int_0^\infty   \exp\left[ 	
-	-\frac{1}{2}x^TA \otimes 	\begin{bmatrix}
-		1 & -1\\
-		-1 & 1\\
-	\end{bmatrix}x + (-b_1-c,b_2-c)^Tx \right] d\textbf{x}\\
-	
-	& \qquad
-	
-	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}
-	
-	\\ [2ex]
-	&
-	= \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T - c\textbf{1}^T)x \right] d\textbf{x}
 	
 	+ \int^\infty_0\int^{\infty}_0 \exp\left[ -\frac{1}{2}x^TA^*x + (b_1-c,-b_2-c)^Tx \right] d\textbf{x}\\
 	& \qquad
-	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}x^TA^*x + (-b_1-c,b_2-c)^Tx \right] d\textbf{x}
+	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}x^TA^*x + (-b_1-c,b_2-c)^Tx \right] d\textbf{x}\\
+	& \qquad
 	
 	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}x^TAx - (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}
 	
 	\\ [2ex]
 	
-	&
-	= \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x^TAx -2 (\textbf{b}^T - c\textbf{1}^T)x) \right] d\textbf{x}
-	
-	+ \int^\infty_0\int^{\infty}_0 \exp\left[ -\frac{1}{2}(x^TA^*x -2 (b_1-c,-b_2-c)^Tx) \right] d\textbf{x}\\
-	& \qquad
-	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}(x^TA^*x -2 (-b_1-c,b_2-c)^Tx) \right] d\textbf{x}
-	
-	+ \int_0^\infty\int_0^\infty   \exp\left[ -\frac{1}{2}(x^TAx +2 (\textbf{b}^T + c\textbf{1}^T)x) \right]d\textbf{x}
-	
-	\\ [2ex]
-	
-	&
-	= \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x-\mu_1)^TA(x-\mu_1) + \frac{(A\mu_1)^TA^{-1}(A\mu_1)]}{2} \right] d\textbf{x}\\
-	& \qquad	
-	+ \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x-\mu_2)^TA^*(x-\mu_2) + \frac{(A^*\mu_2)^TA^{*-1}(A^*\mu_2)]}{2} \right] d\textbf{x}\\
-	& \qquad
-	+ \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x-\mu_3)^TA^*(x-\mu_3) + \frac{(A^*\mu_3)^TA^{-1}(A^*\mu_3)]}{2} \right] d\textbf{x}\\
-	& \qquad	
-	+ \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x-\mu_4)^TA(x-\mu_4) + \frac{(A\mu_4)^TA^{-1}(A\mu_4)]}{2} \right] d\textbf{x}
-	
-	\\ [2ex]
 	&
 	= \int_0^\infty\int_0^\infty    \exp\left[ -\frac{1}{2}(x-\mu_1)^T\Sigma_1^{-1}(x-\mu_1) + \frac{(A\mu_1)^T\Sigma_1(A\mu_1)]}{2} \right] d\textbf{x}\\
 	& \qquad	
@@ -253,11 +216,13 @@ $$
 	
 	\\ [2ex]
 	&	 
-	=  2\pi|\Sigma_1|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma_1(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x} 	+  \exp\left[ \frac{(A\mu_4)^T\Sigma_1(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}])\\
+	=  2\pi|\Sigma_1|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma_1(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x} 	\\
+	& \qquad
+	+  \exp\left[ \frac{(A\mu_4)^T\Sigma_1(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}])\\
 	& \qquad	
-	+ 2\pi|\Sigma_2|^{\frac{1}{2}}(\exp\left[ \frac{(A^*\mu_2)^T\Sigma_2(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}
+	+ 2\pi|\Sigma_2|^{\frac{1}{2}}(\exp\left[ \frac{(A^*\mu_2)^T\Sigma_2(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}\\
+	& \qquad
 	+  \exp\left[ \frac{(A^*\mu_3)^T\Sigma_2(A^*\mu_3)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x})\\
-	
 	
 	
 	&
@@ -271,14 +236,14 @@ $$
 \end{array} 
 $$
 
-\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \otimes 	\begin{bmatrix}
+\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T, \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \otimes 	\begin{bmatrix}
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
 
 \newpage
 
-\subsubsection{Find Expectation}
+\subsubsection{Derivation of Expectation}
 Follow similar step as before
 $$
 \begin{array}{rl}
@@ -333,7 +298,7 @@ $$
 \end{bmatrix}$.
 \noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma_1)$, $B\sim MTN_+(\mu_2,\Sigma_2)$, $C\sim MTN_+(\mu_3,\Sigma_2)$, $D\sim MTN_+(\mu_4,\Sigma_1)$ is denotes the multivariate positively truncated normal distribution.
 
-\subsubsection{Find Covariance Matrix}
+\subsubsection{Derivation of Covariance Matrix}
 Follow similar steps as before
 $$
 Cov(X) = E[XX^T] - E[X]E[X]^T
@@ -341,7 +306,7 @@ $$
 $$
 \begin{array}{rl}
 	E[XX^T] 
-	& = \int_{-\infty}^\infty \int_{-\infty}^\infty xx^T \otimes \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x}\\ [2ex]
+	& = \int_{-\infty}^\infty \int_{-\infty}^\infty xx^T \otimes \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x} \\[2ex]
 	& 
 	= Z^{-1} 2\pi|\Sigma|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_1,\Sigma_1)d\textbf{x}\\
 	& \qquad	
@@ -354,6 +319,7 @@ $$
 		1 & -1\\
 		-1 & 1\\
 	\end{bmatrix}  \otimes  \exp\left[ \frac{(A^*\mu_3)^T\Sigma(A^*\mu_3)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}\\
+
 	& \qquad	
 	-  \exp\left[ \frac{(A\mu_4)^T\Sigma(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_4,\Sigma_1)d\textbf{x}]\\
 	\\
@@ -402,7 +368,7 @@ $$
 E[AA^T] = Cov(A) - E[A]E[A]^T 
 $$
 
-\subsubsection{Finding marginal distribution}
+\subsubsection{Derivation of marginal distribution}
 $$
 \begin{array}{rl}
 	f(x_1)
@@ -465,10 +431,10 @@ where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\m
 
 
 \section{Local-Global Algorithm}
-\subsection{Univariate local-global algorithm}
-Continuing from \autoref{eq:MarLike}, it is evident to observe that $p(\beta_j|\mathcal{D}) \propto p(\beta_1,\mathcal{D}) \sim Lasso(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}}}) $
+\subsection{Univariate local global algorithm}
+Continuing from \autoref{eq:MarLike}, it is evident to observe that $p(\beta_j|\mathcal{D}) \propto p(\beta_j,\mathcal{D}) \sim Lasso(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}  }}) $
 
-The local approximation of mean $\mu_j^*$ and variance $\Sigma_{jj}^*$ can be obtained by the expression \autoref{} and \autoref{}. A marginal normal approximation to the conditional distribution $p(\theta_j|\mathcal{D})$: $q^*(\theta_j) \approx N(\mu_j^*,\Sigma_{jj}^*)$. 
+The local approximation of mean $\mu_j^*$ and variance $\Sigma_{jj}^*$ can be obtained by the expression \autoref{eq:LassoMoment} with given Lasso parameter $a,b,c$. A marginal normal approximation to the conditional distribution $p(\theta_j|\mathcal{D})$: $q^*(\theta_j) \approx N(\mu_j^*,\Sigma_{jj}^*)$. 
 The optimal distribution can be updated via \autoref{eq:updateQ}
 \begin{equation}
 	\label{eq:updateQ}
@@ -476,14 +442,58 @@ The optimal distribution can be updated via \autoref{eq:updateQ}
 \end{equation} 
 Since, both $q(\theta_{-j}|\theta_j)$ and $q(\theta_j)$ are Normal distribution, the joint distribution will also be a normal distribution as well.
 Additionally, the marginal mean and variance of the joint distribution for $\theta_j$ will be $\mu_j^*$ and $\Sigma_{jj}^*$
-The derivation for $\tilde{\mu}$ has been shown below:
+The derivation for $\tilde{\mu}$ has been shown below using the property of the conditional expectation:
 
+We know that $q(\theta_2|\theta_1)$ and $q(\theta_1)$ are Gaussian. Hence, their joint distribution will also be Gaussian. The marginal 
+mean and variance of the joint distribution for $\theta_1$ will be $\mu_1^*$
+and $\Sigma_{11}^*$. Suppose the mean and covariance of the joint distribution
+are $\widetilde{\mu}$ and $\widetilde{\Sigma}$ respectively. Then
+$\widetilde{\mu}_1 = \mu_1^*$, and $\widetilde{\Sigma}_{11} = \Sigma_{11}^*$.
+All we need to do is determine $\widetilde{\mu}_{2}$, $\widetilde{\Sigma}_{22}$
+and $\widetilde{\Sigma}_{12}$.
 
-The derivation for $\tilde{\Sigma}$ has been shown below:
+\bigskip 
+\noindent We have
+$$
+\begin{array}{rl}
+	& \mathbb{E}[\theta_2] = \mathbb{E}[\mathbb{E}(\theta_2\mid\theta_1)] 
+	\\ [1ex]
+	&  = \mathbb{E}[\mu_2 + \Sigma_{21}\Sigma_{11}^{-1}\left(\theta_1 - \mu_1\right)]
+	\\ [1ex]
+	& = \mu_2 + \Sigma_{21}\Sigma_{11}^{-1}\left(\mu_1^* - \mu_1\right).
+\end{array} 
+$$
 
+\noindent Similarly,
+$$
+\begin{array}{rl}
+	\mbox{Cov}(\theta_2) 
+	&  = \mathbb{E}[\mbox{Cov}(\theta_2\mid\theta_1)] + \mbox{Cov}[\mathbb{E}(\theta_2\mid\theta_1)] 
+	\\ [2ex]
+	&  = \mathbb{E}(\Sigma_{22} - \Sigma_{21} \Sigma_{11}^{-1}\Sigma_{12}) + \mbox{Cov}[\mu_2 + \Sigma_{21}\Sigma_{11}^{-1}\left(\theta_1 - \mu_1\right)] 
+	\\ [2ex]
+	&  = \Sigma_{22} - \Sigma_{21} \Sigma_{11}^{-1}\Sigma_{12}
+	+ \Sigma_{21}\Sigma_{11}^{-1}  \mbox{Cov}(\theta_1) \Sigma_{11}^{-1}  \Sigma_{12}
+	\\ [2ex]
+	&  =  \Sigma_{22} 
+	+ \Sigma_{21}(\Sigma_{11}^{-1}  \Sigma_{11}^* \Sigma_{11}^{-1} -\Sigma_{11}^{-1})  \Sigma_{12}.
+\end{array} 
+$$
 
-
-
+\noindent Lastly,
+$$
+\begin{array}{rl}
+	\mbox{Cov}(\theta_1,\theta_2) 
+	&  = \mathbb{E}[(\theta_1 - \mathbb{E}(\theta_1))(\theta_2 - \mathbb{E}(\theta_2))^T] 
+	\\ [2ex]
+	&  = \left[ \mathbb{E}\left\{ (\theta_1 - \mathbb{E}(\theta_1))(\theta_2 - \mathbb{E}(\theta_2))^T \mid \theta_1 \right\} \right]     \\ [2ex]
+	& = \mathbb{E}\left[ \left(\theta_1 - \mu_1^* \right)\left(  \Sigma_{21}\Sigma_{11}^{-1}(\theta_1 - \mu_1^*)    \right)^T\right] 
+	\\ [2ex]
+	&  = \mathbb{E}\left[ \left(\theta_1 - \mu_1^* \right)\left(  \theta_1 - \mu_1^* \right)^T\right] \Sigma_{11}^{-1}\Sigma_{12}
+	\\ [2ex]
+	&  = \Sigma_{11}^* \Sigma_{11}^{-1}\Sigma_{12}.
+\end{array} 
+$$
 
 \noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ where
 $$
@@ -494,15 +504,30 @@ $$
 \end{array} \right]
 $$
 
+The derivation for $\tilde{\Sigma}$ has been shown below using the property of the conditional covariance:
+
+
+
+
+
+\noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $j$ is:
+\begin{equation}
+	\widetilde{\mu} =
+	\left[ \begin{array}{c}
+		\mu_j^* \\
+		\mu_{-j} + \Sigma_{-j,j}\Sigma_{jj}^{-1}\left(\mu_j^* - \mu_j\right)
+	\end{array} \right]
+\end{equation}
+
 \noindent and
-$$
-\widetilde{\Sigma} = 
-\left[ \begin{array}{cc}
-	\Sigma_{11}^* & \Sigma_{11}^* \Sigma_{11}^{-1}\Sigma_{12} \\
-	\Sigma_{21}  \Sigma_{11}^{-1}\Sigma_{11}^* & \Sigma_{22} 
-	+ \Sigma_{21}\Sigma_{11}^{-1}  ( \Sigma_{11}^* -\Sigma_{11})  \Sigma_{11}^{-1} \Sigma_{12}
-\end{array} \right].
-$$
+\begin{equation}
+	\widetilde{\Sigma} = 
+	\left[ \begin{array}{cc}
+		\Sigma_{jj}^* & \Sigma_{jj}^* \Sigma_{jj}^{-1}\Sigma_{j-j} \\
+		\Sigma_{-jj}  \Sigma_{jj}^{-1}\Sigma_{jj}^* & \Sigma_{-j-j} 
+		+ \Sigma_{-jj}\Sigma_{jj}^{-1}  ( \Sigma_{jj}^* -\Sigma_{jj})  \Sigma_{jj}^{-1} \Sigma_{j-j}
+	\end{array} \right].
+\end{equation}
 
 
 		
@@ -511,30 +536,37 @@ $$
 	\caption{Univariate-Local-Global-Algorithm}
 	\begin{algorithmic}[1]
 		
-		\State Input: data $X$, normalized response variable $y$, parameter from MFVB $(\tilde{a},\tilde{b},\mu,\Sigma)$, Penalizing parameter: $\lambda$
-		\While{$\mu_{\beta}$ is changing less than $\epsilon$} 
-		\For{$j$=1,..., $p$}
-		\State  $t = \Sigma_{-j,j}\Sigma_{j,j}^{-1}$ 
-		\State $s = \mu_{-j} - \Sigma_{-j,j}\Sigma_{j,j}^{-1}\mu_j$
-		\State $a = \frac{\tilde{a}}{\tilde{b}}*(X^TX_{j,j}) + (X^TX_{(j,-j)}^T)$ \Comment{lasso parameter}
-		\State $b = \frac{\tilde{a}}{\tilde{b}}  X[,j](y-X_{,-j}s)       $ \Comment{lasso parameter}
-		\State $c = \lambda (\exp(\Gamma(\tilde{a}+0.5) - \Gamma(\tilde{a}) - 0.5\log(\tilde{b})))  $ \Comment{lasso parameter}
-		\State $\mu_{j}^* = elasso(a,b,c)$ \Comment{Update Local Mean}
-		\State $\Sigma_{jj}^* = vlasso(a,b,c)$ \Comment{Update Local Variance}
-		\State $\tilde{\mu_{j}} = \mu_j ^*$ \Comment{Update Global Mean}
-		\State $\tilde{\mu_{-j}} = \mu_{-j} +  \Sigma_{-j,j}\Sigma^{-1}_{jj}(\mu_j^*-\mu_j)$ \Comment{Update Global Mean}
-		\State $\tilde{\Sigma_{j,j}} = \Sigma_{jj}^*$ \Comment{Update Global Covariance}
-		\State $\tilde{\Sigma_{j,-j}} = \Sigma_{jj}^*  \Sigma_{jj}^{-1}\Sigma_{j,-j} $ \Comment{Update Global Covariance}
-		\State $\tilde{\Sigma_{-j,j}} = \tilde{\Sigma_{j,-j}}^T$ \Comment{Update Global Covariance}
-		\State $\tilde{\Sigma_{-j,-j}} = \Sigma_{-j,-j} + \Sigma_{-j,j}\Sigma_{j,j}^{-1}(\Sigma_{j,j}^{-1} - \Sigma_{j,j})\Sigma_{j,j}^{-1}\Sigma_{j,-j}$ \Comment{Update Global Covariance}		
-		\EndFor
-		\EndWhile 
-		\State return $\tilde{\mu},\tilde{\Sigma}$
+    \State Input: data $X$, normalized response variable $y$, parameter from MFVB $(\tilde{a},\tilde{b},\tilde{\mu},\tilde{\Sigma})$, Penalizing parameter: $\lambda$
+	\While{$\tilde{\mu}$ is changing less than $\epsilon$}
+	\For{$j=1$ to $p$}
+	\State $a = \frac{\tilde{a}}{\tilde{b}}(X^TX)_{j,j} + (X^TX)_{j,-j}\tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}$ \Comment{Obtain Lasso parameter}
+	\State $b = \frac{\tilde{a}}{\tilde{b}}  X_{j}(y-X_{-j}(\tilde{\mu}_{-j} - \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}\tilde{\mu}_j))       $ \Comment{Obtain Lasso parameter}
+	\State $c = \lambda (\exp(\Gamma(\tilde{a}+0.5) - \Gamma(\tilde{a}) - 0.5\log(\tilde{b})))  $ \Comment{Obtain Lasso parameter}
+	\State $\tilde{\mu_{j}} =  elasso(a,b,c) = \mu_j ^*$ \Comment{Replace by Local mean}
+	\State $\tilde{\mu_{-j}} = \tilde{\mu}_{-j} +  \tilde{\Sigma}_{-j,j}\tilde{\Sigma}^{-1}_{jj}(\tilde{\mu}_j^*-\tilde{\mu}_j)$ \Comment{Update Global Mean}
+	\State $\tilde{\Sigma}_{j,j} = vlasso(a,b,c) = \Sigma_{jj}^*$ \Comment{Replace by Updated Local Covariance}
+	\State $\tilde{\Sigma}_{j,-j} = \Sigma_{jj}^*  \tilde{\Sigma}_{jj}^{-1}\tilde{\Sigma}_{j,-j} $ \Comment{Update Global Covariance}
+	\State $\tilde{\Sigma}_{-j,j} = \tilde{\Sigma_{j,-j}}^T$ \Comment{Update Global Covariance}
+	\State $\tilde{\Sigma}_{-j,-j} = \tilde{\Sigma}_{-j,-j} + \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}(\Sigma_{j,j}^{*} - \tilde{\Sigma}_{j,j})\tilde{\Sigma}_{j,j}^{-1}\tilde{\Sigma}_{j,-j}$ \Comment{Update Global Covariance}		
+	\EndFor
+	\EndWhile
+	\State return $\tilde{\mu},\tilde{\Sigma}$
 		
 		
 		
 	\end{algorithmic}
 \end{algorithm}
+
+
+The following bullet points summarized the procedure of our method.
+\begin{itemize}
+	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
+	
+	
+	\item We can derive and calculate the mean of lasso distribution and variance of lasso distribution $a,b,c$: $q^*(\theta_1) \approx N(\mu_1^*,\Sigma_{11}^*)$
+	\item We can use the Expression $q^*(\theta) = q(\theta_{2}|\theta_1)\phi(\theta_1;\mu_1^*,\Sigma_{11}^*)$ to update $q(\theta)$
+	\item Iterates through each variable $\theta_j$ and Update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
+\end{itemize}
 
 \subsection{Bivariate local global algorithm}
 
