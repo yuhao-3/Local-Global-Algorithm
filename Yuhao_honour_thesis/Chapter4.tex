@@ -3,7 +3,19 @@
 \section{Experimental Setting}
 \subsection{Parameter selection}
 \subsection{Evaluation metric}
-L1 accuracy\\
+
+\begin{itemize}
+	\item $l_1$ norm accuracy 
+	\begin{equation}
+		\text{Acc}(f,g) = 1 - l_1(f,g) = \int |f(x)-g(x)|dx
+	\end{equation}
+	\begin{itemize}
+		\item Common choice for comparing Probability Density Functions
+	\end{itemize}
+	
+\end{itemize}
+
+
 (MORE) Matrix norm Posterior cov and estimated Cov\\
 
 Objective: Use math to find posterior mode of lasso distribution: Given a,b,c
@@ -14,8 +26,51 @@ Variable Selection
 Expectation: posterior mode sparse, posterior mean not sparse
 
 \subsection{Experimental datasets}
-toy dataset
-3-4 datasets
+\begin{itemize}
+	
+	\item \textbf{Hitters}:
+	\begin{itemize}
+		\item Type: Baseball statistics dataset
+		\item Predictors ($p$): 20, Samples ($n$): 263
+		\item Description: Contains baseball player statistics, including performance measures and salary information.
+	\end{itemize}
+	
+	\item \textbf{Kakadu}:
+	\begin{itemize}
+		\item Type: Environmental dataset
+		% ????????
+		\item Predictors ($p$): 22, Samples ($n$): 1828
+		\item Description: Relates environmental factors to the abundance of amphibians in Kakadu National Park, Australia.
+	\end{itemize}
+	
+	\item \textbf{Bodyfat}:
+	\begin{itemize}
+		\item Type: Human body measurements dataset
+		\item Predictors ($p$): 15, Samples ($n$): 250
+		\item Description: Contains measurements of various body parts for a sample of individuals, such as weight, height, and circumferences.
+	\end{itemize}
+	\item \textbf{Prostate}:
+	\begin{itemize}
+		\item Type: Medical dataset
+		\item Predictors ($p$): 8, Samples ($n$): 97
+		\item Description: Prostate cancer data with clinical measurements and Logarithm of Prostate Specific Antigen (lpsa).
+	\end{itemize}
+	
+	\item \textbf{Credit}:
+	\begin{itemize}
+		\item Type: Credit scoring dataset
+		\item Predictors($p$): 11, Samples ($n$): 400
+		\item Description: Contains information about loan applicants, such as credit history, employment, and demographics, to assess creditworthiness.
+	\end{itemize}
+	
+	\item \textbf{Eyedata}:
+	\begin{itemize}
+		\item Type: Medical dataset
+		\item Predictors ($p$): \textbf{200}, Samples ($n$): \textbf{120}
+		\item Description: Contains measurements related to glaucoma patients, such as intraocular pressure and visual acuity, to assess the effectiveness of treatment options.
+	\end{itemize}
+\end{itemize}
+
 \section{Experimental Result}
 \subsection{Approximation Accuracy Result}
 \begin{table}[!h]
@@ -142,5 +197,8 @@ toy dataset
 \end{table}
 
 \subsection{Approximation Density Visualization}
+
+
+
 
 

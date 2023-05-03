@@ -48,18 +48,20 @@ With the mean field restriction in \autoref{eq:assum}, the result from \autoref{
 \end{equation}
 where $s = \mu_{-j} - \Sigma_{-j,j}\Sigma_{j,j}^{-1}\mu_j$ and $t = \Sigma_{-j,j}\Sigma_{j,j}^{-1}$, $\tilde{a}$ and $\tilde{b}$ are posterior parameters for $\sigma^2$, $\mu,\Sigma$ are posterior parameters for $\beta$.
 
-
-
-
-
-
-
-
-
 \section{Lasso distribution}
 Before continuing presenting the methodlogy, the introductio of lasso distribution is essential for local approximation correction.
 \autoref{eq:MarLike} can be matched to an univariate lasso distribution as an local approximation of Bayesian Lasso posterior. In addition, the joint likelihood of a pair of variables can also be matched by a bivariate lasso distribution.
-          
+         
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{Lasso_distribution}
+	\caption{Visualization of Lasso Distribution PDF for different parameter setting}
+	\label{fig:LassoDist}
+\end{figure}
+As shown in \autoref{fig:LassoDist}
+
+
+         
+
 \subsection{Univariate Lasso Distribution}
 If $x \sim $ Lasso(a,b,c), then the probability density function can be written as:
 \begin{equation}
@@ -155,7 +157,7 @@ Note, the expectation is the first moment, and variance of lasso distribution ca
 
 
 
-\noindent where $A\sim TN_+(\mu_1,\sigma^2)$, $B\sim TN_+(\mu_2,\sigma^2)$ and $TN_+$ is denotes the positively truncated normal distribution.
+\noindent where $A\sim TN_+(\mu_1,\sigma^2)$, $B\sim TN_+(\mu_2,\sigma^2)$ and $TN_+$ is denotes the positively truncated normal distribution; $\mu_1 = (b-c)/a$, $\mu_2 = -(c + b)/a$ and $\sigma^2 = 1/a$.
 Note that
 $$
 \mathbb{E}(A) = \mu_1 + \frac{\sigma \phi(\mu_1/\sigma)}{\Phi(\mu_1/\sigma)} = \mu_1 + \sigma \zeta_1(\mu_1/\sigma)
@@ -383,23 +385,23 @@ $$
 	f(x_1)
 	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_2 \\
 	& \qquad
-	= Z^{-1}exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2 \\
+	= Z^{-1}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2 \\
 	& \qquad
-	= Z^{-1}exp(-0.5a_{11}x_1^2  + b_1x_1 - c|x_1|) \\
+	= Z^{-1}\exp(-0.5a_{11}x_1^2  + b_1x_1 - c|x_1|) \\
 	& \qquad
-	\int_{-\infty}^{\infty}exp(-\frac{1}{2} [(a_{12}+a_{21})x_1x_2 + a_{22}x_2^2] + b_2x_2 - c|x_2|]dx_2\\
+	\int_{-\infty}^{\infty}\exp(-\frac{1}{2} [(a_{12}+a_{21})x_1x_2 + a_{22}x_2^2] + b_2x_2 - c|x_2|]dx_2\\
 	& \qquad
-	= k \int_{-\infty}^{\infty} exp[-(0.5(a_{12}+a_{21})x_1x_2 -0.5a_{22}x_2^2 + b_2x_2 - c|x_2|]dx_2\\
+	= k \int_{-\infty}^{\infty} \exp[-(0.5(a_{12}+a_{21})x_1x_2 -0.5a_{22}x_2^2 + b_2x_2 - c|x_2|]dx_2\\
 	& \qquad
-	= k[ \int_{0}^{\infty} exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
+	= k[ \int_{0}^{\infty} \exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
 	& \qquad
-	+\int_{-\infty}^{0} exp[-0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{22}x_2^2  + (b_2+c)x_2]dx_2 \\
+	+\int_{-\infty}^{0} \exp[-0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{22}x_2^2  + (b_2+c)x_2]dx_2 \\
 	& \qquad
-	= k[ \int_{0}^{\infty} exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
+	= k[ \int_{0}^{\infty} \exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{22}x_2^2 + (b_2 - c)x_2 ]dx_2  \\
 	& \qquad
-	+\int_{0}^{\infty} exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{22}x_2^2  - (b_2+ c)x_2]dx_2 ]\\
+	+\int_{0}^{\infty} \exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{22}x_2^2  - (b_2+ c)x_2]dx_2 ]\\
 	& \qquad
-	= k[\int_{0}^{\infty} exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_2] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
+	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_2] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
 	& \qquad
 	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
 	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
@@ -413,23 +415,23 @@ $$
 	f(x_2)
 	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_1 \\
 	& \qquad
-	= Z^{-1}exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_1 \\
+	= Z^{-1}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_1 \\
 	& \qquad
-	= Z^{-1}exp(-0.5 a_{22}x_2^2 + b_2x_2 - c|x_2|) \\
+	= Z^{-1}\exp(-0.5 a_{22}x_2^2 + b_2x_2 - c|x_2|) \\
 	& \qquad
-	\int_{-\infty}^{\infty}exp(-\frac{1}{2} [a_{12}a_{21}x_1x_2 + a_{11}x_1^2] + b_1x_1 - c|x_1|]dx_1\\
+	\int_{-\infty}^{\infty}\exp(-\frac{1}{2} [a_{12}a_{21}x_1x_2 + a_{11}x_1^2] + b_1x_1 - c|x_1|]dx_1\\
 	& \qquad
-	= k \int_{-\infty}^{\infty} exp[-0.5(a_{12}+a_{21})x_1x_2 -0.5a_{11}x_1^2 + b_1x_1 - c|x_1|]dx_1\\
+	= k \int_{-\infty}^{\infty} \exp[-0.5(a_{12}+a_{21})x_1x_2 -0.5a_{11}x_1^2 + b_1x_1 - c|x_1|]dx_1\\
 	& \qquad
-	= k[ \int_{0}^{\infty} exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{11}x_1^2 + (b_1 - c)x_1 ]dx_1  \\
+	= k[ \int_{0}^{\infty} \exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{11}x_1^2 + (b_1 - c)x_1 ]dx_1  \\
 	& \qquad
-	+\int_{-\infty}^{0} exp[-0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{11}x_1^2  + (b_1 + c)x_1]dx_1 ]\\
+	+\int_{-\infty}^{0}\exp[-0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{11}x_1^2  + (b_1 + c)x_1]dx_1 ]\\
 	& \qquad
-	= k[ \int_{0}^{\infty} exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{11}x_1^2 + (b_1 - c)x_1 ]dx_1  \\
+	= k[ \int_{0}^{\infty} \exp[-0.5(a_{12}+a_{21})x_1x_2 - 0.5a_{11}x_1^2 + (b_1 - c)x_1 ]dx_1  \\
 	& \qquad
-	+\int_{0}^{\infty} exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{11}x_1^2  - (b_1+c)x_1]dx_1 ]\\
+	+\int_{0}^{\infty} \exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{11}x_1^2  - (b_1+c)x_1]dx_1 ]\\
 	& \qquad
-	= k[\int_{0}^{\infty} exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_1] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
+	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_1] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
 	& \qquad
 	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
 	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
@@ -566,11 +568,10 @@ $$
 	\EndFor
 	\EndWhile
 	\State return $\tilde{\mu},\tilde{\Sigma}$
-		
-		
-		
 	\end{algorithmic}
 \end{algorithm}
+
+
 The following bullet points summarized the procedure of our method.
 \begin{itemize}
 	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter

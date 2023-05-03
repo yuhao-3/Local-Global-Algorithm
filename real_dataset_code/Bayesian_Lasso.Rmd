@@ -58,7 +58,7 @@ dataset_name <- "Kakadu.csv"
 ```
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 dat <- read.csv(here("data","bodyfat.txt"), sep="\t")
 
 library(janitor)
@@ -115,7 +115,7 @@ dataset_name <- "comData"
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 Hitters = na.omit(Hitters)
 
 str(Hitters)
@@ -156,6 +156,8 @@ mX <- scale(x, center = TRUE, scale = TRUE)
 
 n <- nrow(mX)
 p <- ncol(mX)
+print(n)
+print(p)
 ```
 
 ### Use a short MCMC run with a prior to choose lambda
@@ -461,23 +463,24 @@ cat("\nLG1 running time =",time_LG1[3],"s")
 
 ```{r}
 source(here("code/lasso_distribution","Multi-Lasso.R")) 
-plot_densities <- function(ldens, cols, exclude, gold) 
-{
+plot_densities <- function(ldens, cols, exclude, gold, threshold = 0.1) {
   vacc <- c()
   
   xlim <- c()
   ylim <- c()
   for (k in 2:length(ldens)) {
-    if (!(k%in%exclude)) {
-      xlim <- range(c(xlim,ldens[[k]]$x), finite = TRUE)
-      ylim <- range(c(ylim,ldens[[k]]$y), finite = TRUE)
+    if (!(k %in% exclude)) {
+      # Consider only the x and y values where y > threshold
+      subset_ldens <- subset(ldens[[k]], y > threshold)
+      xlim <- range(c(xlim, subset_ldens$x), finite = TRUE)
+      ylim <- range(c(ylim, subset_ldens$y), finite = TRUE)
     }
   }
-  plot(NA,type="n", xlim=xlim, ylim=ylim, xlab="", ylab="") 
+  plot(NA, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "") 
   for (k in 2:length(ldens)) {
-    lines(ldens[[k]]$x,ldens[[k]]$y, col=cols[k], lwd=2) 
+    lines(ldens[[k]]$x, ldens[[k]]$y, col = cols[k], lwd = 2) 
     
-    acc <- 1 - 0.5*trapint(ldens[[gold]]$x, abs(ldens[[gold]]$y - ldens[[k]]$y))
+    acc <- 1 - 0.5 * trapint(ldens[[gold]]$x, abs(ldens[[gold]]$y - ldens[[k]]$y))
     vacc[k] <- acc
   }
   
@@ -521,7 +524,7 @@ cc = res_LG1$c
 # cc2 = res_LG2_new$c
  
 
-pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 12, height=8)
+pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 20, height=10)
 
  
 cols <- c("purple","green", "blue", "red", "purple")
@@ -533,12 +536,12 @@ XTy <- t(mX)%*%vy
 
 mai.dft <- c(1.02,0.82,0.82,0.42) #par("mai") # Defaults
 op <- par(mai=mai.dft)
-pcntB <- 0.3
-pcntL <- 0.3
-pcntT <- 0.3
-pcntR <- 0.3
+pcntB <- 0.65
+pcntL <- 0.2
+pcntT <- 0.65
+pcntR <- 0.2
 mai.new <- c(pcntB,pcntL,pcntT,pcntR) #*c(1.02,0.82,0.82,0.42)
-par(mfrow=c(3,3),mai=mai.new) 
+par(mfrow=c(2,4),mai=mai.new) 
 
 ranges <- apply(res_gibbs$mBeta[-c(1:nburn),], 2, range)
 
@@ -571,28 +574,79 @@ for (j in 1:p) {
   vacc <- plot_densities(ldens, cols, exclude, gold=2)
   
   mAcc[,j] <- vacc
+  title(sub = paste("Predictor", j), cex.sub = 2)
   
   # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
   # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
   methods <- c("BEM+SE","MCMC", "VB", "LG_Local","LG_Global")
-  if (j==1) {
     legend("topright",
            legend=methods[-1],
            text.col=cols[2:5],
-           border = FALSE)
-  }
+           border = FALSE,
+           cex = 2)
+
 }
+
 
 dev.off()
 
 summ <- cbind(round(100*apply(mAcc[-1,],1,summary),1))
 colnames(summ) <- methods[-1]
 summ
+
 ```
 
 ```{r}
 save.image(paste("results",dataset_name,".Rdata",sep=""))
 load(paste("results",dataset_name,".Rdata",sep=""))
 ```
+
+# Draw R code for lasso distribution
+```{r}
+# Load necessary libraries
+library(ggplot2)
+
+# Generate the PDF for different parameter settings
+x <- seq(-10, 10, length.out = 1000)
+
+# Set the parameters for the ExampleDistribution (a, b)
+params <- list(c(1,0,0.5), c(1, 5, 0.5), c(1, -5, 0.5), c(5,0,0.5), c(1,0,5),c(5,5,5))
+
+pdf_data <- data.frame()
+
+# Calculate the PDF for each parameter setting
+for (param in params) {
+  a <- param[1]
+  b <- param[2]
+  c <- param[3]
+  y <- dlasso(x, a, b, c)
+  
+  temp_data <- data.frame(x = x, y = y, a = a, b = b,c=c)
+  pdf_data <- rbind(pdf_data, temp_data)
+}
+
+
+# Combine the a, b, and c parameters into a single label
+pdf_data$label <- paste("a =", pdf_data$a, ", b =", pdf_data$b, ", c =", pdf_data$c)
+
+
+# Create the plot with a white background
+p <- ggplot(pdf_data, aes(x = x, y = y, color = interaction(a, b, c))) +
+  geom_line() +
+  scale_color_discrete(name = "Parameters\n(a, b, c)") +
+  labs(x = "X", y = "Density", title = "Univariate Lasso Distribution PDF for Different Parameter Settings") +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0.5),
+        legend.text = element_text(size = 12)) # Legend
+
+
+
+# Save the plot to a file
+ggsave("figures/lasso_distribution.png", plot = p, width = 14, height = 6) # width
+
+
+```
+
 
 
