@@ -141,59 +141,67 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{27}{section.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Basic Setting for the Bayesian Lasso Problem}{27}{section.3.2}\protected@file@percent }
 \newlabel{eq:assum}{{3.1}{27}{Basic Setting for the Bayesian Lasso Problem}{equation.3.1}{}}
+\newlabel{LocalGlobalVI}{{3.2}{27}{Basic Setting for the Bayesian Lasso Problem}{equation.3.2}{}}
 \newlabel{eq:condNormal}{{3.4}{28}{Basic Setting for the Bayesian Lasso Problem}{equation.3.4}{}}
 \newlabel{eq:MarLike}{{3.5}{28}{Basic Setting for the Bayesian Lasso Problem}{equation.3.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Lasso distribution}{28}{section.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Lasso distribution}{29}{section.3.3}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of Lasso Distribution PDF for different parameter setting\relax }}{29}{figure.caption.16}\protected@file@percent }
 \newlabel{fig:LassoDist}{{3.1}{29}{Visualization of Lasso Distribution PDF for different parameter setting\relax }{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Univariate Lasso Distribution}{29}{subsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{30}{subsubsection*.17}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of normalizing constant}{30}{subsubsection*.18}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of Moments}{30}{subsubsection*.19}\protected@file@percent }
-\newlabel{eq:LassoMoment}{{3.7}{30}{Derivation of Moments}{equation.3.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Bivariate Lasso Distribution}{31}{subsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of Normalizing Constant}{32}{subsubsection*.20}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of Expectation}{33}{subsubsection*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of Covariance Matrix}{33}{subsubsection*.22}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Derivation of marginal distribution}{35}{subsubsection*.23}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Local-Global Algorithm}{36}{section.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Univariate local global algorithm}{36}{subsection.3.4.1}\protected@file@percent }
-\newlabel{eq:updateQ}{{3.9}{36}{Univariate local global algorithm}{equation.3.9}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces Univariate-Local-Global-Algorithm\relax }}{38}{algorithm.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bivariate local global algorithm}{38}{subsection.3.4.2}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces Bivariate-Local-Global-Algorithm\relax }}{39}{algorithm.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Experiment Result and Analysis}{40}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Univariate Lasso Distribution}{30}{subsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Basic Property}{31}{subsubsection*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of normalizing constant}{31}{subsubsection*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of Moments}{31}{subsubsection*.19}\protected@file@percent }
+\newlabel{eq:LassoMoment}{{3.7}{31}{Derivation of Moments}{equation.3.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Bivariate Lasso Distribution}{32}{subsection.3.3.2}\protected@file@percent }
+\newlabel{bilasso}{{3.3.2}{32}{Bivariate Lasso Distribution}{subsection.3.3.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of Normalizing Constant}{33}{subsubsection*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of Expectation}{34}{subsubsection*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of Covariance Matrix}{34}{subsubsection*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Derivation of marginal distribution}{36}{subsubsection*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Local-Global Algorithm}{37}{section.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Univariate local global algorithm}{37}{subsection.3.4.1}\protected@file@percent }
+\newlabel{eq:updateQ}{{3.9}{37}{Univariate local global algorithm}{equation.3.9}{}}
+\newlabel{eq:LG_mu}{{3.10}{38}{Univariate local global algorithm}{equation.3.10}{}}
+\newlabel{eq:LG_sigma}{{3.11}{38}{Univariate local global algorithm}{equation.3.11}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces Univariate-Local-Global-Algorithm\relax }}{39}{algorithm.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Bivariate local global algorithm}{40}{subsection.3.4.2}\protected@file@percent }
+\newlabel{eq:condBiNormal}{{3.16}{40}{Bivariate local global algorithm}{equation.3.16}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces Bivariate-Local-Global-Algorithm\relax }}{41}{algorithm.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Experiment Result and Analysis}{42}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter4}{{4}{40}{Experiment Result and Analysis}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setting}{40}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Parameter selection}{40}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Evaluation metric}{40}{subsection.4.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Experimental datasets}{40}{subsection.4.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Experimental Result}{42}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Approximation Accuracy Result}{42}{subsection.4.2.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Experiment Result on Hitters dataset\relax }}{42}{table.caption.24}\protected@file@percent }
-\newlabel{table:Hitter}{{4.1}{42}{Experiment Result on Hitters dataset\relax }{table.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Approximation Density Visualization}{42}{subsection.4.2.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Experiment Result on Kakadu dataset\relax }}{43}{table.caption.25}\protected@file@percent }
-\newlabel{table:Kakadu}{{4.2}{43}{Experiment Result on Kakadu dataset\relax }{table.caption.25}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Experiment Result on bodyfat dataset\relax }}{43}{table.caption.26}\protected@file@percent }
-\newlabel{table:bodyfat}{{4.3}{43}{Experiment Result on bodyfat dataset\relax }{table.caption.26}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.4}{\ignorespaces Experiment Result on Prostate dataset\relax }}{44}{table.caption.27}\protected@file@percent }
-\newlabel{table:prostate}{{4.4}{44}{Experiment Result on Prostate dataset\relax }{table.caption.27}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.5}{\ignorespaces Experiment Result on Credit dataset\relax }}{44}{table.caption.28}\protected@file@percent }
-\newlabel{table:Credit}{{4.5}{44}{Experiment Result on Credit dataset\relax }{table.caption.28}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.6}{\ignorespaces Experiment Result on Eyedata dataset\relax }}{45}{table.caption.29}\protected@file@percent }
-\newlabel{table:Eyedata}{{4.6}{45}{Experiment Result on Eyedata dataset\relax }{table.caption.29}{}}
+\newlabel{Chapter4}{{4}{42}{Experiment Result and Analysis}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setting}{42}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Evaluation metric}{42}{subsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Experimental datasets}{42}{subsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Experimental Result}{44}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Approximation Accuracy Result}{44}{subsection.4.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Experiment Result on Hitters dataset\relax }}{44}{table.caption.24}\protected@file@percent }
+\newlabel{table:Hitter}{{4.1}{44}{Experiment Result on Hitters dataset\relax }{table.caption.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Approximation Density Visualization}{44}{subsection.4.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Experiment Result on Kakadu dataset\relax }}{45}{table.caption.25}\protected@file@percent }
+\newlabel{table:Kakadu}{{4.2}{45}{Experiment Result on Kakadu dataset\relax }{table.caption.25}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Experiment Result on bodyfat dataset\relax }}{45}{table.caption.26}\protected@file@percent }
+\newlabel{table:bodyfat}{{4.3}{45}{Experiment Result on bodyfat dataset\relax }{table.caption.26}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.4}{\ignorespaces Experiment Result on Prostate dataset\relax }}{46}{table.caption.27}\protected@file@percent }
+\newlabel{table:prostate}{{4.4}{46}{Experiment Result on Prostate dataset\relax }{table.caption.27}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.5}{\ignorespaces Experiment Result on Credit dataset\relax }}{46}{table.caption.28}\protected@file@percent }
+\newlabel{table:Credit}{{4.5}{46}{Experiment Result on Credit dataset\relax }{table.caption.28}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.6}{\ignorespaces Experiment Result on Eyedata dataset\relax }}{47}{table.caption.29}\protected@file@percent }
+\newlabel{table:Eyedata}{{4.6}{47}{Experiment Result on Eyedata dataset\relax }{table.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset\relax }}{48}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:hitters1}{{4.1}{48}{Part of Approximation Density for Hitters dataset\relax }{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Part of Approximation Density for Hitters dataset\relax }}{49}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:hitters2}{{4.2}{49}{Part of Approximation Density for Hitters dataset\relax }{figure.caption.31}{}}
 \bibstyle{elsarticle-harv}
 \bibdata{references}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{46}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{50}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{Chapter5}{{5}{46}{Discussion and Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Limitation}{46}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Future Work}{46}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Conclusion}{46}{section.5.3}\protected@file@percent }
+\newlabel{Chapter5}{{5}{50}{Discussion and Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Limitation}{50}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Future Work}{50}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Conclusion}{50}{section.5.3}\protected@file@percent }
 \bibcite{beck_teboulle_2009}{{1}{2009}{{Beck and Teboulle}}{{}}}
 \bibcite{Beech1959}{{2}{1959}{{Beech et~al.}}{{Beech, Kendall and Stuart}}}
 \bibcite{bishop_2006}{{3}{2006}{{Bishop}}{{}}}
@@ -205,12 +213,11 @@
 \bibcite{friedman_hastie_tibshirani_2010}{{9}{2010}{{Friedman et~al.}}{{Friedman, Hastie and Tibshirani}}}
 \bibcite{4767596}{{10}{1984}{{Geman and Geman}}{{}}}
 \bibcite{khare_hobert_2013}{{11}{2013}{{Khare and Hobert}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{47}{chapter*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{51}{chapter*.32}\protected@file@percent }
 \bibcite{Ormerod2010ExplainingVA}{{12}{2010}{{Ormerod and Wand}}{{}}}
 \bibcite{parisi1988statistical}{{13}{1988}{{Parisi and Shankar}}{{}}}
 \bibcite{park_casella_2008}{{14}{2008}{{Park and Casella}}{{}}}
-\bibcite{FastBL}{{15}{2015a}{{Rajaratnam and Sparks}}{{}}}
-\bibcite{rajaratnam_sparks_2015}{{16}{2015b}{{Rajaratnam and Sparks}}{{}}}
-\bibcite{tibshirani_1996}{{17}{1996}{{Tibshirani}}{{}}}
-\bibcite{nan_zhang_shuqing_zeng_2005}{{18}{2005}{{Zhang and Zeng}}{{}}}
-\gdef \@abspage@last{57}
+\bibcite{FastBL}{{15}{2015}{{Rajaratnam and Sparks}}{{}}}
+\bibcite{tibshirani_1996}{{16}{1996}{{Tibshirani}}{{}}}
+\bibcite{nan_zhang_shuqing_zeng_2005}{{17}{2005}{{Zhang and Zeng}}{{}}}
+\gdef \@abspage@last{61}

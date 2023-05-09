@@ -1,22 +1,23 @@
 \chapter{Experiment Result and Analysis}
 \label{Chapter4}
 \section{Experimental Setting}
-\subsection{Parameter selection}
 \subsection{Evaluation metric}
+To test the effectiveness of our algorithms, several evaluation metrics would be used:
 
 \begin{itemize}
 	\item $l_1$ norm accuracy 
-	\begin{equation}
-		\text{Acc}(f,g) = 1 - l_1(f,g) = \int |f(x)-g(x)|dx
+    \begin{equation}
+		l_1(f,g) = \int |f(x)-g(x)|dx
 	\end{equation}
-	\begin{itemize}
-		\item Common choice for comparing Probability Density Functions
-	\end{itemize}
+	\begin{equation}
+		\text{Acc}(f,g) = 1 - \frac{1}{2}l_1(f,g) 
+	\end{equation}
+    \item Running Speed: Total number of time (second) used for generating posterior density
 	
 \end{itemize}
 
+Firstly, a common choice for comparing Probability Density Functions if $l_1$ norm
 
-(MORE) Matrix norm Posterior cov and estimated Cov\\
 
 Objective: Use math to find posterior mode of lasso distribution: Given a,b,c
 Task: Check if posterior estimate reach 
@@ -26,6 +27,7 @@ Variable Selection
 Expectation: posterior mode sparse, posterior mean not sparse
 
 \subsection{Experimental datasets}
+The following bullet points demonstrate the dataset description, which includes the introduction to the purpose of datset, and number of predictos and number of samples respectively.
 \begin{itemize}
 	
 	\item \textbf{Hitters}:
@@ -66,7 +68,7 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\item \textbf{Eyedata}:
 	\begin{itemize}
 		\item Type: Medical dataset
-		\item Predictors ($p$): \textbf{200}, Samples ($n$): \textbf{120}
+		\item Predictors ($p$): 200, Samples ($n$): 120
 		\item Description: Contains measurements related to glaucoma patients, such as intraocular pressure and visual acuity, to assess the effectiveness of treatment options.
 	\end{itemize}
 \end{itemize}
@@ -91,7 +93,6 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\caption{Experiment Result on Hitters dataset}
 	\label{table:Hitter}
 \end{table}
-
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c| c|c|c|c|}
@@ -110,9 +111,6 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\caption{Experiment Result on Kakadu dataset}
 	\label{table:Kakadu}
 \end{table}
-
-
-
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
@@ -131,9 +129,6 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\caption{Experiment Result on bodyfat dataset}
 	\label{table:bodyfat}
 \end{table}
-
-
-
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
@@ -152,12 +147,9 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\caption{Experiment Result on Prostate dataset}
 	\label{table:prostate}
 \end{table}
-
-
-
-
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
+		\small
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 			\hline
 			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
@@ -174,11 +166,9 @@ Expectation: posterior mode sparse, posterior mean not sparse
 	\caption{Experiment Result on Credit dataset}
 	\label{table:Credit}
 \end{table}
-
-
-
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
+		\small
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
 			\hline
 			Algorithm  & MCMC  & VB & LG\_Local & LG\_Global \\
@@ -198,7 +188,19 @@ Expectation: posterior mode sparse, posterior mean not sparse
 
 \subsection{Approximation Density Visualization}
 
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 1, width=\linewidth,keepaspectratio]{lasso_densities_Hitters.pdf}
+	\caption{Part of Approximation Density for Hitters dataset}
+	\label{fig:hitters1}
+\end{figure}
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 2, width=\linewidth,keepaspectratio]{lasso_densities_Hitters.pdf}
+	\caption{Part of Approximation Density for Hitters dataset}
+	\label{fig:hitters2}
+\end{figure}
 
 
 

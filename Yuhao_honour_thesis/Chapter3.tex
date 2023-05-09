@@ -14,6 +14,7 @@ Firstly, the Bayesian Lasso Posterior approximation can be restricted by mean fi
 Under the same setting in Variational Inference in Mean-Field-Variational-Bayes by \cite{Ormerod2010ExplainingVA}:
 the parameter of interest $\theta$ can be divided up into two parts $\theta_1$: $\beta_j$ current variable and $\theta_{2}: \beta_{-j}$, other variables. The marginal log likelihood of $\theta_1$ can be divided up into ELBO part and KL divergence part by the following derivation:
 \begin{equation}
+	\label{LocalGlobalVI}
 	\log(\mathcal{D},\theta_1) = \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})] + KL(q(\theta_{2}|\theta_1),p(\theta_{2}|\mathcal{D},\theta_1))
 \end{equation}
 Since the KL divergence is greater than 0, the marginal log likelihood of $\theta_1$ and $\mathcal{D}$ has a more tractable Evidence Lower Bound: 
@@ -24,6 +25,8 @@ When $q(\theta_{2}|\theta_1) = p(\theta_{2}|\mathcal{D},\theta_1)$ then
 $$
 	\log(\mathcal{D},\theta_1) = \mathbb{E}_{p(\theta_{2}|\mathcal{D},\theta_1)}[\log p(\mathcal{D},\theta_2,\theta_{1})]
 $$
+
+
 In Bayesian Lasso: $\theta = (\beta,\sigma^2)$, however, the update for $\sigma$ will not be discussed while we will only discuss the an approach for updating $\beta$, assuming $q(\beta) \sim N(\mu,\Sigma)$. Thus,
 the conditional distribution $q(\beta_{-j}|\beta_{j})$ for any $j_{th}$ variable can be derived by the fact that $q(\beta_{-j}|\beta_{j}) \propto q(\mathbf{\beta})$, resulting another multivariate normal distribution with dimension of $p-1$ as shown in \autoref{eq:condNormal}
 \begin{equation}
@@ -47,9 +50,11 @@ With the mean field restriction in \autoref{eq:assum}, the result from \autoref{
 	\end{aligned}
 \end{equation}
 where $s = \mu_{-j} - \Sigma_{-j,j}\Sigma_{j,j}^{-1}\mu_j$ and $t = \Sigma_{-j,j}\Sigma_{j,j}^{-1}$, $\tilde{a}$ and $\tilde{b}$ are posterior parameters for $\sigma^2$, $\mu,\Sigma$ are posterior parameters for $\beta$.
+One of the fundamental improvement between our method and MFVB is that our method capture the correlation between $\theta_2$ and $\theta_1$. The expectation with respect to $q(\theta_2|\theta_1)$ is performed. To clarify, consider the case for MFVB, where expectation with respect to $q(\theta)$ is performed that assumes the independence of the parameter $\theta$.
+It is also clear ro observe from the fact that our method degrade to the MFVB method when $t = 0$, it results in $s = \mu_{-j}$.\\
+Before continuing presenting the methodology, the introduction of lasso distribution is essential for local approximation correction.
 
 \section{Lasso distribution}
-Before continuing presenting the methodlogy, the introductio of lasso distribution is essential for local approximation correction.
 \autoref{eq:MarLike} can be matched to an univariate lasso distribution as an local approximation of Bayesian Lasso posterior. In addition, the joint likelihood of a pair of variables can also be matched by a bivariate lasso distribution.
          
 \begin{figure}[h]
@@ -57,17 +62,33 @@ Before continuing presenting the methodlogy, the introductio of lasso distributi
 	\caption{Visualization of Lasso Distribution PDF for different parameter setting}
 	\label{fig:LassoDist}
 \end{figure}
-As shown in \autoref{fig:LassoDist}
+As shown in \autoref{fig:LassoDist},  it demonstrates the shape and location of the univariate lasso distribution with different parameter settings. The orange line depicts the lasso distribution when $(a,b,c) = (1,5,-0.5)$ respectively, the yellow line depicts the lasso distribution when $(a,b,c) = (1,0,0.5)$, the green line depicts the lasso distribution when $(a,b,c) = (1,0,0.5)$, the sky blue one depicts the lasso distribution when $(a,b,c) = (5,0,0.5)$, the blue line depicts the lasso distribution when $(a,b,c) = (1,5,0.5)$, the blue line depicts the lasso distribution when $(a,b,c) = (1,0,5)$, the pink line depicts the lasso distribution when  $(a,b,c) = (5,5,5)$. 
+From the yellow and dark-blue line, we can observe that parameter A control the size of the curvature of the tuning point, larger A implies a smoother tuning point.
+From the Red line, yellow line, and sky-blue line, we can observe that changing b will move the location of the curve. Larger b will move the graph further to the right.
+From the yellow line and green line, C controls the sharpness the curve, larger c implies distribution with smaller variance and shaper turning point.
 
 
-         
 
 \subsection{Univariate Lasso Distribution}
 If $x \sim $ Lasso(a,b,c), then the probability density function can be written as:
 \begin{equation}
 	p(x,a,b,c) = Z^{-1}\exp(-\frac{1}{2}ax^2+bx-c|x|)
 \end{equation}
-where $a > 0, b \in \mathbb{R}, c > 0$, $Z$ is normalizing constant. Certain property of a probability distribution can also be formed to demonstrate the effectiveness, in our algorithm normalizing constant $Z$, expectation $\mathbb{E}(x)$, second moment $\mathbb{E}(x^2)$ and variance $\mathbb{V}(x)$ are necessary.
+where $a \geq 0, b \in \mathbb{R}, c \geq 0$, there are also certain restrictions to certain parameter settings:
+\begin{itemize}
+	\item $a$ and $c$ can't be 0 at the same time
+	\item When $a = 0$, lasso distribution will become a asymmetric Laplace distribution
+	\item When $c = 0$, lasso distribution will become a normal distribution
+\end{itemize}
+The probability density function of univariate lasso distribution can be divided up into four components:
+\begin{itemize}
+	\item A normalization constant $Z$, to enable the integration of the probability density function to be 1.
+	\item A quadratic term $ax$ square to control the curvature of the curve.
+	\item A linear term $bx$ to control the location of the curve.
+	\item An absolute term $c|x|$ to control the sharpness of the turning point.
+\end{itemize} 
+Certain property of a probability distribution can also be formed to demonstrate the effectiveness, in our algorithm normalizing constant $Z$, expectation $\mathbb{E}(x)$, second moment $\mathbb{E}(x^2)$ and variance $\mathbb{V}(x)$ are necessary.
+
 \subsubsection{Basic Property}
 \subsubsection{Derivation of normalizing constant}
 The normalizing constant Z can be written as a function of $a$, $b$, $c$.
@@ -181,11 +202,12 @@ $$
 We also have sufficient information to implement a VB approximation.
 
 \subsection{Bivariate Lasso Distribution}
+\label{bilasso}
 If $\mathbf{x} \sim \mbox{Bilasso}(A,b,c)$ with then it has density given by
 \begin{equation}
 	p(\mathbf{x}) = Z^{-1}\exp(-\frac{1}{2}\mathbf{x}^TA\mathbf{x}+b^T\mathbf{x}-c||\mathbf{x}||_1)
 \end{equation}
- where $A \in S_d^+$: positive definite matrix with dimension $d$, $b \in \mathbb{R}^2$, $c > 0$\\
+ where $A \in S_d^+$: positive definite matrix with dimension $d$, $b \in \mathbb{R}^2$, $c \geq 0$\\
 \subsubsection{Derivation of Normalizing Constant}
 $$
 \begin{array}{rl}
@@ -247,7 +269,7 @@ $$
 \end{array} 
 $$
 
-\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T, \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \otimes 	\begin{bmatrix}
+\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T, \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \odot 	\begin{bmatrix}
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
@@ -258,52 +280,52 @@ $$
 Follow similar step as before
 $$
 \begin{array}{rl}
-	E[X] 
-	& = Z^{-1} \int_{-\infty}^\infty \int_{-\infty}^\infty x \otimes \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x}\\ [2ex]
+	\mathbb{E}[X] 
+	& = Z^{-1} \int_{-\infty}^\infty \int_{-\infty}^\infty x \odot \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x}\\ [2ex]
 	
 	& \qquad
-	= Z^{-1} \int_0^\infty\int_0^\infty x \otimes   \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T - c\textbf{1}^T)x \right] d\textbf{x}\\
+	= Z^{-1} \int_0^\infty\int_0^\infty x \odot   \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T - c\textbf{1}^T)x \right] d\textbf{x}\\
 	
 	& \qquad
-	+ \int^\infty_0\int^{\infty}_0 [1,-1]^T \otimes x \otimes  \exp\left[ 
-	-\frac{1}{2}x^TA^*\otimes \begin{bmatrix}
+	+ \int^\infty_0\int^{\infty}_0 [1,-1]^T \odot x \odot  \exp\left[ 
+	-\frac{1}{2}x^TA^*\odot \begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
 	\end{bmatrix}x + (b_1-c,-b_2-c)^Tx \right] d\textbf{x}\\
 	& \qquad
-	+ \int_0^\infty\int_0^\infty  [-1,1]^T \otimes x \otimes    \exp\left[ 	
-	-\frac{1}{2}x^TA^* \otimes 	\begin{bmatrix}
+	+ \int_0^\infty\int_0^\infty  [-1,1]^T \odot x \odot    \exp\left[ 	
+	-\frac{1}{2}x^TA^* \odot 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
 	\end{bmatrix}x + (-b_1-c,b_2-c)^Tx \right] d\textbf{x}\\
 	
 	& \qquad
 	
-	- \int_0^\infty\int_0^\infty x \otimes  \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}\\
+	- \int_0^\infty\int_0^\infty x \odot  \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}\\
 	
 	& \qquad
-	=  Z^{-1}[|\Sigma_1|(\frac{\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	-  \frac{\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|(\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
+	-  \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
 	& \qquad
 	+ |\Sigma_2|
-	([1,-1]^T\frac{\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
-	+ [-1,1]^T   \frac{\int_0^\infty\int_0^\infty x\otimes\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	([1,-1]^T\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	+ [-1,1]^T   \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	& \qquad
-	=  Z^{-1}[|\Sigma_1|(\frac{E[\textbf{A}]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	-  \frac{E[D]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|(\frac{\mathbb{E}[\textbf{A}]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
+	-  \frac{\mathbb{E}[D]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
 	& \qquad
 	+ 
 	|\Sigma_2|(
-	[1,-1]^T \frac{E[B]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
-	+ [-1,1]^T   \frac{E[C]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	[1,-1]^T \frac{\mathbb{E}[B]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	+ [-1,1]^T   \frac{\mathbb{E}[C]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	&
 	
 	
 \end{array}
 $$
-\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \otimes 	\begin{bmatrix}
+\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \odot 	\begin{bmatrix}
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
@@ -312,71 +334,71 @@ $$
 \subsubsection{Derivation of Covariance Matrix}
 Follow similar steps as before
 $$
-Cov(X) = E[XX^T] - E[X]E[X]^T
+\mbox{Cov}(X) = \mathbb{E}[XX^T] - \mathbb{E}[X]\mathbb{E}[X]^T
 $$
 $$
 \begin{array}{rl}
-	E[XX^T] 
-	& = \int_{-\infty}^\infty \int_{-\infty}^\infty xx^T \otimes \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x} \\[2ex]
+	\mathbb{E}[XX^T] 
+	& = \int_{-\infty}^\infty \int_{-\infty}^\infty xx^T \odot \exp\left[ -\frac{1}{2}x^TAx + \textbf{b}^Tx - c\textbf{1}^T||x||_1 \right] d\textbf{x} \\[2ex]
 	& 
-	= Z^{-1} 2\pi|\Sigma|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_1,\Sigma_1)d\textbf{x}\\
+	= Z^{-1} 2\pi|\Sigma|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_1,\Sigma_1)d\textbf{x}\\
 	& \qquad	
 	+ 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes \exp\left[ \frac{(A^*\mu_2)^T\Sigma(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}\\
+	\end{bmatrix} \odot \exp\left[ \frac{(A^*\mu_2)^T\Sigma(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}\\
 	& \qquad
 	+ 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix}  \otimes  \exp\left[ \frac{(A^*\mu_3)^T\Sigma(A^*\mu_3)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}\\
+	\end{bmatrix}  \odot  \exp\left[ \frac{(A^*\mu_3)^T\Sigma(A^*\mu_3)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}\\
 
 	& \qquad	
-	-  \exp\left[ \frac{(A\mu_4)^T\Sigma(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_4,\Sigma_1)d\textbf{x}]\\
+	-  \exp\left[ \frac{(A\mu_4)^T\Sigma(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_4,\Sigma_1)d\textbf{x}]\\
 	\\
 	&
-	=  Z^{-1}|\Sigma|[ \frac{\int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma))}
+	=  Z^{-1}|\Sigma|[ \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma))}
 	
 	+ 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes  \frac{\int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_2,\Sigma)d\textbf{x}}{\phi_2(A\mu_2,\Sigma))}\\
+	\end{bmatrix} \odot  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_2,\Sigma)d\textbf{x}}{\phi_2(A\mu_2,\Sigma))}\\
 	& \qquad
 	+	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes   \frac{\int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_3,\Sigma)d\textbf{x}}{\phi_2(A\mu_3,\Sigma))}
+	\end{bmatrix} \odot   \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_3,\Sigma)d\textbf{x}}{\phi_2(A\mu_3,\Sigma))}
 	
-	-  \frac{\int_0^\infty\int_0^\infty xx^T\otimes\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma))}]\\
+	-  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma))}]\\
 	\\
 	&
-	=  Z^{-1}[|\Sigma_1|(\frac{E[\textbf{A}\textbf{A}^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	+  \frac{E[DD^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|(\frac{\mathbb{E}[\textbf{A}\textbf{A}^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
+	+  \frac{\mathbb{E}[DD^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
 	& \qquad
 	+ 
 	|\Sigma_2|(
 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes \frac{E[BB^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	\end{bmatrix} \odot \frac{\mathbb{E}[BB^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
 	
 	+\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \otimes   \frac{E[CC^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	\end{bmatrix} \odot   \frac{\mathbb{E}[CC^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	
 	
 \end{array}
 $$
-\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \otimes 	\begin{bmatrix}
+\noindent where $\mu_1 = A^{-1}(b-c\textbf{1})^T$, $\mu_2 = A^{*-1}(b_1-c,-b_2-c)^T, \mu_3 = A^{*-1}(-b_1-c,b_2-c)^T \mu_4 = A^{-1}(-b-c \textbf{1}^T)^T $ and $\Sigma_1 = A^{-1}$, $\Sigma_2 = A^{*-1}$ $A^* = A \odot 	\begin{bmatrix}
 	1 & -1\\
 	-1 & 1\\
 \end{bmatrix}$.
 \noindent $\textbf{A}\sim MTN_+(\mu_1,\Sigma_1)$, $B\sim MTN_+(\mu_2,\Sigma_2)$, $C\sim MTN_+(\mu_3,\Sigma_2)$, $D\sim MTN_+(\mu_4,\Sigma_1)$ is denotes the multivariate positively truncated normal distribution.
-
+In addition, the second moment of $\mathbb{E}[AA^T]$ and $\mathbb{E}[BB^T]$ can be derived similary from the variance property in multivariate function:
 $$
-E[AA^T] = Cov(A) - E[A]E[A]^T 
+\mathbb{E}[AA^T] = \mbox{Cov}(A) - \mathbb{E}[A]\mathbb{E}[A]^T 
 $$
 
 \subsubsection{Derivation of marginal distribution}
@@ -401,14 +423,14 @@ $$
 	& \qquad
 	+\int_{0}^{\infty} \exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{22}x_2^2  - (b_2+ c)x_2]dx_2 ]\\
 	& \qquad
-	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_2] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
+	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_2] + \int_{0}^{\infty} \exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
 	& \qquad
 	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
 	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
 	
 \end{array}
 $$
-where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{22}}x_1 + \frac{b_2-c}{a_{22}}) $, $\mu_2 =(\frac{a_{12}+a_{21}}{2a_{22}}x_1 - \frac{b_2+c}{a_{22}}) $, $\sigma^2 = 1/a_{22}$, $k =  Z^{-1}exp(-0.5a_{11}x_1^2 + b_1x_1 - c|x_1|)$
+where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{22}}x_1 + \frac{b_2-c}{a_{22}}) $, $\mu_2 =(\frac{a_{12}+a_{21}}{2a_{22}}x_1 - \frac{b_2+c}{a_{22}}) $, $\sigma^2 = 1/a_{22}$, $k =  Z^{-1}\exp(-0.5a_{11}x_1^2 + b_1x_1 - c|x_1|)$
 
 $$
 \begin{array}{rl}
@@ -431,14 +453,14 @@ $$
 	& \qquad
 	+\int_{0}^{\infty} \exp[0.5(a_{12}+a_{21})x_1x_2  - 0.5a_{11}x_1^2  - (b_1+c)x_1]dx_1 ]\\
 	& \qquad
-	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_1] + \int_{0}^{\infty} exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
+	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_1] + \int_{0}^{\infty} \exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
 	& \qquad
 	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
 	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
 	
 \end{array}
 $$
-where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\mu_2 =(\frac{a_{12}+a_{21}}{2a_{11}}x_2 - \frac{b_1+c}{a_{11}}) $, $\sigma^2 = 1/a_{11}$, $k =  Z^{-1}exp(-0.5a_{22}x_2^2 + b_2x_2 - c|x_2|)$
+where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\mu_2 =(\frac{a_{12}+a_{21}}{2a_{11}}x_2 - \frac{b_1+c}{a_{11}}) $, $\sigma^2 = 1/a_{11}$, $k =  Z^{-1}\exp(-0.5a_{22}x_2^2 + b_2x_2 - c|x_2|)$
 
 
 \section{Local-Global Algorithm}
@@ -530,6 +552,7 @@ $$
 
 \noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $\beta_j$ is:
 \begin{equation}
+	\label{eq:LG_mu}
 	\widetilde{\mu} =
 	\left[ \begin{array}{c}
 		\mu_j^* \\
@@ -539,6 +562,7 @@ $$
 
 \noindent and
 \begin{equation}
+	\label{eq:LG_sigma}
 	\widetilde{\Sigma} = 
 	\left[ \begin{array}{cc}
 		\Sigma_{jj}^* & \Sigma_{jj}^* \Sigma_{jj}^{-1}\Sigma_{j-j} \\
@@ -579,25 +603,94 @@ The following bullet points summarized the procedure of our method.
 	
 	\item Compute the mean of lasso distribution and variance of lasso distribution with the current $a,b,c$: $q^*(\theta_1) \approx N(\mu_j^*,\Sigma_{jj}^*)$
 	\item We can use the update expression $q^*(\theta) = q(\theta_{-j}|\theta_j)\phi(\theta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\theta)$
-	\item Iterates through each variable $\theta_j$ and Update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
+	\item Iterates through each variable $\theta_j$ and update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
 \end{itemize}
 
+\newpage
 \subsection{Bivariate local global algorithm}
+Apart from the Univariate algorithm that match each variable of interest into an univariate Lasso distribution, each pair of regression coefficients can be matched simultaneously by a bivariate lasso distribution as mentioned in \autoref{bilasso}. The main intuition is similar to \autoref{eq:LocalGlobalVI}, but
+the log likelihood of each index pair $\mathcal{I}$ now can be written as:
+\begin{equation}
+	\begin{array}{rl} 
+		\log p(D,\beta_\sI) 
+		& \ds = \mathbb{E}_{\beta_{-\sI},\sigma^2\mid \mathcal{D},\beta_\sI} \log p(\beta_\sI\mid \mathcal{D},\beta_{-\sI},\sigma^2)
+		\\ [2ex]
+		& \ds \approx  \mathbb{E}_{q(\beta_{-\sI}\mid\beta_\sI)q(\sigma^2)} \log p(\beta_\sI\mid \mathcal{D},\beta_{-\sI},\sigma^2)\\
+		% & \ds =  \frac{\widetilde{a}}{\widetilde{b}} \mX_j^T\left( \vy - \mX_{-j}\vs \right)  \beta_j
+		% - \frac{\widetilde{a}}{2\widetilde{b}} \left( \mX_j^T\mX_j + \mX_j^T\mX_{-j}\vt   \right)\beta_j^2
+		% - \frac{\lambda\,\Gamma(\widetilde{a}+1/2)}{\Gamma(\widetilde{a})\sqrt{\widetilde{b}}} |\beta_j| 
+		
+	\end{array}.
+\end{equation}
+The log likelihood of index pair can be written as the follwing:
+\begin{equation}
+	\begin{array}{rl}
+		\log p(\beta_\sI\mid\mathcal{D},\beta_{-I},\sigma^2) 
+		& \ds = - \tfrac{1}{2\sigma^2}\beta_\sI^TX_\sI^TX_\sI\beta_\sI - \frac{\lambda}{\sigma} \|\beta_{\sI} \|_1
+		\\ [2ex]
+		& \ds \qquad 
+		+ \frac{1}{2\sigma^2}(y - X_{-\sI}\beta_{-\sI})^TX_\sI\beta_{\sI}
+		+ \frac{1}{2\sigma^2}\beta_{\sI}X_\sI^T(y - X_{-\sI}\beta_{-\sI})
+		
+	\end{array}.
+\end{equation}
+
+
+For the purpose of enabling $\beta_{-\sI}$ to be symmetric for preventing generating a non-symmetric, the log likelihood of index pair $\sI$ can be remodified as the follwing:
+\begin{equation}
+	\begin{array}{rl} 
+		\log p(\mathcal{D},\beta_\sI) 
+		&  =  \frac{\widetilde{a}}{\widetilde{b}} \left( y - X_{-\sI}s \right)^T X_\sI \beta_\sI
+		- \frac{\lambda\,\Gamma(\widetilde{a}+1/2)}{\Gamma(\widetilde{a})\sqrt{\widetilde{b}}} |\beta_\sI\|_1
+		\\ [2ex]
+		& 
+		- \frac{\widetilde{a}}{2\widetilde{b}} \beta_\sI^T \left( X_\sI^TX_\sI + \tfrac{1}{2}X_\sI^TX_{-\sI}T 
+		+ \tfrac{1}{2}T X_{-\sI}^TX_\sI
+		\right)\beta_\sI
+		
+	\end{array}.
+\end{equation}
+Then the marginal log likelihood can be matched to a bivariate lasso distribution:
+\begin{equation}
+	\beta_{\sI}\mid\mathcal{D} 
+	\stackrel{\mbox{\scriptsize approx.}}{\sim} 
+	\mbox{BiLasso}\left(
+	\frac{\widetilde{a}}{\widetilde{b}} \left(X_\sI^TX_\sI + \tfrac{1}{2}X_\sI^TX_{-j}T + \tfrac{1}{2}T^T X_{-j}^T X_\sI \right),
+	\frac{\widetilde{a}}{\widetilde{b}} X_\sI^T\left( y - X_{-\sI}s \right),
+	\frac{\lambda\,\Gamma(\widetilde{a}+1/2)}{\Gamma(\widetilde{a})\sqrt{\widetilde{b}}} 
+	\right).
+\end{equation}
+
+To propagate to correct the global mean and variance parameter, note the conditional distribution of $q(\beta_{-\sI}\mid\beta_\sI)$ can be written as the following:
+\begin{equation}
+	\begin{array}{rl}
+		q(\beta_{-\sI}\mid\beta_\sI) 
+		& = N_{p-|\sI|}\left( \mu_{-\sI} +\Sigma_{-\sI,\sI} \Sigma_{\sI,\sI}^{-1}(\beta_\sI - \mu_\sI), \Sigma_{-\sI,-\sI} - \Sigma_{-\sI,\sI}\Sigma_{\sI,\sI}^{-1}\Sigma_{\sI,-\sI}  \right)) 
+		\\ 
+		& = N_{p-|\sI|}\left( s  + T \beta_{\sI}, \Sigma_{-\sI,-\sI} - \Sigma_{-\sI,\sI}\Sigma_{\sI,\sI}^{-1}\Sigma_{\sI,-\sI}  \right))
+	\end{array} 
+	\label{eq:condBiNormal}
+\end{equation}
+Using \autoref{eq:condBiNormal} and propagate equation from \autoref{eq:updateQ}, the update formula for $\tilde{\mu}$ and $\tilde{\Sigma}$ can be updated by the same equation as the univariate case from \autoref{eq:LG_mu} and \autoref{eq:LG_sigma} with the substitution of subscript $j$ to index pair $\mathcal{I}$.
 
 \begin{algorithm}
 	\caption{Bivariate-Local-Global-Algorithm}
 	\begin{algorithmic}[1]
 		
-		\State Input: $p(\mathcal{D},\theta)$, data $\mathcal{D}$, Initialize Variational parameters for each $q_j(\theta_j)$
-		\While{ELBO has not converged} 
-		\For{$j$=1,...,$p$}
-		\State $q_j(\theta_j) \propto \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)]$
+		\State Input: data $X$, normalized response variable $y$, parameter from MFVB $(\tilde{a},\tilde{b},\tilde{\mu},\tilde{\Sigma})$, Penalizing parameter: $\lambda$
+		\While{$\tilde{\mu}$ is changing less than $\epsilon$}
+		\For{$j=1$ to $p$}
+		\State $a = \frac{\tilde{a}}{\tilde{b}}(X^TX)_{j,j} + (X^TX)_{j,-j}\tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}$ \Comment{Obtain Lasso parameter}
+		\State $b = \frac{\tilde{a}}{\tilde{b}}  X_{j}(y-X_{-j}(\tilde{\mu}_{-j} - \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}\tilde{\mu}_j))       $ \Comment{Obtain Lasso parameter}
+		\State $c = \lambda (\exp(\Gamma(\tilde{a}+0.5) - \Gamma(\tilde{a}) - 0.5\log(\tilde{b})))  $ \Comment{Obtain Lasso parameter}
+		\State $\tilde{\mu_{j}} =  elasso(a,b,c) = \mu_j ^*$ \Comment{Replace by Local mean}
+		\State $\tilde{\mu_{-j}} = \tilde{\mu}_{-j} +  \tilde{\Sigma}_{-j,j}\tilde{\Sigma}^{-1}_{jj}(\tilde{\mu}_j^*-\tilde{\mu}_j)$ \Comment{Update Global Mean}
+		\State $\tilde{\Sigma}_{j,j} = vlasso(a,b,c) = \Sigma_{jj}^*$ \Comment{Replace by Updated Local Covariance}
+		\State $\tilde{\Sigma}_{j,-j} = \Sigma_{jj}^*  \tilde{\Sigma}_{jj}^{-1}\tilde{\Sigma}_{j,-j} $ \Comment{Update Global Covariance}
+		\State $\tilde{\Sigma}_{-j,j} = \tilde{\Sigma_{j,-j}}^T$ \Comment{Update Global Covariance}
+		\State $\tilde{\Sigma}_{-j,-j} = \tilde{\Sigma}_{-j,-j} + \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}(\Sigma_{j,j}^{*} - \tilde{\Sigma}_{j,j})\tilde{\Sigma}_{j,j}^{-1}\tilde{\Sigma}_{j,-j}$ \Comment{Update Global Covariance}		
 		\EndFor
-		\State Compute $ELBO(q(\theta)) = \mathbb{E}[\log[p(\mathcal{D},\theta)]] + \mathbb{E}[\log[q(\theta)]]$
-		\EndWhile 
-		\State return $q(\theta)$
-		
-		
-		
+		\EndWhile
+		\State return $\tilde{\mu},\tilde{\Sigma}$
 	\end{algorithmic}
 \end{algorithm}

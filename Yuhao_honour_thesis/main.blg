@@ -8,45 +8,45 @@ Database file #1: references.bib
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Warning--empty journal in parisi1988statistical
 Warning--empty journal in FastBL
-You've used 18 entries,
+You've used 17 entries,
             2990 wiz_defined-function locations,
-            756 strings with 8168 characters,
-and the built_in function-call counts, 10811 in all, are:
-= -- 841
-> -- 364
-< -- 12
-+ -- 150
-- -- 123
-* -- 1139
-:= -- 1590
-add.period$ -- 62
-call.type$ -- 18
-change.case$ -- 129
+            751 strings with 7978 characters,
+and the built_in function-call counts, 10315 in all, are:
+= -- 801
+> -- 346
+< -- 11
++ -- 142
+- -- 117
+* -- 1087
+:= -- 1515
+add.period$ -- 59
+call.type$ -- 17
+change.case$ -- 122
 chr.to.int$ -- 17
-cite$ -- 20
-duplicate$ -- 840
-empty$ -- 820
-format.name$ -- 193
-if$ -- 2011
-int.to.chr$ -- 2
+cite$ -- 19
+duplicate$ -- 801
+empty$ -- 786
+format.name$ -- 182
+if$ -- 1921
+int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 153
-newline$ -- 113
-num.names$ -- 72
-pop$ -- 312
+missing$ -- 147
+newline$ -- 108
+num.names$ -- 68
+pop$ -- 294
 preamble$ -- 1
-purify$ -- 113
+purify$ -- 107
 quote$ -- 0
-skip$ -- 252
+skip$ -- 242
 stack$ -- 0
-substring$ -- 412
-swap$ -- 550
+substring$ -- 401
+swap$ -- 526
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 156
+type$ -- 147
 warning$ -- 2
-while$ -- 65
+while$ -- 62
 width$ -- 0
-write$ -- 278
+write$ -- 265
 (There were 2 warnings)
