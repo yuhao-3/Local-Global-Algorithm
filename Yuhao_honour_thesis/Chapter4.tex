@@ -80,28 +80,106 @@ The following bullet points demonstrate the dataset description, which includes 
 
 In particular, Hitters dataset and Eyedata dataset should be gained more attention, since Hitters has large correlation between predictors while Eyedata has more number of predictors than number of samples meaning Hitters and Eyedata are harder to approximate. On the other hand, if the approximation accuracy and approximation density can achieve higher result than MFVB, then success of Local-Global Algorithm can also achieve success on other datasets that are easier to approximate. We will show the experimental result with a specific focus on Hitters and Eyedata compared with results on other datasets in the later subsection.
 
-\newpage
 \section{Experimental Result}
 
 \subsection{Approximation Density Visualization}
-The following plot demonstrates the least approximated density plot for each 6 datasets. Due to limited
+The following six plots demonstrate part of the approximated density plots on each of the dataset. Due to large number of predictors in each dataset, we will present two density plots for each dataset. The best density approximation of Local-Global algorithm with MCMC and the worst density approximation of Local-Global algorithm that is the most deviated compared with MCMC. The best plot will be placed on the left of each plot, and the worst plot will be arranged on the right of each plot.
+As for the density on Kakadu, Prostate, Bodyfat, Credit dataset, there is no significant deviation between density plot generated from MFVB, LG-Global and LG-Local with MCMC. Almost all of the predictors in these datasets demonstrate a roughly normal density. This will not significantly leads to the considerable decrease of approximation accuracy for MFVB, as opposed to LG-local and LG-Global.
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+	\centering
+		\includegraphics[page = 15, width=\linewidth,keepaspectratio]{lasso_densities_Hitters.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 8, width=\linewidth,keepaspectratio]{lasso_densities_Hitters-1.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Hitters dataset; Left: best case, Right: worst case}
+	\label{fig:hitters1}
+\end{figure}
+As we can see from the density plot from this particular predictor in \autoref{fig:hitters1}, the plot on the left hand side overlaps significantly with MCMC, indicating a high accuracy of the approximation performance.
+By the worst density plot, MFVB tends to deviate the left-skewed MCMC (gold standard), especially when the actual distribution has a sharp tuning point, the local and global algorithms, especially for the local approximation line, however can approximate well to the gold standard in this scenario. This is mainly due to the absolute term $c|x|$ in the lasso distribution formula, accommodating various potential density functions.
+
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[page = 1, width=\linewidth,keepaspectratio]{lasso_densities_Kakadu.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 2, width=\linewidth,keepaspectratio]{lasso_densities_Kakadu-1.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Kakadu dataset; Left: best case, Right: worst case}
+	\label{fig:Kakadu}
+\end{figure}
+
+By \autoref{fig:Kakadu}, the best density plot of Local-Global algorithms overlaps with MCMC and MFVB, which is similar to \autoref{fig:hitters1}. For the worst case, LG-local still demonstrate the best approximation performance under this case. Even though the gold standard demonstrate a density with high variance, LG-Local fit a density with similar variance even though a sharp tuning point exist.
 
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[page = 2, width=\linewidth,keepaspectratio]{lasso_densities_Hitters.pdf}
-	\caption{Part of Approximation Density for Hitters dataset; Green line refers to MCMC(note they are overlapped), Blue line is MFVB, Red is LG-Local, Purple line is LG-Global}
-	\label{fig:hitters1}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[page = 1, width=\linewidth,keepaspectratio]{lasso_densities_Bodyfat.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 8, width=\linewidth,keepaspectratio]{lasso_densities_Bodyfat-1.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Bodyfat dataset; Left: best case, Right: worst case}
+	\label{fig:Bodyfat}
 \end{figure}
 
+\autoref{fig:Bodyfat}, the best density plot of Local-Global algorithms overlap with MCMC and MFVB considerably as well since the datset itself demonstrates asymptotically normal data distribution, which is similar to aforementioned case due to asymptocially normal distributed data distribution. LG-local still demonstrate the best approximation performance under the worst case according to the right of \autoref{fig:Bodyfat}. LG-Local line is highly consistent with the density plot generated by the gold standard from the green line.
 
-\autoref{fig:hitters1} shows an approximation density plot for different algorithms, this plot shows one of the worst approximation density plots on the Hitters dataset. The green one shows MCMC, the blue is MFVB, the red is a local and global algorithm to local approximation and the purple is a local and global algorithm to the global approximation. As we can see from the result in this particular predicor, MFVB tends to deviate from MCMC (gold standard), especially when the actual distribution has a sharp tuning point, the local and global algorithms however  can approximate well to the gold standard.
 
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[page = 1, width=\linewidth,keepaspectratio]{lasso_densities_prostate.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 7, width=\linewidth,keepaspectratio]{lasso_densities_prostate-1.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Prostate dataset; Left: best case, Right: worst case}
+	\label{fig:Prostate}
+\end{figure}
+
+In the best case in \autoref{fig:Prostate}, MFVB overestimates the posterior variance slightly, while LG-local and LG-global demonstrate high robustness against target distribution. For the worst case, although LG-Global underestimates the posterior variance moderately, LG-local demonstrate high consistency again with MCMC.
+
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[page = 11, width=\linewidth,keepaspectratio]{lasso_densities_Credit.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 2, width=\linewidth,keepaspectratio]{lasso_densities_Credit-1.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Credit dataset; Left: best case, Right: worst case}
+	\label{fig:Credit}
+\end{figure}
+
+Similarly as before, the Local-Global approximation overlap with MFVB and MCMC as shown on the left of the \autoref{fig:Credit}. For the worst case plot, MFVB demonstrate a overestimation of the posterior variance, while LG-local and LG-global is also significantly coincides with the MCMC density plot.
+
+\begin{figure}[h]
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[page = 52, width=\linewidth,keepaspectratio]{lasso_densities_eyedata-1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[page = 200, width=\linewidth,keepaspectratio]{lasso_densities_eyedata.pdf}
+	\end{subfigure}
+	\caption{Part of Approximation Density for Eyedata dataset; Left: best case from 52nd predictor, Right: worst case from 200th predictor}
+	\label{fig:Eyedata}
+\end{figure}
+
+The left of the \autoref{fig:Eyedata} has shown the largest distinction on the best scenario. Due to the reason that the for most of the predictors on the eyedata, the actual distribution is not asymptotically normal by MCMC plot, the optimal approximation case shows a laplacian-like distribution. This can directly lead to the inaccurate result for MFVB and LG-Global.
+For the worst case on the right of \autoref{fig:eyedata}, the marginal LG-local approximation underestimate the data distribution slightly, but the overall performance is still the best among all the three plots. 
+MFVB approximation again overestimates the posterior variance considerably.
+Although normal distributed assumption exist for LG-Global, LG-Global tends to correct the overestimated posterior variance of the regression coefficient, compared with MFVB. 
+
+\newpage
 \subsection{Approximation Accuracy Result}
-The following six tables demonstrate the experiment results for the approximation accuracy of 3 different algorithms, where LG-Local represent the marginal approximation of Local-Global Algorithm by lasso distribution, LG-Global represent the global approximation of Local-Global Algorithm by a univariate normal distribution with a particular global mean at $j_{th}$ component and the variance is used by the $h_th$ row and $j_th$ cell of the $\tilde{\Sigma}$ in the global covariance matrix $\tilde{\Sigma}$.
+The following six tables demonstrate the experiment results for the approximation accuracy of 3 different algorithms, where LG-Local represent the marginal approximation of Local-Global Algorithm by lasso distribution, LG-Global represent the global approximation of Local-Global Algorithm by a univariate normal distribution with a particular global mean at $j_{th}$ component and the variance is used by the $j_{th}$ row and $j_{th}$ column of the $\tilde{\Sigma}$.
 Each row illustrates a distinct quantile of approximation accuracy, such as minimum approximation accuracy achieved by each algorithm, maximum approximation accuracy via each algorithm etc.
 LG-Local represents the local approximation accuracy for our algorithm and LG-Global represents the global approximation accuracy in our algorithm. VB represents the Mean-Field-Variational-Bayes algorithm and MCMC represents the Monte Carlo Markov Chain method, as a gold standard that achieve 100\% accuracy for each approximation density.
-\newpage
+
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c| c|c|c|c|}
@@ -120,7 +198,7 @@ LG-Local represents the local approximation accuracy for our algorithm and LG-Gl
 	\caption{Experiment Result on Hitters dataset}
 	\label{table:Hitter}
 \end{table}
-\autoref{table:Hitter} illustrate the approximation result on Hitters dataset, the global approximation of the Local-Global algorithm is superior to the benchmark approach MFVB from the perspective of all the metrics by about 1 to 5 percentage. In addition, the time used for running the Local-Global algorithm  is 0.17s, which is 0.03s slower than the MFVB. It is expected since MFVB only involves the global parameter approximation, without including the process of local approximation. Meanwhile, both of the methods are 400 times faster than MCMC.
+\autoref{table:Hitter} illustrates the approximation result on Hitters dataset, the global approximation of the Local-Global algorithm is superior to the benchmark approach MFVB from the perspective of all the metrics by about 1 to 5 percentage. In addition, the time used for running the Local-Global algorithm  is 0.17s, which is 0.03s slower than the MFVB. It is expected since MFVB only involves the global parameter approximation, without including the process of local approximation. Meanwhile, both of the methods are 400 times faster than MCMC.
 The performance of Local-Global algorithm has proven to be better in approximation accuracy in this particular dataset regarded as the hardest among all of the datasets without significant increase of running speed,
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
@@ -140,9 +218,8 @@ The performance of Local-Global algorithm has proven to be better in approximati
 	\caption{Experiment Result on Kakadu dataset}
 	\label{table:Kakadu}
 \end{table}
-\newpage
-\autoref{table:Kakadu} illustrate the approximation result on Kakadu dataset. Even thought the minimum of global approximation of Local-Global algorithm is lower than MFVB, all other metrics are slightly higher than MFVB. For the local appxoimation of LG-Local, there are one to two percentage increase compared with MFVB. In addition, the execution time for the Local-Global is 0.05s shorther than that of MFVB(0.14s), while both methods achieves 6000 times faster speed than that of MCMC, this is because the numb er of samples in Kakadu is high and MCMC require a longer running time to sample. Nevertheless, the performance of the MFVB method and Local-Global algorithm would not degrade severly since the data distribution is approximately normal, while the assumption of both algorithms are also from normal distribution.
-\newpage
+
+\autoref{table:Kakadu} illustrate the approximation result on Kakadu dataset. Even thought the minimum of global approximation of Local-Global algorithm is lower than MFVB, all other metrics are slightly higher than MFVB. For the local appxoimation of LG-Local, there are one to two percentage increase compared with MFVB. In addition, the execution time for the Local-Global is 0.05s shorther than that of MFVB(0.14s), while both methods achieves 6000 times faster speed than that of MCMC, this is because the numb er of samples in Kakadu is high and MCMC require a longer running time to sample. Nevertheless, the performance of the MFVB method and Local-Global algorithm would not degrade severly since the data distribution is approximately normal.
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
@@ -164,12 +241,6 @@ The performance of Local-Global algorithm has proven to be better in approximati
 
 \autoref{table:bodyfat} illustrate the approximation result on Bodyfat dataset. Even though the minimum of global approximation of Local-Global algorithm is lower than MFVB similar to Kakadu, all other metrics are slightly higher than MFVB. For the local appxoimation of LG-Local, there are 2 to 5 percentage increase compared with MFVB. Apart from that, the execution time for the Local-Global is 0.03s shorter than that of MFVB(0.14s), while both methods achieves 300 times faster speed than that of MCMC.
 The data distribution on Bodyfat dataset is similar to that of Kakadu dataset since Bodyfat also follows a normal distribution, which means there is no drastic difference between MFVB and Local-Global algorithm.
-
-
-
-
-
-\newpage
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\begin{tabular}{|p{3cm}||c| c|c| c|c|c|c|}
@@ -188,12 +259,9 @@ The data distribution on Bodyfat dataset is similar to that of Kakadu dataset si
 	\caption{Experiment Result on Prostate dataset}
 	\label{table:prostate}
 \end{table}
+
 \autoref{table:prostate} illustrates the approximation result on the Prostate dataset.  The global approximation of Local-Global algorithm is slgihtly higher than MFVB similar to Kakadu, Bodyfat. The local approximation accuracy of LG-Local are higher than both global approximation and MFVB. Apart from that, the execution time for the Local-Global is 0.01s shorter than that of MFVB(0.11s), and both methods achieves 300 times faster speed than that of MCMC.
 The data distribution on Prostate dataset is similar to that of Bodyfat and Kakadu with an approximate normal distribution, which means there is no dramatic distinction between MFVB and Local-Global algorithm.
-
-\newpage
-
-
 
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
@@ -214,13 +282,8 @@ The data distribution on Prostate dataset is similar to that of Bodyfat and Kaka
 	\caption{Experiment Result on Credit dataset}
 	\label{table:Credit}
 \end{table}
-
-
 \autoref{table:Credit} demonstrates the approximation result on the Credit dataset.  The global approximation of Local-Global algorithm is slightly higher than MFVB, althought the minimum value of MFVB is roughly 8\% lower than LG-Global. The approximation accuracy of LG-global is similar to LG-local, achieving above 99\%. Also, the execution time for the Local-Global is 0.11s, and it is only 0.01s slower than Local-Global Algorithm. Both methods achieves 300 times faster speed than that of MCMC.
 Likewise, prostate, credit, Bodyfat and Kakadu have roughly normal distribution property directly lead to the similar result as before.
-
-
-\newpage
 \begin{table}[!h]
 	\resizebox{\linewidth}{!}{
 		\small

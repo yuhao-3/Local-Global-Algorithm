@@ -72,7 +72,7 @@ dataset_name <- "bodyfat"
 
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dat <- read.csv(here("data","prostate.data"), sep="\t")
 
 library(janitor)
@@ -115,7 +115,7 @@ dataset_name <- "comData"
 ```
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 Hitters = na.omit(Hitters)
 
 str(Hitters)
@@ -461,9 +461,17 @@ cat("\nLG1 running time =",time_LG1[3],"s")
 
 
 
+
+
+
+
+
+
+
+
 ```{r}
 source(here("code/lasso_distribution","Multi-Lasso.R")) 
-plot_densities <- function(ldens, cols, exclude, gold, threshold = 0.5) {
+plot_densities <- function(ldens, cols, exclude, gold, threshold = 0.2) {
   vacc <- c()
   
   xlim <- c()
@@ -476,6 +484,9 @@ plot_densities <- function(ldens, cols, exclude, gold, threshold = 0.5) {
       ylim <- range(c(ylim, subset_ldens$y), finite = TRUE)
     }
   }
+  
+  xlim =  c(-0.2,0.2)
+  ylim = c(0,5)
   
   plot(NA, type = "n", xlim = xlim, ylim = ylim, xlab = "x", ylab = "density")
   for (k in 2:length(ldens)) {
@@ -525,7 +536,7 @@ cc = res_LG1$c
 # cc2 = res_LG2_new$c
  
 
-pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 20, height= 9)
+pdf(here("figures",paste("lasso_densities_",dataset_name,".pdf",sep="")), width= 10, height= 8)
 
  
 cols <- c("purple","green", "blue", "red", "purple")
@@ -580,7 +591,7 @@ for (j in 1:p) {
   # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global","LG2_Local1","LG2_Local2","LG2_Global")
   # methods <- c("BEM+SE","MCMC", "VB", "VB-PHC","LG_Local","LG_Global")
   methods <- c("BEM+SE","MCMC", "VB", "LG_Local","LG_Global")
-    legend("topright",
+  legend("topright",
            legend=methods[-1],
            text.col=cols[2:5],
            border = FALSE,
@@ -636,10 +647,10 @@ pdf_data$label <- sprintf("(%g, %g, %g)", pdf_data$a, pdf_data$b, pdf_data$c)
 p <- ggplot(pdf_data, aes(x = x, y = y, color = label)) +
   geom_line() +
   scale_color_discrete(name = "Parameters\n(a, b, c)") +
-  labs(x = "X", y = "Density", title = "Univariate Lasso Distribution PDF for Different Parameter Settings") +
+  labs(x = "X", y = "Density") +
   theme(panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white"),
-        plot.title = element_text(hjust = 0.5, size = 30),
+        plot.title = element_text(hjust = 0.3, size = 30),
         legend.text = element_text(size = 25),
         legend.title = element_text(size = 25),
         axis.title.x = element_text(size = 14),
@@ -651,7 +662,7 @@ p <- ggplot(pdf_data, aes(x = x, y = y, color = label)) +
 
 
 # Save the plot to a file
-ggsave("figures/lasso_distribution.png", plot = p, width = 14, height = 6) # width
+ggsave("figures/lasso_distribution.png", plot = p, width = 17, height = 8) # width
 ```
 
 

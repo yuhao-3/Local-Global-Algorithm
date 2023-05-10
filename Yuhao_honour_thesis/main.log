@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  10 MAY 2023 13:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  11 MAY 2023 02:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -752,13 +752,13 @@ been already used, duplicate ignored
                    \relax 
 l.62 
       [2] [3] [4]
-<VIoptimization.jpg, id=375, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=389, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 80.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=397, 196.735pt x 93.34875pt>
+<VIdemo.png, id=411, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 133.
@@ -774,7 +774,7 @@ Chapter 2.
 [10
 
 ] [11]
-<lassodemo.png, id=453, 614.295pt x 388.45125pt>
+<lassodemo.png, id=467, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -806,7 +806,7 @@ Chapter 3.
 [27
 
 ] [28]
-<Lasso_distribution.png, id=648, 1445.4pt x 578.16pt>
+<Lasso_distribution.png, id=662, 1445.4pt x 578.16pt>
 File: Lasso_distribution.png Graphic file (type png)
 <use Lasso_distribution.png>
 Package pdftex.def Info: Lasso_distribution.png  used on input line 61.
@@ -867,24 +867,145 @@ Overfull \hbox (30.67468pt too wide) detected at line 664
 Chapter 4.
 [42
 
-] [43] [44]
-<lasso_densities_Hitters.pdf, id=747, page=2, 722.7pt x 722.7pt>
+] [43]
+<lasso_densities_Hitters.pdf, id=757, page=15, 722.7pt x 578.16pt>
 File: lasso_densities_Hitters.pdf Graphic file (type pdf)
-<use lasso_densities_Hitters.pdf, page 2>
-Package pdftex.def Info: lasso_densities_Hitters.pdf , page2 used on input line
- 92.
-(pdftex.def)             Requested size: 462.64183pt x 462.64772pt.
- [45 <./lasso_densities_Hitters.pdf>] [46]
+<use lasso_densities_Hitters.pdf, page 15>
+Package pdftex.def Info: lasso_densities_Hitters.pdf , page15 used on input lin
+e 91.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_Hitters-1.pdf, id=758, page=8, 722.7pt x 578.16pt>
+File: lasso_densities_Hitters-1.pdf Graphic file (type pdf)
+<use lasso_densities_Hitters-1.pdf, page 8>
+Package pdftex.def Info: lasso_densities_Hitters-1.pdf , page8 used on input li
+ne 94.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 89--96
+[][] [] 
+ []
+
+[44]
+<lasso_densities_Kakadu.pdf, id=764, page=1, 722.7pt x 578.16pt>
+File: lasso_densities_Kakadu.pdf Graphic file (type pdf)
+<use lasso_densities_Kakadu.pdf, page 1>
+Package pdftex.def Info: lasso_densities_Kakadu.pdf , page1 used on input line 
+105.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_Kakadu-1.pdf, id=765, page=2, 722.7pt x 578.16pt>
+File: lasso_densities_Kakadu-1.pdf Graphic file (type pdf)
+<use lasso_densities_Kakadu-1.pdf, page 2>
+Package pdftex.def Info: lasso_densities_Kakadu-1.pdf , page2 used on input lin
+e 108.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 103--110
+[][] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[45 <./lasso_densities_Hitters.pdf> <./lasso_densities_Hitters-1.pdf>]
+<lasso_densities_Bodyfat.pdf, id=782, page=1, 722.7pt x 578.16pt>
+File: lasso_densities_Bodyfat.pdf Graphic file (type pdf)
+<use lasso_densities_Bodyfat.pdf, page 1>
+Package pdftex.def Info: lasso_densities_Bodyfat.pdf , page1 used on input line
+ 120.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_Bodyfat-1.pdf, id=783, page=8, 722.7pt x 578.16pt>
+File: lasso_densities_Bodyfat-1.pdf Graphic file (type pdf)
+<use lasso_densities_Bodyfat-1.pdf, page 8>
+Package pdftex.def Info: lasso_densities_Bodyfat-1.pdf , page8 used on input li
+ne 123.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 118--125
+[][] [] 
+ []
+
+<lasso_densities_prostate.pdf, id=786, page=1, 722.7pt x 578.16pt>
+File: lasso_densities_prostate.pdf Graphic file (type pdf)
+<use lasso_densities_prostate.pdf, page 1>
+Package pdftex.def Info: lasso_densities_prostate.pdf , page1 used on input lin
+e 135.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_prostate-1.pdf, id=787, page=7, 722.7pt x 578.16pt>
+File: lasso_densities_prostate-1.pdf Graphic file (type pdf)
+<use lasso_densities_prostate-1.pdf, page 7>
+Package pdftex.def Info: lasso_densities_prostate-1.pdf , page7 used on input l
+ine 138.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 133--140
+[][] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[46 <./lasso_densities_Kakadu.pdf> <./lasso_densities_Kakadu-1.pdf> <./lasso_de
+nsities_Bodyfat.pdf> <./lasso_densities_Bodyfat-1.pdf>]
+<lasso_densities_Credit.pdf, id=814, page=11, 722.7pt x 578.16pt>
+File: lasso_densities_Credit.pdf Graphic file (type pdf)
+<use lasso_densities_Credit.pdf, page 11>
+Package pdftex.def Info: lasso_densities_Credit.pdf , page11 used on input line
+ 149.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_Credit-1.pdf, id=815, page=2, 722.7pt x 578.16pt>
+File: lasso_densities_Credit-1.pdf Graphic file (type pdf)
+<use lasso_densities_Credit-1.pdf, page 2>
+Package pdftex.def Info: lasso_densities_Credit-1.pdf , page2 used on input lin
+e 152.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 147--154
+[][] [] 
+ []
+
+<lasso_densities_eyedata-1.pdf, id=817, page=52, 722.7pt x 578.16pt>
+File: lasso_densities_eyedata-1.pdf Graphic file (type pdf)
+<use lasso_densities_eyedata-1.pdf, page 52>
+Package pdftex.def Info: lasso_densities_eyedata-1.pdf , page52 used on input l
+ine 163.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+<lasso_densities_eyedata.pdf, id=818, page=200, 722.7pt x 578.16pt>
+File: lasso_densities_eyedata.pdf Graphic file (type pdf)
+<use lasso_densities_eyedata.pdf, page 200>
+Package pdftex.def Info: lasso_densities_eyedata.pdf , page200 used on input li
+ne 166.
+(pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
+
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 161--168
+[][] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `fig:eyedata' on page 47 undefined on input line 173.
+
+[47 <./lasso_densities_prostate.pdf> <./lasso_densities_prostate-1.pdf> <./lass
+o_densities_Credit.pdf> <./lasso_densities_Credit-1.pdf>] [48 <./lasso_densitie
+s_eyedata-1.pdf> <./lasso_densities_eyedata.pdf>] [49]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[47] [48] [49] [50] [51]) (Chapter5.tex [52]
+[50]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[51] [52]) (Chapter5.tex [53]
 Chapter 5.
-) (main.bbl [53
+) (main.bbl [54
 
-] [54
+] [55
 
-]) [55] (main.aux)
+]) [56] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -893,13 +1014,13 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4C3E57DD965B580E01F7A39C31804301;8177.
+(rerunfilecheck)             Checksum: 96D86B5E3E073368FA345E8A5FCE9A1D;8177.
  ) 
 Here is how much of TeX's memory you used:
- 16487 strings out of 475385
- 274456 string characters out of 2783908
- 659892 words of memory out of 3000000
- 37347 multiletter control sequences out of 15000+600000
+ 16581 strings out of 475385
+ 277600 string characters out of 2783908
+ 660453 words of memory out of 3000000
+ 37424 multiletter control sequences out of 15000+600000
  482124 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,12n,80p,1202b,589s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -920,9 +1041,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (64 pages, 2453541 bytes).
+Output written on main.pdf (65 pages, 3404438 bytes).
 PDF statistics:
- 949 PDF objects out of 1000 (max. 8388607)
- 224 named destinations out of 1000 (max. 500000)
- 391 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1041 PDF objects out of 1200 (max. 8388607)
+ 230 named destinations out of 1000 (max. 500000)
+ 446 words of extra memory for PDF output out of 10000 (max. 10000000)
 

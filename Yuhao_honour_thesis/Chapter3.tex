@@ -550,7 +550,7 @@ $$
 
 
 
-\noindent Hence, $q^*(\theta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $\beta_j$ is:
+\noindent Hence, $q^*(\beta) = N(\widetilde{\mu},\widetilde{\Sigma})$ at the time when updating variable $\beta_j$ is:
 \begin{equation}
 	\label{eq:LG_mu}
 	\widetilde{\mu} =
@@ -598,12 +598,12 @@ $$
 
 The following bullet points summarized the procedure of our method.
 \begin{itemize}
-	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
+	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\beta = (\beta_j,\beta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
 	
 	
 	\item Compute the mean of lasso distribution and variance of lasso distribution : $elasso$ and $vlasso$ function in the aforementioned pseudo algorithm, with the current $a,b,c$: $q^*(\theta_1) \approx N(\mu_j^*,\Sigma_{jj}^*)$
-	\item Then we can use the update expression $q^*(\theta) = q(\theta_{-j}|\theta_j)\phi(\theta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\theta)$
-	\item Iterates through each variable $\theta_j$ and update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
+	\item Then we can use the update expression $q^*(\beta) = q(\beta_{-j}|\beta_j)\phi(\beta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\beta)$
+	\item Iterates through each variable $\beta_j$ and update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
 \end{itemize}
 
 \newpage
@@ -697,4 +697,14 @@ Using \autoref{eq:condBiNormal} and propagate equation from \autoref{eq:updateQ}
 		\State return $\tilde{\mu},\tilde{\Sigma}$
 	\end{algorithmic}
 \end{algorithm}
+
+
+The following bullet points summarized the procedure of Bivariate Local-Global Algorithm
+\begin{itemize}
+	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\beta_j,\beta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
+	\item Compute the mean of lasso distribution and variance of \textbf{bivariate} lasso distribution : $bielasso$ and $bivlasso$ function in the aforementioned pseudo algorithm, with the current $a,b,c$: $q^*(\beta_j) \approx N(\mu_j^*,\Sigma_{jj}^*)$
+	\item Then we can use the update expression $q^*(\theta) = q(\beta_{-j}|\beta_j)\phi(\beta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\beta)$
+	\item Iterates through each variable $\theta_j$ and update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
+\end{itemize}
+
 
