@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  9 MAY 2023 13:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  10 MAY 2023 13:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -752,13 +752,13 @@ been already used, duplicate ignored
                    \relax 
 l.62 
       [2] [3] [4]
-<VIoptimization.jpg, id=374, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=375, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 80.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=396, 196.735pt x 93.34875pt>
+<VIdemo.png, id=397, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 133.
@@ -774,7 +774,7 @@ Chapter 2.
 [10
 
 ] [11]
-<lassodemo.png, id=452, 614.295pt x 388.45125pt>
+<lassodemo.png, id=453, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -801,16 +801,16 @@ r/m/n/12 )) \OMS/cmsy/m/n/12 ^^@ []\OML/cmm/m/it/12 :
 LaTeX Warning: Reference `eq:lassoposteriorsummary' on page 25 undefined on inp
 ut line 398.
 
-) (Chapter3.tex [25] [26]
+[25]) (Chapter3.tex [26]
 Chapter 3.
 [27
 
 ] [28]
-<Lasso_distribution.png, id=647, 1011.78pt x 433.62pt>
+<Lasso_distribution.png, id=648, 1445.4pt x 578.16pt>
 File: Lasso_distribution.png Graphic file (type png)
 <use Lasso_distribution.png>
 Package pdftex.def Info: Lasso_distribution.png  used on input line 61.
-(pdftex.def)             Requested size: 462.64183pt x 198.27664pt.
+(pdftex.def)             Requested size: 462.64183pt x 185.05908pt.
  [29 <./Lasso_distribution.png>] [30] [31]
 Underfull \hbox (badness 10000) in paragraph at lines 209--211
 
@@ -859,61 +859,32 @@ m/n/12 jD\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 / \OML/cmm/m/it/12 p\OT1/cmr/m/n/12
  []
 
 [36] [37] [38] [39]
-
-LaTeX Warning: Reference `eq:LocalGlobalVI' on page 40 undefined on input line 
-611.
-
-
-Overfull \hbox (30.67468pt too wide) detected at line 662
+Overfull \hbox (30.67468pt too wide) detected at line 664
 [][][]\OML/cmm/m/it/12 ^^L[] \OMS/cmsy/m/n/12 j D [] [] [] \OML/cmm/m/it/12 :
  []
 
-) (Chapter4.tex [40] [41]
+[40]) (Chapter4.tex [41]
 Chapter 4.
 [42
 
-] [43]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<lasso_densities_Hitters.pdf, id=741, page=1, 722.7pt x 722.7pt>
-File: lasso_densities_Hitters.pdf Graphic file (type pdf)
-<use lasso_densities_Hitters.pdf, page 1>
-Package pdftex.def Info: lasso_densities_Hitters.pdf , page1 used on input line
- 193.
-(pdftex.def)             Requested size: 462.64183pt x 462.64772pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<lasso_densities_Hitters.pdf, id=742, page=2, 722.7pt x 722.7pt>
+] [43] [44]
+<lasso_densities_Hitters.pdf, id=747, page=2, 722.7pt x 722.7pt>
 File: lasso_densities_Hitters.pdf Graphic file (type pdf)
 <use lasso_densities_Hitters.pdf, page 2>
 Package pdftex.def Info: lasso_densities_Hitters.pdf , page2 used on input line
- 200.
+ 92.
 (pdftex.def)             Requested size: 462.64183pt x 462.64772pt.
+ [45 <./lasso_densities_Hitters.pdf>] [46]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (Chapter5.tex [44] [45] [46] [47] [48 <./lasso_densities_Hitters.pdf>]
-[49 <./lasso_densities_Hitters.pdf>]
+[47] [48] [49] [50] [51]) (Chapter5.tex [52]
 Chapter 5.
-) (main.bbl [50
+) (main.bbl [53
 
-] [51
+] [54
 
-]) [52] (main.aux)
+]) [55] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -922,13 +893,13 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9A08F6762F69E4F8225F78A600782092;8177.
+(rerunfilecheck)             Checksum: 4C3E57DD965B580E01F7A39C31804301;8177.
  ) 
 Here is how much of TeX's memory you used:
- 16490 strings out of 475385
- 274617 string characters out of 2783908
- 661846 words of memory out of 3000000
- 37352 multiletter control sequences out of 15000+600000
+ 16487 strings out of 475385
+ 274456 string characters out of 2783908
+ 659892 words of memory out of 3000000
+ 37347 multiletter control sequences out of 15000+600000
  482124 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,12n,80p,1202b,589s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -949,9 +920,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (61 pages, 3748705 bytes).
+Output written on main.pdf (64 pages, 2453541 bytes).
 PDF statistics:
- 928 PDF objects out of 1000 (max. 8388607)
- 222 named destinations out of 1000 (max. 500000)
- 396 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 949 PDF objects out of 1000 (max. 8388607)
+ 224 named destinations out of 1000 (max. 500000)
+ 391 words of extra memory for PDF output out of 10000 (max. 10000000)
 

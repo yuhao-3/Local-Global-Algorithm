@@ -52,11 +52,11 @@
 \contentsline {section}{\numberline {4.1}Experimental Setting}{42}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Evaluation metric}{42}{subsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.1.2}Experimental datasets}{42}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Experimental Result}{44}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Approximation Accuracy Result}{44}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Approximation Density Visualization}{44}{subsection.4.2.2}%
-\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{50}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Limitation}{50}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Work}{50}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Conclusion}{50}{section.5.3}%
-\contentsline {chapter}{Bibliography}{51}{chapter*.32}%
+\contentsline {section}{\numberline {4.2}Experimental Result}{45}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Approximation Density Visualization}{45}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Approximation Accuracy Result}{46}{subsection.4.2.2}%
+\contentsline {chapter}{\numberline {5}Discussion and Conclusion}{53}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Limitation}{53}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Work}{53}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Conclusion}{53}{section.5.3}%
+\contentsline {chapter}{Bibliography}{54}{chapter*.31}%

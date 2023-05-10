@@ -5,8 +5,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Graphical comparison between lasso regression and ridge regression\relax }}{12}{figure.caption.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of Lasso Distribution PDF for different parameter setting\relax }}{29}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of the Univariate Lasso Distribution PDF for different parameter setting\relax }}{29}{figure.caption.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset\relax }}{48}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Part of Approximation Density for Hitters dataset\relax }}{49}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset; Green line refers to MCMC(note they are overlapped), Blue line is MFVB, Red is LG-Local, Purple line is LG-Global\relax }}{45}{figure.caption.24}%
 \addvspace {10\p@ }

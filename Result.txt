@@ -1,0 +1,123 @@
+Hitters
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 86.8   92.4     97.3      89.3
+1st Qu.  100 92.1   95.7     99.2      97.0
+Median   100 95.7   97.3     99.6      97.4
+Mean     100 94.2   97.1     99.3      97.1
+3rd Qu.  100 97.4   98.9     99.7      99.0
+Max.     100 98.7   99.6     99.8      99.7
+
+BEM running time =  0.07 s
+MCMC running time =  453.75 s
+MFVB running time =  0.17 s
+LG1 running time = 0.17 s
+
+
+
+
+
+Kakadu
+
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 93.2   95.8     95.9      92.2
+1st Qu.  100 98.9   99.7     99.8      99.2
+Median   100 99.2   99.8     99.8      99.4
+Mean     100 98.6   99.4     99.4      98.8
+3rd Qu.  100 99.3   99.8     99.8      99.8
+Max.     100 99.7   99.8     99.8      99.8
+
+BEM running time =  0.07 s
+MCMC running time =  6696.56 s
+MFVB running time =  0.14 s
+LG1 running time = 0.19 s
+
+
+
+
+
+
+bodyfat
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 91.3   95.1     96.3      90.7
+1st Qu.  100 97.0   98.8     99.6      97.6
+Median   100 98.0   99.3     99.7      98.4
+Mean     100 97.0   98.7     99.2      97.2
+3rd Qu.  100 98.4   99.5     99.7      98.6
+Max.     100 99.3   99.6     99.7      99.7
+
+
+
+BEM running time =  0.06 s
+MCMC running time =  398.59 s
+MFVB running time =  0.14 s
+LG1 running time = 0.17 s
+
+
+
+
+
+Prostate
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 96.9   99.1     99.5      97.4
+1st Qu.  100 97.2   99.1     99.5      97.9
+Median   100 97.6   99.2     99.6      98.9
+Mean     100 97.5   99.2     99.6      98.7
+3rd Qu.  100 97.7   99.2     99.6      99.5
+Max.     100 98.4   99.4     99.6      99.6
+
+BEM running time =  0.05 s
+MCMC running time =  336.31 s
+MFVB running time =  0.11 s
+LG1 running time = 0.12 s
+
+
+
+Credit
+
+
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 91.8   94.4     99.5      99.3
+1st Qu.  100 98.3   98.7     99.7      99.5
+Median   100 99.4   99.7     99.8      99.5
+Mean     100 97.9   98.8     99.7      99.6
+3rd Qu.  100 99.5   99.7     99.8      99.7
+Max.     100 99.7   99.8     99.8      99.8
+
+
+BEM running time =  0.05 s
+MCMC running time =  359.92 s
+MFVB running time =  0.1 s
+LG1 running time = 0.11 s
+
+
+
+
+Eyedata
+
+
+        MCMC   VB VB-PHC LG_Local LG_Global
+Min.     100 78.4   87.1     97.3      86.1
+1st Qu.  100 86.9   93.9     98.6      90.4
+Median   100 90.3   95.4     98.7      91.3
+Mean     100 88.9   94.9     98.7      91.8
+3rd Qu.  100 91.2   96.3     98.8      92.3
+Max.     100 93.1   97.6     99.1      99.2
+
+BEM running time =  1.71 s
+
+MCMC running time =  18144.7 s
+
+MFVB running time =  1.21 s
+
+LG1 running time = 1.72 s
+
+
+
+
+
+
+
+
+
+
+

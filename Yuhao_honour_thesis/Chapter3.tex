@@ -1,7 +1,7 @@
 \chapter{Methodlogy}
 \label{Chapter3}
 \section{Introduction}
-The main intuition behind the method is to adjust MFVB posterior parameter estimate result for posterior of regression coefficients $\beta$: $\tilde{\mu}$ and $\tilde{\Sigma}$. Continuing utilizing mean field variational family $q(\theta) = \prod_i q(\theta_i)$ assumption and Gaussian Approximation: $q^*(\theta) \sim N(\tilde{\mu},\tilde{\Sigma})$  to approximate the global Bayesian Lasso Posterior $p(\theta|\mathcal{D})$, with the correction of local parameter information that the marginal likelihood is approximately coincides with a lasso distribution if a Laplace prior is assigned. As a consequence, the goal is to seek for the mathematical expression of each of the local mean parameter $\mu_j^{*}$, local variance $\Sigma_{jj}^{*}$ from a lasso distribution locally, a global mean $\tilde{\mu}$ and global variance $\tilde{\Sigma}$ of $q^*(\theta)$ for Gaussian Approximation can be updated by iteratively to correct global parameter estimate by local parameter expression, for each $\beta_j$.
+The main intuition behind the method is to adjust MFVB posterior parameter estimate result for the posterior of regression coefficients $\beta$: $\tilde{\mu}$ and $\tilde{\Sigma}$. Continuing utilizing mean field variational family $q(\theta) = \prod_i q(\theta_i)$ assumption and Gaussian Approximation: $q^*(\theta) \sim N(\tilde{\mu},\tilde{\Sigma})$  to approximate the global Bayesian Lasso Posterior $p(\theta|\mathcal{D})$, with the correction of local parameter information that the marginal likelihood approximately coincides with a lasso distribution if a Laplace prior is assigned. As a consequence, the goal is to seek the mathematical expression of each of the local mean parameter $\mu_j^{*}$, local variance $\Sigma_{jj}^{*}$ from a lasso distribution locally, a global mean $\tilde{\mu}$ and global variance $\tilde{\Sigma}$ of $q^*(\theta)$ for Gaussian Approximation can be updated by iteratively to correct global parameter estimate by local parameter expression, for each $\beta_j$.
 
 
 \section{Basic Setting for the Bayesian Lasso Problem}
@@ -59,7 +59,7 @@ Before continuing presenting the methodology, the introduction of lasso distribu
          
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{Lasso_distribution}
-	\caption{Visualization of Lasso Distribution PDF for different parameter setting}
+	\caption{Visualization of the Univariate Lasso Distribution PDF for different parameter setting}
 	\label{fig:LassoDist}
 \end{figure}
 As shown in \autoref{fig:LassoDist},  it demonstrates the shape and location of the univariate lasso distribution with different parameter settings. The orange line depicts the lasso distribution when $(a,b,c) = (1,5,-0.5)$ respectively, the yellow line depicts the lasso distribution when $(a,b,c) = (1,0,0.5)$, the green line depicts the lasso distribution when $(a,b,c) = (1,0,0.5)$, the sky blue one depicts the lasso distribution when $(a,b,c) = (5,0,0.5)$, the blue line depicts the lasso distribution when $(a,b,c) = (1,5,0.5)$, the blue line depicts the lasso distribution when $(a,b,c) = (1,0,5)$, the pink line depicts the lasso distribution when  $(a,b,c) = (5,5,5)$. 
@@ -601,14 +601,16 @@ The following bullet points summarized the procedure of our method.
 	\item Our target: $p(\theta|\mathcal{D})$ = $p(\beta, \sigma^2|\mathcal{D})$, where a normal distribution is used to approximate, with global parameters $\tilde{\mu},\tilde{\Sigma}$. The initial estimate of $\tilde{\mu}$ and $\Sigma$ has been obtained via MFVB. Define $\theta = (\theta_j,\theta_{-j})$, separated by a target variable and rest of the variables. $\mu_{j}^*, \Sigma_{jj}^*$ as local parameter
 	
 	
-	\item Compute the mean of lasso distribution and variance of lasso distribution with the current $a,b,c$: $q^*(\theta_1) \approx N(\mu_j^*,\Sigma_{jj}^*)$
-	\item We can use the update expression $q^*(\theta) = q(\theta_{-j}|\theta_j)\phi(\theta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\theta)$
+	\item Compute the mean of lasso distribution and variance of lasso distribution : $elasso$ and $vlasso$ function in the aforementioned pseudo algorithm, with the current $a,b,c$: $q^*(\theta_1) \approx N(\mu_j^*,\Sigma_{jj}^*)$
+	\item Then we can use the update expression $q^*(\theta) = q(\theta_{-j}|\theta_j)\phi(\theta_j;\mu_j^*,\Sigma_{jj}^*)$ to adjust the global mean and global covariance of $q(\theta)$
 	\item Iterates through each variable $\theta_j$ and update $\tilde{\mu}$ and $\tilde{\Sigma}$ each time by the derived expression.
 \end{itemize}
 
 \newpage
 \subsection{Bivariate local global algorithm}
-Apart from the Univariate algorithm that match each variable of interest into an univariate Lasso distribution, each pair of regression coefficients can be matched simultaneously by a bivariate lasso distribution as mentioned in \autoref{bilasso}. The main intuition is similar to \autoref{eq:LocalGlobalVI}, but
+Apart from the Univariate algorithm that match each variable of interest into an univariate Lasso distribution, each pair of regression coefficients can be matched simultaneously by a bivariate lasso distribution as mentioned in \autoref{bilasso}.
+The number of index pair can be calculated via while the combination arithmetric. The total number of index pair is: ${p}\choose{2}$. For example, if $p=3$ then index pair $\mathcal{I}$: can be $(1,2)$, $(1,3)$ and $(2,3)$.
+The main intuition is similar to \autoref{LocalGlobalVI}, but
 the log likelihood of each index pair $\mathcal{I}$ now can be written as:
 \begin{equation}
 	\begin{array}{rl} 
@@ -673,24 +675,26 @@ To propagate to correct the global mean and variance parameter, note the conditi
 \end{equation}
 Using \autoref{eq:condBiNormal} and propagate equation from \autoref{eq:updateQ}, the update formula for $\tilde{\mu}$ and $\tilde{\Sigma}$ can be updated by the same equation as the univariate case from \autoref{eq:LG_mu} and \autoref{eq:LG_sigma} with the substitution of subscript $j$ to index pair $\mathcal{I}$.
 
+\newpage
 \begin{algorithm}
 	\caption{Bivariate-Local-Global-Algorithm}
 	\begin{algorithmic}[1]
 		
 		\State Input: data $X$, normalized response variable $y$, parameter from MFVB $(\tilde{a},\tilde{b},\tilde{\mu},\tilde{\Sigma})$, Penalizing parameter: $\lambda$
 		\While{$\tilde{\mu}$ is changing less than $\epsilon$}
-		\For{$j=1$ to $p$}
-		\State $a = \frac{\tilde{a}}{\tilde{b}}(X^TX)_{j,j} + (X^TX)_{j,-j}\tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}$ \Comment{Obtain Lasso parameter}
-		\State $b = \frac{\tilde{a}}{\tilde{b}}  X_{j}(y-X_{-j}(\tilde{\mu}_{-j} - \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}\tilde{\mu}_j))       $ \Comment{Obtain Lasso parameter}
+		\For{$ \mathcal{I} = (1,1)$ to $(p-1, p)$}
+		\State $a = \frac{\widetilde{a}}{\widetilde{b}} \left(X_\sI^TX_\sI + \tfrac{1}{2}X_\sI^TX_{-j}T + \tfrac{1}{2}T^T X_{-j}^T X_\sI \right)$ \Comment{Obtain Lasso parameter}
+		\State $b = \frac{\widetilde{a}}{\widetilde{b}} X_\sI^T\left( y - X_{-\sI}s \right) $ \Comment{Obtain Lasso parameter}
 		\State $c = \lambda (\exp(\Gamma(\tilde{a}+0.5) - \Gamma(\tilde{a}) - 0.5\log(\tilde{b})))  $ \Comment{Obtain Lasso parameter}
-		\State $\tilde{\mu_{j}} =  elasso(a,b,c) = \mu_j ^*$ \Comment{Replace by Local mean}
-		\State $\tilde{\mu_{-j}} = \tilde{\mu}_{-j} +  \tilde{\Sigma}_{-j,j}\tilde{\Sigma}^{-1}_{jj}(\tilde{\mu}_j^*-\tilde{\mu}_j)$ \Comment{Update Global Mean}
-		\State $\tilde{\Sigma}_{j,j} = vlasso(a,b,c) = \Sigma_{jj}^*$ \Comment{Replace by Updated Local Covariance}
-		\State $\tilde{\Sigma}_{j,-j} = \Sigma_{jj}^*  \tilde{\Sigma}_{jj}^{-1}\tilde{\Sigma}_{j,-j} $ \Comment{Update Global Covariance}
-		\State $\tilde{\Sigma}_{-j,j} = \tilde{\Sigma_{j,-j}}^T$ \Comment{Update Global Covariance}
-		\State $\tilde{\Sigma}_{-j,-j} = \tilde{\Sigma}_{-j,-j} + \tilde{\Sigma}_{-j,j}\tilde{\Sigma}_{j,j}^{-1}(\Sigma_{j,j}^{*} - \tilde{\Sigma}_{j,j})\tilde{\Sigma}_{j,j}^{-1}\tilde{\Sigma}_{j,-j}$ \Comment{Update Global Covariance}		
+		\State $\tilde{\mu_{\mathcal{I}}} =  Bielasso(a,b,c) = \mu_\mathcal{I} ^*$ \Comment{Replace by Local mean}
+		\State $\tilde{\mu_{-\mathcal{I}}} = \tilde{\mu}_{-\mathcal{I}} +  \tilde{\Sigma}_{-\mathcal{I},\mathcal{I}}\tilde{\Sigma}^{-1}_{\mathcal{I}\mathcal{I}}(\tilde{\mu}_\mathcal{I}^*-\tilde{\mu}_\mathcal{I})$ \Comment{Update Global Mean}
+		\State $\tilde{\Sigma}_{\mathcal{I},\mathcal{I}} = Bivlasso(a,b,c) = \Sigma_{\mathcal{I}\mathcal{I}}^*$ \Comment{Replace by Updated Local Covariance}
+		\State $\tilde{\Sigma}_{\mathcal{I},-\mathcal{I}} = \Sigma_{\mathcal{I}\mathcal{I}}^*  \tilde{\Sigma}_{\mathcal{I}\mathcal{I}}^{-1}\tilde{\Sigma}_{\mathcal{I},-\mathcal{I}} $ \Comment{Update Global Covariance}
+		\State $\tilde{\Sigma}_{-\mathcal{I},\mathcal{I}} = \tilde{\Sigma_{\mathcal{I},-\mathcal{I}}}^T$ \Comment{Update Global Covariance}
+		\State $\tilde{\Sigma}_{-\mathcal{I},-\mathcal{I}} = \tilde{\Sigma}_{-\mathcal{I},-\mathcal{I}} + \tilde{\Sigma}_{-\mathcal{I},\mathcal{I}}\tilde{\Sigma}_{\mathcal{I},\mathcal{I}}^{-1}(\Sigma_{\mathcal{I},\mathcal{I}}^{*} - \tilde{\Sigma}_{\mathcal{I},\mathcal{I}})\tilde{\Sigma}_{\mathcal{I},\mathcal{I}}^{-1}\tilde{\Sigma}_{\mathcal{I},-\mathcal{I}}$ \Comment{Update Global Covariance}		
 		\EndFor
 		\EndWhile
 		\State return $\tilde{\mu},\tilde{\Sigma}$
 	\end{algorithmic}
 \end{algorithm}
+
