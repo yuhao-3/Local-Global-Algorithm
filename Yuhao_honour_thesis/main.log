@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  12 MAY 2023 11:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  12 MAY 2023 12:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -752,13 +752,13 @@ been already used, duplicate ignored
                    \relax 
 l.62 
       [2] [3] [4]
-<VIoptimization.jpg, id=394, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=393, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 80.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=416, 196.735pt x 93.34875pt>
+<VIdemo.png, id=415, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 133.
@@ -774,7 +774,7 @@ Chapter 2.
 [10
 
 ] [11]
-<lassodemo.png, id=472, 614.295pt x 388.45125pt>
+<lassodemo.png, id=471, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -801,7 +801,7 @@ Chapter 3.
 [26
 
 ] [27]
-<Lasso_distribution.png, id=661, 1445.4pt x 578.16pt>
+<Lasso_distribution.png, id=662, 1445.4pt x 578.16pt>
 File: Lasso_distribution.png Graphic file (type png)
 <use Lasso_distribution.png>
 Package pdftex.def Info: Lasso_distribution.png  used on input line 58.
@@ -863,13 +863,13 @@ Chapter 4.
 [41
 
 ] [42]
-<lasso_densities_Hitters.pdf, id=757, page=15, 722.7pt x 578.16pt>
+<lasso_densities_Hitters.pdf, id=758, page=15, 722.7pt x 578.16pt>
 File: lasso_densities_Hitters.pdf Graphic file (type pdf)
 <use lasso_densities_Hitters.pdf, page 15>
 Package pdftex.def Info: lasso_densities_Hitters.pdf , page15 used on input lin
 e 90.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Hitters-1.pdf, id=758, page=8, 722.7pt x 578.16pt>
+<lasso_densities_Hitters-1.pdf, id=759, page=8, 722.7pt x 578.16pt>
 File: lasso_densities_Hitters-1.pdf Graphic file (type pdf)
 <use lasso_densities_Hitters-1.pdf, page 8>
 Package pdftex.def Info: lasso_densities_Hitters-1.pdf , page8 used on input li
@@ -880,13 +880,13 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 88--95
 [][] [] 
  []
 
-<lasso_densities_Kakadu.pdf, id=760, page=1, 722.7pt x 578.16pt>
+<lasso_densities_Kakadu.pdf, id=761, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_Kakadu.pdf Graphic file (type pdf)
 <use lasso_densities_Kakadu.pdf, page 1>
 Package pdftex.def Info: lasso_densities_Kakadu.pdf , page1 used on input line 
 103.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Kakadu-1.pdf, id=761, page=2, 722.7pt x 578.16pt>
+<lasso_densities_Kakadu-1.pdf, id=762, page=2, 722.7pt x 578.16pt>
 File: lasso_densities_Kakadu-1.pdf Graphic file (type pdf)
 <use lasso_densities_Kakadu-1.pdf, page 2>
 Package pdftex.def Info: lasso_densities_Kakadu-1.pdf , page2 used on input lin
@@ -897,13 +897,13 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 101--108
 [][] [] 
  []
 
-<lasso_densities_Bodyfat.pdf, id=764, page=1, 722.7pt x 578.16pt>
+<lasso_densities_Bodyfat.pdf, id=765, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_Bodyfat.pdf Graphic file (type pdf)
 <use lasso_densities_Bodyfat.pdf, page 1>
 Package pdftex.def Info: lasso_densities_Bodyfat.pdf , page1 used on input line
  115.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Bodyfat-1.pdf, id=765, page=8, 722.7pt x 578.16pt>
+<lasso_densities_Bodyfat-1.pdf, id=766, page=8, 722.7pt x 578.16pt>
 File: lasso_densities_Bodyfat-1.pdf Graphic file (type pdf)
 <use lasso_densities_Bodyfat-1.pdf, page 8>
 Package pdftex.def Info: lasso_densities_Bodyfat-1.pdf , page8 used on input li
@@ -914,13 +914,13 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 113--120
 [][] [] 
  []
 
-<lasso_densities_prostate.pdf, id=768, page=1, 722.7pt x 578.16pt>
+<lasso_densities_prostate.pdf, id=769, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_prostate.pdf Graphic file (type pdf)
 <use lasso_densities_prostate.pdf, page 1>
 Package pdftex.def Info: lasso_densities_prostate.pdf , page1 used on input lin
 e 127.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_prostate-1.pdf, id=769, page=7, 722.7pt x 578.16pt>
+<lasso_densities_prostate-1.pdf, id=770, page=7, 722.7pt x 578.16pt>
 File: lasso_densities_prostate-1.pdf Graphic file (type pdf)
 <use lasso_densities_prostate-1.pdf, page 7>
 Package pdftex.def Info: lasso_densities_prostate-1.pdf , page7 used on input l
@@ -931,13 +931,13 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 125--132
 [][] [] 
  []
 
-<lasso_densities_Credit.pdf, id=771, page=11, 722.7pt x 578.16pt>
+<lasso_densities_Credit.pdf, id=772, page=11, 722.7pt x 578.16pt>
 File: lasso_densities_Credit.pdf Graphic file (type pdf)
 <use lasso_densities_Credit.pdf, page 11>
 Package pdftex.def Info: lasso_densities_Credit.pdf , page11 used on input line
  139.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Credit-1.pdf, id=772, page=2, 722.7pt x 578.16pt>
+<lasso_densities_Credit-1.pdf, id=773, page=2, 722.7pt x 578.16pt>
 File: lasso_densities_Credit-1.pdf Graphic file (type pdf)
 <use lasso_densities_Credit-1.pdf, page 2>
 Package pdftex.def Info: lasso_densities_Credit-1.pdf , page2 used on input lin
@@ -948,13 +948,13 @@ Overfull \hbox (2.61107pt too wide) in paragraph at lines 137--144
 [][] [] 
  []
 
-<lasso_densities_eyedata-1.pdf, id=774, page=52, 722.7pt x 578.16pt>
+<lasso_densities_eyedata-1.pdf, id=775, page=52, 722.7pt x 578.16pt>
 File: lasso_densities_eyedata-1.pdf Graphic file (type pdf)
 <use lasso_densities_eyedata-1.pdf, page 52>
 Package pdftex.def Info: lasso_densities_eyedata-1.pdf , page52 used on input l
 ine 151.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_eyedata.pdf, id=775, page=200, 722.7pt x 578.16pt>
+<lasso_densities_eyedata.pdf, id=776, page=200, 722.7pt x 578.16pt>
 File: lasso_densities_eyedata.pdf Graphic file (type pdf)
 <use lasso_densities_eyedata.pdf, page 200>
 Package pdftex.def Info: lasso_densities_eyedata.pdf , page200 used on input li
@@ -1021,11 +1021,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  16582 strings out of 475385
  277588 string characters out of 2783908
- 668443 words of memory out of 3000000
+ 668447 words of memory out of 3000000
  37423 multiletter control sequences out of 15000+600000
  482124 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 77i,12n,80p,1202b,589s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 77i,12n,80p,1214b,589s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\12958\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pf
 b><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><D:/P
@@ -1043,9 +1043,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (67 pages, 3412041 bytes).
+Output written on main.pdf (67 pages, 3412541 bytes).
 PDF statistics:
- 1061 PDF objects out of 1200 (max. 8388607)
+ 1062 PDF objects out of 1200 (max. 8388607)
  232 named destinations out of 1000 (max. 500000)
  454 words of extra memory for PDF output out of 10000 (max. 10000000)
 
