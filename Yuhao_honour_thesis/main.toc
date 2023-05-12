@@ -44,7 +44,7 @@
 \contentsline {subsubsection}{Derivation of Normalizing Constant}{32}{subsubsection*.20}%
 \contentsline {subsubsection}{Derivation of Expectation}{33}{subsubsection*.21}%
 \contentsline {subsubsection}{Derivation of Covariance Matrix}{33}{subsubsection*.22}%
-\contentsline {subsubsection}{Derivation of marginal distribution}{35}{subsubsection*.23}%
+\contentsline {subsubsection}{Derivation of marginal distribution}{34}{subsubsection*.23}%
 \contentsline {section}{\numberline {3.4}Local-Global Algorithm}{36}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Univariate local global algorithm}{36}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Bivariate local global algorithm}{39}{subsection.3.4.2}%

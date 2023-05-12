@@ -5,7 +5,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Graphical comparison between lasso regression and ridge regression\relax }}{12}{figure.caption.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of the Univariate Lasso Distribution PDF for different parameter setting\relax }}{28}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of the Univariate Lasso Distribution PDF for different parameter settings\relax }}{28}{figure.caption.16}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset; Left: best case, Right: worst case\relax }}{44}{figure.caption.24}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Part of Approximation Density for Kakadu dataset; Left: best case, Right: worst case\relax }}{45}{figure.caption.25}%
