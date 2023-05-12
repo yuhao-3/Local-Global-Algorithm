@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  11 MAY 2023 02:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2023.2.10)  11 MAY 2023 19:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -655,7 +655,7 @@ Package hyperref Info: Link coloring ON on input line 19.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (Titlefluff.tex
-<UsydLogo.pdf, id=183, 293.095pt x 101.37875pt>
+<UsydLogo.pdf, id=187, 293.095pt x 101.37875pt>
 File: UsydLogo.pdf Graphic file (type pdf)
 <use UsydLogo.pdf>
 Package pdftex.def Info: UsydLogo.pdf  used on input line 21.
@@ -752,13 +752,13 @@ been already used, duplicate ignored
                    \relax 
 l.62 
       [2] [3] [4]
-<VIoptimization.jpg, id=389, 1361.085pt x 1002.74625pt>
+<VIoptimization.jpg, id=394, 1361.085pt x 1002.74625pt>
 File: VIoptimization.jpg Graphic file (type jpg)
 <use VIoptimization.jpg>
 Package pdftex.def Info: VIoptimization.jpg  used on input line 80.
 (pdftex.def)             Requested size: 272.21217pt x 200.5457pt.
  [5 <./VIoptimization.jpg>]
-<VIdemo.png, id=411, 196.735pt x 93.34875pt>
+<VIdemo.png, id=416, 196.735pt x 93.34875pt>
 File: VIdemo.png Graphic file (type png)
 <use VIdemo.png>
 Package pdftex.def Info: VIdemo.png  used on input line 133.
@@ -774,7 +774,7 @@ Chapter 2.
 [10
 
 ] [11]
-<lassodemo.png, id=467, 614.295pt x 388.45125pt>
+<lassodemo.png, id=472, 614.295pt x 388.45125pt>
 File: lassodemo.png Graphic file (type png)
 <use lassodemo.png>
 Package pdftex.def Info: lassodemo.png  used on input line 41.
@@ -796,27 +796,22 @@ m/n/12 (\OML/cmm/m/it/12 a \OT1/cmr/m/n/12 + 1)[](\OML/cmm/m/it/12 ^^[[]\OT1/cm
 r/m/n/12 )) \OMS/cmsy/m/n/12 ^^@ []\OML/cmm/m/it/12 :
  []
 
-[19] [20] [21] [22] [23] [24]
-
-LaTeX Warning: Reference `eq:lassoposteriorsummary' on page 25 undefined on inp
-ut line 398.
-
-[25]) (Chapter3.tex [26]
+[19] [20] [21] [22] [23] [24]) (Chapter3.tex [25]
 Chapter 3.
-[27
+[26
 
-] [28]
-<Lasso_distribution.png, id=662, 1445.4pt x 578.16pt>
+] [27]
+<Lasso_distribution.png, id=661, 1445.4pt x 578.16pt>
 File: Lasso_distribution.png Graphic file (type png)
 <use Lasso_distribution.png>
 Package pdftex.def Info: Lasso_distribution.png  used on input line 61.
 (pdftex.def)             Requested size: 462.64183pt x 185.05908pt.
- [29 <./Lasso_distribution.png>] [30] [31]
+ [28 <./Lasso_distribution.png>] [29] [30]
 Underfull \hbox (badness 10000) in paragraph at lines 209--211
 
  []
 
-[32] [33]
+[31] [32]
 Overfull \hbox (12.97688pt too wide) detected at line 327
 []
  []
@@ -826,7 +821,7 @@ Overfull \hbox (56.41408pt too wide) detected at line 393
 []
  []
 
-[34] [35]
+[33] [34]
 Overfull \hbox (2.76614pt too wide) in paragraph at lines 432--434
 \OT1/cmr/m/n/12 where $\OML/cmm/m/it/12 ^^V[] \OT1/cmr/m/n/12 = (\OMS/cmsy/m/n/
 12 ^^@[]\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + [])$, $\OML/cmm/m/it/12 ^^V[] \O
@@ -858,137 +853,147 @@ m/n/12 jD\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 / \OML/cmm/m/it/12 p\OT1/cmr/m/n/12
 12 ^^@
  []
 
-[36] [37] [38] [39]
+[35] [36] [37] [38]
 Overfull \hbox (30.67468pt too wide) detected at line 664
 [][][]\OML/cmm/m/it/12 ^^L[] \OMS/cmsy/m/n/12 j D [] [] [] \OML/cmm/m/it/12 :
  []
 
-[40]) (Chapter4.tex [41]
+[39]) (Chapter4.tex [40]
 Chapter 4.
-[42
+[41
 
-] [43]
+] [42]
 <lasso_densities_Hitters.pdf, id=757, page=15, 722.7pt x 578.16pt>
 File: lasso_densities_Hitters.pdf Graphic file (type pdf)
 <use lasso_densities_Hitters.pdf, page 15>
 Package pdftex.def Info: lasso_densities_Hitters.pdf , page15 used on input lin
-e 91.
+e 90.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 <lasso_densities_Hitters-1.pdf, id=758, page=8, 722.7pt x 578.16pt>
 File: lasso_densities_Hitters-1.pdf Graphic file (type pdf)
 <use lasso_densities_Hitters-1.pdf, page 8>
 Package pdftex.def Info: lasso_densities_Hitters-1.pdf , page8 used on input li
-ne 94.
+ne 93.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 89--96
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 88--95
 [][] [] 
  []
 
-[44]
-<lasso_densities_Kakadu.pdf, id=764, page=1, 722.7pt x 578.16pt>
+<lasso_densities_Kakadu.pdf, id=760, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_Kakadu.pdf Graphic file (type pdf)
 <use lasso_densities_Kakadu.pdf, page 1>
 Package pdftex.def Info: lasso_densities_Kakadu.pdf , page1 used on input line 
-105.
+103.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Kakadu-1.pdf, id=765, page=2, 722.7pt x 578.16pt>
+<lasso_densities_Kakadu-1.pdf, id=761, page=2, 722.7pt x 578.16pt>
 File: lasso_densities_Kakadu-1.pdf Graphic file (type pdf)
 <use lasso_densities_Kakadu-1.pdf, page 2>
 Package pdftex.def Info: lasso_densities_Kakadu-1.pdf , page2 used on input lin
-e 108.
+e 106.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 103--110
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 101--108
 [][] [] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[45 <./lasso_densities_Hitters.pdf> <./lasso_densities_Hitters-1.pdf>]
-<lasso_densities_Bodyfat.pdf, id=782, page=1, 722.7pt x 578.16pt>
+<lasso_densities_Bodyfat.pdf, id=764, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_Bodyfat.pdf Graphic file (type pdf)
 <use lasso_densities_Bodyfat.pdf, page 1>
 Package pdftex.def Info: lasso_densities_Bodyfat.pdf , page1 used on input line
- 120.
+ 115.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Bodyfat-1.pdf, id=783, page=8, 722.7pt x 578.16pt>
+<lasso_densities_Bodyfat-1.pdf, id=765, page=8, 722.7pt x 578.16pt>
 File: lasso_densities_Bodyfat-1.pdf Graphic file (type pdf)
 <use lasso_densities_Bodyfat-1.pdf, page 8>
 Package pdftex.def Info: lasso_densities_Bodyfat-1.pdf , page8 used on input li
-ne 123.
+ne 118.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 118--125
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 113--120
 [][] [] 
  []
 
-<lasso_densities_prostate.pdf, id=786, page=1, 722.7pt x 578.16pt>
+<lasso_densities_prostate.pdf, id=768, page=1, 722.7pt x 578.16pt>
 File: lasso_densities_prostate.pdf Graphic file (type pdf)
 <use lasso_densities_prostate.pdf, page 1>
 Package pdftex.def Info: lasso_densities_prostate.pdf , page1 used on input lin
-e 135.
+e 127.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_prostate-1.pdf, id=787, page=7, 722.7pt x 578.16pt>
+<lasso_densities_prostate-1.pdf, id=769, page=7, 722.7pt x 578.16pt>
 File: lasso_densities_prostate-1.pdf Graphic file (type pdf)
 <use lasso_densities_prostate-1.pdf, page 7>
 Package pdftex.def Info: lasso_densities_prostate-1.pdf , page7 used on input l
-ine 138.
+ine 130.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 133--140
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 125--132
 [][] [] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[46 <./lasso_densities_Kakadu.pdf> <./lasso_densities_Kakadu-1.pdf> <./lasso_de
-nsities_Bodyfat.pdf> <./lasso_densities_Bodyfat-1.pdf>]
-<lasso_densities_Credit.pdf, id=814, page=11, 722.7pt x 578.16pt>
+<lasso_densities_Credit.pdf, id=771, page=11, 722.7pt x 578.16pt>
 File: lasso_densities_Credit.pdf Graphic file (type pdf)
 <use lasso_densities_Credit.pdf, page 11>
 Package pdftex.def Info: lasso_densities_Credit.pdf , page11 used on input line
- 149.
+ 139.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_Credit-1.pdf, id=815, page=2, 722.7pt x 578.16pt>
+<lasso_densities_Credit-1.pdf, id=772, page=2, 722.7pt x 578.16pt>
 File: lasso_densities_Credit-1.pdf Graphic file (type pdf)
 <use lasso_densities_Credit-1.pdf, page 2>
 Package pdftex.def Info: lasso_densities_Credit-1.pdf , page2 used on input lin
-e 152.
+e 142.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 147--154
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 137--144
 [][] [] 
  []
 
-<lasso_densities_eyedata-1.pdf, id=817, page=52, 722.7pt x 578.16pt>
+<lasso_densities_eyedata-1.pdf, id=774, page=52, 722.7pt x 578.16pt>
 File: lasso_densities_eyedata-1.pdf Graphic file (type pdf)
 <use lasso_densities_eyedata-1.pdf, page 52>
 Package pdftex.def Info: lasso_densities_eyedata-1.pdf , page52 used on input l
-ine 163.
+ine 151.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
-<lasso_densities_eyedata.pdf, id=818, page=200, 722.7pt x 578.16pt>
+<lasso_densities_eyedata.pdf, id=775, page=200, 722.7pt x 578.16pt>
 File: lasso_densities_eyedata.pdf Graphic file (type pdf)
 <use lasso_densities_eyedata.pdf, page 200>
 Package pdftex.def Info: lasso_densities_eyedata.pdf , page200 used on input li
-ne 166.
+ne 154.
 (pdftex.def)             Requested size: 231.3209pt x 185.05908pt.
 
-Overfull \hbox (2.61107pt too wide) in paragraph at lines 161--168
+Overfull \hbox (2.61107pt too wide) in paragraph at lines 149--156
 [][] [] 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--162
+
+ []
+
+[43] [44 <./lasso_densities_Hitters.pdf> <./lasso_densities_Hitters-1.pdf>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig:eyedata' on page 47 undefined on input line 173.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-[47 <./lasso_densities_prostate.pdf> <./lasso_densities_prostate-1.pdf> <./lass
-o_densities_Credit.pdf> <./lasso_densities_Credit-1.pdf>] [48 <./lasso_densitie
-s_eyedata-1.pdf> <./lasso_densities_eyedata.pdf>] [49]
+[45 <./lasso_densities_Kakadu.pdf> <./lasso_densities_Kakadu-1.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[46 <./lasso_densities_Bodyfat.pdf> <./lasso_densities_Bodyfat-1.pdf>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[47 <./lasso_densities_prostate.pdf> <./lasso_densities_prostate-1.pdf>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[48 <./lasso_densities_Credit.pdf> <./lasso_densities_Credit-1.pdf>] [49 <./las
+so_densities_eyedata-1.pdf> <./lasso_densities_eyedata.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1001,26 +1006,23 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [51] [52]) (Chapter5.tex [53]
 Chapter 5.
-) (main.bbl [54
+[54
 
-] [55
+] [55]) (main.bbl [56] [57
 
-]) [56] (main.aux)
+]) [58] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 96D86B5E3E073368FA345E8A5FCE9A1D;8177.
+(rerunfilecheck)             Checksum: 984AF3FD6E94B6E3823F291218CB4E59;8282.
  ) 
 Here is how much of TeX's memory you used:
- 16581 strings out of 475385
- 277600 string characters out of 2783908
- 660453 words of memory out of 3000000
- 37424 multiletter control sequences out of 15000+600000
+ 16582 strings out of 475385
+ 277588 string characters out of 2783908
+ 668442 words of memory out of 3000000
+ 37423 multiletter control sequences out of 15000+600000
  482124 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,12n,80p,1202b,589s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -1041,9 +1043,9 @@ fb><D:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/
 Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Program
  Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><D:/Program Files
  (x86)/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (65 pages, 3404438 bytes).
+Output written on main.pdf (67 pages, 3411234 bytes).
 PDF statistics:
- 1041 PDF objects out of 1200 (max. 8388607)
- 230 named destinations out of 1000 (max. 500000)
- 446 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1061 PDF objects out of 1200 (max. 8388607)
+ 232 named destinations out of 1000 (max. 500000)
+ 454 words of extra memory for PDF output out of 10000 (max. 10000000)
 

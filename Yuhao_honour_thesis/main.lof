@@ -5,12 +5,12 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Graphical comparison between lasso regression and ridge regression\relax }}{12}{figure.caption.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of the Univariate Lasso Distribution PDF for different parameter setting\relax }}{29}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualization of the Univariate Lasso Distribution PDF for different parameter setting\relax }}{28}{figure.caption.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset; Left: best case, Right: worst case\relax }}{45}{figure.caption.24}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Part of Approximation Density for Kakadu dataset; Left: best case, Right: worst case\relax }}{46}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Part of Approximation Density for Hitters dataset; Left: best case, Right: worst case\relax }}{44}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Part of Approximation Density for Kakadu dataset; Left: best case, Right: worst case\relax }}{45}{figure.caption.25}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Part of Approximation Density for Bodyfat dataset; Left: best case, Right: worst case\relax }}{46}{figure.caption.26}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Part of Approximation Density for Prostate dataset; Left: best case, Right: worst case\relax }}{47}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Part of Approximation Density for Credit dataset; Left: best case, Right: worst case\relax }}{47}{figure.caption.28}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Part of Approximation Density for Eyedata dataset; Left: best case from 52nd predictor, Right: worst case from 200th predictor\relax }}{48}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Part of Approximation Density for Credit dataset; Left: best case, Right: worst case\relax }}{48}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Part of Approximation Density for Eyedata dataset; Left: best case from 52nd predictor, Right: worst case from 200th predictor\relax }}{49}{figure.caption.29}%
 \addvspace {10\p@ }

@@ -395,54 +395,68 @@ We now propose MFVB algorithm for the Bayesian Lasso problem. Our goal is to att
 In addition, we would like to derive the optimal variational distribution for each parameter: ie. $q_{\beta}^*(\beta)$, $q_{\sigma^2}^*(\sigma^2)$ according to \autoref{eq:optimalSolution}. We consider the parameters of $a_j$ distribution are fixed, therefore, no hyper-priors are required.
 
 The following derivation is based on the conditional posterior distributional form and expectation with respect to corresponding standard distribution
-$\beta$  \autoref{eq:lassoposteriorsummary}, $q_{\beta}^{*}(\beta)$ can be derived by:
+$\beta$, $q_{\beta}^{*}(\beta)$ can be derived by:
 \begin{equation}
 	\begin{aligned}
 		q_{\beta}^{*}(\beta) & \propto \exp[\mathbb{E}_{-\beta}[\log(p(\beta, y,\mathbf{a},\sigma^2))]]\\
-		& \sim MVN(((X^TX + \lambda^2\mathbb{E}_q(A))^{-1}X^Ty, (X^TX+\lambda^2\mathbb{E}_q(A))^{-1}\mathbb{E}_{q}(\sigma^2))\\
+		& \sim MVN(((X^TX + \lambda^2(A))^{-1}X^Ty, (X^TX+\lambda^2A))^{-1}\mathbb{E}_{q}(\frac{1}{\sigma^2}))\\
 	\end{aligned}
 \end{equation}
-where $A = diag(\mathbf{a})$, $\mathbb{E}_{\sigma^2}(\sigma^2) = \frac{\tilde{b}}{\tilde{a}}, \mathbb{E}_a(A) = diag(\frac{\sigma}{|\mathbf{\beta}|\lambda})$. 
-$$
-\mathbb{E}_{q}[\sigma^2] = \frac{\tilde{b}}{\tilde{a}}\\
-$$
+where $A = diag(\mathbf{a})$, $\mathbb{E}_{\sigma^2}(\frac{1}{\sigma^2}) = \frac{\tilde{b}}{\tilde{a}}$.\\
 Also, $q_{\sigma^2}^{*}(\sigma^2)$ can be derived by the following equation.
 The following derivation are based on the known conditional posterior distributional form and expectation with respect to corresponding standard distribution.
 \begin{equation}
 	\begin{aligned}
 		q_{\sigma^2}^{*}(\sigma^2) & \propto \exp[\mathbb{E}_{-\sigma^2}[\log(p(\sigma^2, y,\mathbf{a},\beta))]]\\
-		&\sim \text{InverseGamma}(\frac{n+p}{2}, \frac{1}{2} \mathbb{E}_q||y-X\beta||^2 + \frac{1}{2}\sum_{j=1}^p \mathbb{E}_q(\beta^TA\beta)
+		&\sim \text{InverseGamma}(\frac{n+p}{2}, \frac{1}{2} \mathbb{E}_q||y-X\beta||^2 + \frac{\lambda}{2}\sum_{j=1}^p \mathbb{E}_q(\beta^TA\beta)
 	\end{aligned}
 \end{equation}
-$$
-\mathbb{E}_{q}[||y-X\beta||^2]
-$$
+%$$
+%\mathbb{E}_{q}[||y-X\beta||^2]
+%$$
+%
+%$$
+%	\mathbb{E}_{q}[\beta^TA\beta] = \frac{\sqrt{\frac{\tilde{b}}{\tilde{a}(\tilde{\mu}^T \tilde{\mu} + diag(\tilde{\Sigma})))}}}{\lambda}
+%$$
 
-$$
-	\mathbb{E}_{q}[\beta^TA\beta] = \frac{\sqrt{\frac{\tilde{b}}{\tilde{a}(\tilde{\mu}^T \tilde{\mu} + diag(\tilde{\Sigma})))}}}{\lambda}
-$$
+Therefore, the update Procedure of MFVB for the Bayesian Lasso can be written as following:
+\begin{itemize}
+	\item Update Procedure of MFVB for the Bayesian Lasso
+	\begin{itemize}
+		\item  $Q = X^TX + \lambda^2 A ,\text{where } A = \mbox{diag}(\tau^2)$.
+		
+		\item The update for beta leads to 
+		$$
+		\widetilde{\mu} = Q^{-1}X^Ty \quad \mbox{and} \quad \widetilde{\Sigma} = \mathbb{E}_{q}\left[\frac{1}{\sigma^2}\right]^{-1} Q^{-1}$$ 
+		
+		\item  The update for $\sigma^2$ leads to 
+		$$
+		\widetilde{a} = \frac{n+p}{2}, \quad \mbox{and} \quad \widetilde{b} = \frac{E_{q}||y-X\beta||^2 + \lambda^2 \mathbb{E}_{q}[\beta^TA\beta]}{2}.
+		$$
+	\end{itemize}
+\end{itemize}
 
-\newpage
-\begin{algorithm}
-	\caption{Mean Field Variational Bayes for Bayesian Lasso}
-	\begin{algorithmic}[1]
-		
-		\State Input: response variable $y$, data matrix $X$, Tuning parameter $\lambda$, $\tilde{\mu}^{(0)} = \mathbf{1_p}$, $\tilde{\Sigma}^{(0)}$ = diag(1), $\tilde{a}^{(0)} = 0.0001$, $\tilde{b}^{(0)} = 0.0001$, $d = \mathbf{1}$   
+%\newpage
+%\begin{algorithm}
+%	\caption{Mean Field Variational Bayes for Bayesian Lasso}
+%	\begin{algorithmic}[1]
+%		
+%		\State Input: response variable $y$, data matrix $X$, Tuning parameter $\lambda$, $\tilde{\mu}^{(0)} = \mathbf{1_p}$, $\tilde{\Sigma}^{(0)}$ = diag(1), $\tilde{a}^{(0)} = 0.0001$, $\tilde{b}^{(0)} = 0.0001$, $d = \mathbf{1}$   
+%
+%		\While{$||\theta^{(t)}-\theta^{(t-1)}||_2^2 < \epsilon}$
+%		\State $Q = X^TX + \lambda^2 A ,\text{where } A = diag(d)$
+%		\State $\tilde{\mu} = Q^{-1}X^Ty$ \Comment{Update posterior parameter for $\beta$}
+%		\State $\tilde{\Sigma} = Q^{-1}\mathbb{E}_{q}[\sigma^2] $ \Comment{Update posterior parameter for $\beta$}
+%		\State $\tilde{a} = \frac{n+p}{2}$ \Comment{Update posterior parameter for $\sigma^2$}
+%		\State $\tilde{b} = \frac{E_{q}||y-X\beta||^2 + \lambda^2 \mathbb{E}_{q}[\beta^TA\beta]}{2}$\Comment{Update posterior parameter for $\sigma^2$}
+%		\EndWhile  
+%		
+%
+%		\State	return $\tilde{a},\tilde{b},\tilde{\mu},\tilde{\Sigma}$
+%		
+%		
+%		
+%	\end{algorithmic}
+%\end{algorithm}
 
-		\While{$||\theta^{(t)}-\theta^{(t-1)}||_2^2 < \epsilon}$
-		\State $Q = X^TX + \lambda^2 A ,\text{where } A = diag(d)$
-		\State $\tilde{\mu} = Q^{-1}X^Ty$ \Comment{Update posterior parameter for $\beta$}
-		\State $\tilde{\Sigma} = Q^{-1}\mathbb{E}_{q}[\sigma^2] $ \Comment{Update posterior parameter for $\beta$}
-		\State $\tilde{a} = \frac{n+p}{2}$ \Comment{Update posterior parameter for $\sigma^2$}
-		\State $\tilde{b} = \frac{E_{q}||y-X\beta||^2 + \lambda^2 \mathbb{E}_{q}[\beta^TA\beta]}{2}$\Comment{Update posterior parameter for $\sigma^2$}
-		\EndWhile  
-		
-
-		\State	return $\tilde{a},\tilde{b},\tilde{\mu},\tilde{\Sigma}$
-		
-		
-		
-	\end{algorithmic}
-\end{algorithm}
-
-The aforementioned algorithm 4 estimates the parameters of the posterior distributions of $\beta$ and $\sigma^2$ with descent speed.
+The aforementioned update procedure for MFVB estimates the parameters of the posterior distributions of $\beta$ and $\sigma^2$ with a descent speed, even though the posterior variance is usually underestimated due to the mean-field restriction for the approximated density.

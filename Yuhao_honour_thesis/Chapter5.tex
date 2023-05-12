@@ -1,16 +1,65 @@
 \chapter{Discussion and Conclusion}
 
-Bodyfat, Prostate, Credit: no correlation; VB does do well because of that
+\section{Discussion}
+From the experiment result such as approximation accuracy and approximation density plot in the last chapter. The following five bullet points mention the noticeable phenomenon in the experiment.
+\begin{itemize}
+	\item MFVB tends to produce a density with less variance, making it more concentrated at the center.
+	\item The marginal posterior distribution from Local-Global Algorithm distribution is the most accurate one that can be adapted to various predictor distribution other than the normal distribution
+	\item The global posterior distribution from Local-Global Algorithm distribution is more accurate compared with MFVB.
+	\item The running time for MFVB is slower than Local-Global algorithms for both local approximation and global approximation
+	\item Local-Global Algorithm is highly accurate even when there is a high correlation between predictors according to the result from the Hitters dataset.
+	\item Local-Global Algorithm is highly accurate even when there are more predictors than a number of samples according to the result from the Eyedata dataset.
+\end{itemize}
+Firstly,
 
-Kakadu n = 2000;
+Secondly, this phenomenon is mainly due to the adaptability of the function form of univariate lasso distribution that can capture the sharp point in the curve.
+Thirdly, this is mainly due to the addition of the local adjustment by capturing the correlation between $\beta_j$ and $\beta_{-j}$. Therefore, the global approximation can be more exact than MFVB.
+Thirdly, due to extra procedure for the local approximation process and calculation of moment for Lasso distribution, the Local-Global algorithm is slightly slower than MFVB, but with moderate amount, and both algorithms are faster than MCMC.
+Lastly, the fourth and the fifth bullet point mention the performance on Hitters dataset and Eyedata dataset. They can be contribtued from the adjustment and adaptability of Local-Global algorithms, leading to better approximation result.
 
-Hard for VB: Hitters: high correlation(between predictors) and Eyedata: p > n.
+
+
+
+
+
+
+
+
+
+
+%Bodyfat, Prostate, Credit: no correlation; VB does do well because of that
+%
+%Kakadu n = 2000;
+%
+%Hard for VB: Hitters: high correlation(between predictors) and Eyedata: p > n.
 
 
 \label{Chapter5}
 \section{Limitation}
+There are still some improvements in our work.
+
+
+\begin{itemize}
+	\item Automatic choice of $\lambda$ is still obtained by Gibbs Sampling.
+	\item The Univariate Local-Global algorithm can't deal with the case when initial covariance is a diagonal matrix. 
+\end{itemize}
+The first limitation is that the current choice for $\lambda$ is from the three-step Gibbs Sampler from \cite{park_casella_2008}. By \cite{park_casella_2008}, if the $\lambda^2$ instead of $\lambda$ is treated as a random variable assigning a diffuse hyper prior distribution such as the gamma prior distribution, then an optimal $\lambda$ posterior distribution can be derived due to conjugacy. The full conditional posterior distributions of $\lambda^2$ can be with a rate parameter and shape parameter. Gibbs sampler can use full conditional posterior form to seek the $\lambda$ samples. The posterior median for $\lambda$ can be a reliable estimation for optimal $\lambda$ used afterwards. Although the optimal lambda behavior is desired, the execution time for obtaining posterior estimates is as long as sampling other posterior estimates for $\beta$ and $\sigma^2$.
+%Under the basis of Local-Global algorithm, $\lambda$ can be treated to match the marginal lasso distribution from the local perspective, followed by a propagation to the global to corre
+
+Finally, if the initial covariance $\tilde{Sigma}$ is diagonal, by our update formula, it will remain as a diagonal matrix until the last iteration, which enables the univariate local-global algorithm non-generalizable.
+For instance, considering the update formula for $\tilde{Sigma}$ if the initial $\tilde{\Sigma}$ is a diagonal covariance matrix, then 
+due to the manner of Local-Global algorithm that update $\tilde{\beta}$ and $\tilde{\Sigma}$ one variable at a time by \autoref{eq:LG_sigma}. The dimension for $\Sigma_{jj}^{*}$ is a scalar value greater than 0 since it is obtained by the lasso variance function, the $\Sigma_{-j,-j}$ will remain a diagonal matrix with dimension $p-1$, $\Sigma_{-j,j} = \Sigma_{j,-j}^T$ can be $\mathbf{0}$ since $\tilde{\Sigma}$ is diagonal. Therefore, the resulting update formula by \autoref{eq:LG_sigma} will be diagonal at the end. This can directly lead to issues if the actual $\Sigma$ is a non-diagonal matrix, causing discrepancy.
 
 \section{Future Work}
-
+To better resolve the limitation mentioned before, several improvements can be explored and completed in the future.
+\begin{itemize}
+	\item Propose a Bivariate-Local-Global Algorithm to address the problem when the initial covariance is a diagonal matrix
+	\item Derive the update formula of $\sigma^2$
+\end{itemize}
+Firstly, since the update for each iteration is via a pair of variables, for the covariance matrix of each variable, it will be updated for several times for each pair.
+Secondly, our Local-Global algorithm can only obtain the posterior distribution for the regression coefficient $\beta$ only, while the temporary assumption of the independence between the $\sigma^2$ and $\beta$ is limited. As a matter of fact, an alternative update formula to derive $\Sigma$ should be derived and explored in the future.
 
 \section{Conclusion}
+In conclusion, we have proposed a novel algorithm for the Bayesian Lasso: a local approximation correction approach that could capture the correlation between the distribution of target variable and distribution of other variables. In addition, due to the matching with the invented lasso distribution, the local approximation is more precise, causing significant improvement over the MFVB approximation. The main goal of the future work will be the sucessful implementation of the Bivariatei-Local-Global algorithm, as well as a valid derivation formula for the update of covariance distribution $q(\sigma^2)$
+
+
