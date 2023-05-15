@@ -15,15 +15,15 @@ Under the same setting in Variational Inference in Mean-Field-Variational-Bayes 
 the parameter of interest $\theta$ can be divided up into two parts $\theta_1$: $\beta_j$ current variable and $\theta_{2}: \beta_{-j}$, other variables. The marginal log-likelihood of $\theta_1$ can be divided up into the ELBO part and the KL divergence part by the following derivation:
 \begin{equation}
 	\label{LocalGlobalVI}
-	\log(\mathcal{D},\theta_1) = \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})] + KL(q(\theta_{2}|\theta_1),p(\theta_{2}|\mathcal{D},\theta_1))
+	\log(\mathcal{D},\theta_1) = \mathbb{E}_{q(\theta_{2}|\theta_1)}\left[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})\right] + KL(q(\theta_{2}|\theta_1),p(\theta_{2}|\mathcal{D},\theta_1))
 \end{equation}
 Since the KL divergence is greater than 0, the marginal log-likelihood of $\theta_1$ and $\mathcal{D}$ has a more tractable Evidence Lower Bound: 
 \begin{equation}
-	\log(\mathcal{D},\theta_1) \geq \mathbb{E}_{q(\theta_{2}|\theta_1)}[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})]
+	\log(\mathcal{D},\theta_1) \geq \mathbb{E}_{q(\theta_{2}|\theta_1)}\left[\log(\frac{p(\mathcal{D},\theta_1,\theta_{2})}{q(\theta_{2}|\theta_1)})\right]
 \end{equation}
 When $q(\theta_{2}|\theta_1) = p(\theta_{2}|\mathcal{D},\theta_1)$ then 
 $$
-\log(\mathcal{D},\theta_1) = \mathbb{E}_{p(\theta_{2}|\mathcal{D},\theta_1)}[\log p(\mathcal{D},\theta_2,\theta_{1})]
+\log(\mathcal{D},\theta_1) = \mathbb{E}_{p(\theta_{2}|\mathcal{D},\theta_1)}[\log p(\mathcal{D},\theta_1,\theta_{2})]
 $$
 
 
@@ -40,7 +40,7 @@ With the mean field restriction in \autoref{eq:assum}, the result from \autoref{
 		\log p(\mathcal{D},\beta_j) &= \mathbb{E}_{\beta_{-j},\sigma^2|\mathcal{D},\beta_j} 	\log(p(\beta_j|\mathcal{D},\beta_{-j},\sigma^2))\\
 		& \approx \mathbb{E}_{q(\beta_{-j}|\beta_j)q(\sigma^2)}
 		\log(p(\beta_j|\mathcal{D},\beta_{-j},\sigma^2))\\
-		& \propto \mathbb{E}_{q(\beta_{-j}|\beta_j)q(\sigma^2)}[-\frac{||X_j||_2^2}{2\sigma^2}\beta_j^2 + \frac{X_j^T(y - X_{-j}\beta_{-j})}{\sigma^2}\beta_j - \frac{\lambda}{\sigma}|\beta_j|]\\
+		& \propto \mathbb{E}_{q(\beta_{-j}|\beta_j)q(\sigma^2)}\left[-\frac{||X_j||_2^2}{2\sigma^2}\beta_j^2 + \frac{X_j^T(y - X_{-j}\beta_{-j})}{\sigma^2}\beta_j - \frac{\lambda}{\sigma}|\beta_j|\right]\\
 		&= \frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s)\beta_j - \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t)\beta_j^2 - \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}}}|\beta_j|.\\
 	\end{aligned}
 \end{equation}
@@ -68,7 +68,7 @@ From the yellow line and green line, $c$ controls the sharpness of the curve, a 
 \subsection{Univariate Lasso Distribution}
 If $x \sim $ Lasso(a,b,c), then the probability density function can be written as:
 \begin{equation}
-	p(x,a,b,c) = Z^{-1}\exp(-\frac{1}{2}ax^2+bx-c|x|)
+	p(x,a,b,c) = Z^{-1}\exp\left(-\frac{1}{2}ax^2+bx-c|x|\right)
 \end{equation}
 where $a \geq 0, b \in \mathbb{R}, c \geq 0$, there are also certain restrictions to certain parameter settings:
 \begin{itemize}
@@ -201,7 +201,7 @@ We also have sufficient information to implement a VB approximation.
 \label{bilasso}
 If $\mathbf{x} \sim \mbox{Bilasso}(A,b,c)$ with then it has density given by
 \begin{equation}
-	p(\mathbf{x}) = Z^{-1}\exp(-\frac{1}{2}\mathbf{x}^TA\mathbf{x}+b^T\mathbf{x}-c||\mathbf{x}||_1)
+	p(\mathbf{x}) = Z^{-1}\exp\left(-\frac{1}{2}\mathbf{x}^TA\mathbf{x}+b^T\mathbf{x}-c||\mathbf{x}||_1\right)
 \end{equation}
  where $A \in S_d^+$: positive definite matrix with dimension $d$, $b \in \mathbb{R}^2$, $c \geq 0$\\
 \subsubsection{Derivation of Normalizing Constant}
@@ -246,20 +246,20 @@ $$
 	
 	\\ [2ex]
 	&	 
-	=  2\pi|\Sigma_1|^{\frac{1}{2}}[\exp\left[ \frac{(A\mu_1)^T\Sigma_1(A\mu_1)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x} 	\\
+	=  2\pi|\Sigma_1|^{\frac{1}{2}}[ \exp \left[ \frac{(A\mu_1)^T\Sigma_1(A\mu_1)}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x} 	\\
 	& \qquad
-	+  \exp\left[ \frac{(A\mu_4)^T\Sigma_1(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}])\\
+	+  \exp\left[ \frac{(A\mu_4)^T\Sigma_1(A\mu_4)}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}]\\
 	& \qquad	
-	+ 2\pi|\Sigma_2|^{\frac{1}{2}}(\exp\left[ \frac{(A^*\mu_2)^T\Sigma_2(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}\\
+	+ 2\pi|\Sigma_2|^{\frac{1}{2}}[\exp\left[ \frac{(A^*\mu_2)^T\Sigma_2(A^*\mu_2)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}\\
 	& \qquad
-	+  \exp\left[ \frac{(A^*\mu_3)^T\Sigma_2(A^*\mu_3)]}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x})\\
+	+  \exp\left[ \frac{(A^*\mu_3)^T\Sigma_2(A^*\mu_3)}{2} \right] \int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}]\\
 	
 	
 	&
-	=|\Sigma_1| (\frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1})} 
-	+ \frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1})}) \\
+	=|\Sigma_1| \left(\frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1})} 
+	+ \frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1})}\right) \\
 	& \qquad	
-	+ |\Sigma_2| (\frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1})} + \frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})} +))
+	+ |\Sigma_2| \left(\frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1})} + \frac{\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})} \right)
 	
 	
 	
@@ -301,20 +301,20 @@ $$
 	- \int_0^\infty\int_0^\infty x \odot  \exp\left[ -\frac{1}{2}x^TAx + (\textbf{b}^T + c\textbf{1}^T)x \right]d\textbf{x}\\
 	
 	& \qquad
-	=  Z^{-1}[|\Sigma_1|(\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	-  \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|\left(\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1})}
+	-  \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))}\right)\\
 	& \qquad
 	+ |\Sigma_2|
-	([1,-1]^T\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
-	+ [-1,1]^T   \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	\left([1,-1]^T\frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1})}
+	+ [-1,1]^T   \frac{\int_0^\infty\int_0^\infty x\odot\phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})\right)
 	\\
 	& \qquad
-	=  Z^{-1}[|\Sigma_1|(\frac{\mathbb{E}[\textbf{A}]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	-  \frac{\mathbb{E}[D]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|(\frac{\mathbb{E}[\textbf{A}]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1})}
+	-  \frac{\mathbb{E}[D]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1})})\\
 	& \qquad
 	+ 
 	|\Sigma_2|(
-	[1,-1]^T \frac{\mathbb{E}[B]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	[1,-1]^T \frac{\mathbb{E}[B]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1})}
 	+ [-1,1]^T   \frac{\mathbb{E}[C]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
 	\\
 	&
@@ -354,35 +354,35 @@ $$
 	-  \exp\left[ \frac{(A\mu_4)^T\Sigma(A\mu_4)]}{2} \right] \int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_4,\Sigma_1)d\textbf{x}]\\
 	\\
 	&
-	=  Z^{-1}|\Sigma|[ \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma))}
+	=  Z^{-1}|\Sigma|[ \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_1,\Sigma)d\textbf{x}}{\phi_2(A\mu_1,\Sigma)}
 	
 	+ 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \odot  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_2,\Sigma)d\textbf{x}}{\phi_2(A\mu_2,\Sigma))}\\
+	\end{bmatrix} \odot  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_2,\Sigma)d\textbf{x}}{\phi_2(A\mu_2,\Sigma)}\\
 	& \qquad
 	+	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \odot   \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_3,\Sigma)d\textbf{x}}{\phi_2(A\mu_3,\Sigma))}
+	\end{bmatrix} \odot   \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_3,\Sigma)d\textbf{x}}{\phi_2(A\mu_3,\Sigma)}
 	
-	-  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma))}]\\
+	-  \frac{\int_0^\infty\int_0^\infty xx^T\odot\phi_2(x;\mu_4,\Sigma)d\textbf{x}}{\phi_2(A\mu_4,\Sigma)}]\\
 	\\
 	&
-	=  Z^{-1}[|\Sigma_1|(\frac{\mathbb{E}[\textbf{A}\textbf{A}^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1}))}
-	+  \frac{\mathbb{E}[DD^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1}))})\\
+	=  Z^{-1}[|\Sigma_1|\left(\frac{\mathbb{E}[\textbf{A}\textbf{A}^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_1,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_1,\Sigma_1^{-1})}
+	+  \frac{\mathbb{E}[DD^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_4,\Sigma_1)d\textbf{x}}{\phi_2(A\mu_4,\Sigma_1^{-1})}\right)\\
 	& \qquad
 	+ 
-	|\Sigma_2|(
+	|\Sigma_2|\left(
 	\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \odot \frac{\mathbb{E}[BB^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1}))}
+	\end{bmatrix} \odot \frac{\mathbb{E}[BB^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_2,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_2,\Sigma_2^{-1})}
 	
 	+\begin{bmatrix}
 		1 & -1\\
 		-1 & 1\\
-	\end{bmatrix} \odot   \frac{\mathbb{E}[CC^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})})]
+	\end{bmatrix} \odot   \frac{\mathbb{E}[CC^T]\int_0^\infty\int_0^\infty \phi_2(x;\mu_3,\Sigma_2)d\textbf{x}}{\phi_2(A^*\mu_3,\Sigma_2^{-1})}\right)]
 	\\
 	
 	
@@ -406,9 +406,9 @@ $$
 	f(x_1)
 	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_2 \\
 	& \qquad
-	= Z^{-1}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2 \\
+	= Z^{-1}\int_{-\infty}^{\infty}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_2 \\
 	& \qquad
-	= Z^{-1}\exp(-0.5a_{11}x_1^2  + b_1x_1 - c|x_1|) \\
+	= Z^{-1}\int_{-\infty}^{\infty}\exp(-0.5a_{11}x_1^2  + b_1x_1 - c|x_1|)dx_2 \\
 	& \qquad
 	\int_{-\infty}^{\infty}\exp(-\frac{1}{2} [(a_{12}+a_{21})x_1x_2 + a_{22}x_2^2] + b_2x_2 - c|x_2|]dx_2\\
 	& \qquad
@@ -424,8 +424,8 @@ $$
 	& \qquad
 	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_2] + \int_{0}^{\infty} \exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_2] \\
 	& \qquad
-	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
-	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
+	= k \sigma\left[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
+	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}\right]  \\
 	
 \end{array}
 $$
@@ -436,9 +436,9 @@ $$
 	f(x_2)
 	& =  \int_{-\infty}^{\infty} f(x_1,x_2)dx_1 \\
 	& \qquad
-	= Z^{-1}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_1 \\
+	= Z^{-1}\int_{-\infty}^{\infty}\exp(-\frac{1}{2}x^TAx + b^Tx - c||x||_1))dx_1 \\
 	& \qquad
-	= Z^{-1}\exp(-0.5 a_{22}x_2^2 + b_2x_2 - c|x_2|) \\
+	= Z^{-1}\int_{-\infty}^{\infty}\exp(-0.5 a_{22}x_2^2 + b_2x_2 - c|x_2|) dx_1\\
 	& \qquad
 	\int_{-\infty}^{\infty}\exp(-\frac{1}{2} [a_{12}a_{21}x_1x_2 + a_{11}x_1^2] + b_1x_1 - c|x_1|]dx_1\\
 	& \qquad
@@ -454,18 +454,17 @@ $$
 	& \qquad
 	= k[\int_{0}^{\infty} \exp[-\frac{(x_2-\mu_1)^2}{2\sigma^2} + \frac{\mu_1^2}{2\sigma^2}]dx_1] + \int_{0}^{\infty} \exp[-\frac{(x_2-\mu_2)^2}{2\sigma^2} + \frac{\mu_2^2}{2\sigma^2}]dx_1] \\
 	& \qquad
-	= k \sigma[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
-	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}]  \\
+	= k \sigma\left[\frac{\Phi(\mu_1/\sigma)}{\phi(\mu_1/\sigma)} +
+	\frac{\Phi(\mu_2/\sigma)}{\phi(\mu_2/\sigma)}\right]  \\
 	
 \end{array}
 $$
-where $\mu_1 = (-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}) $, $\mu_2 =(\frac{a_{12}+a_{21}}{2a_{11}}x_2 - \frac{b_1+c}{a_{11}}) $, $\sigma^2 = 1/a_{11}$, $k =  Z^{-1}\exp(-0.5a_{22}x_2^2 + b_2x_2 - c|x_2|)$
+where $\mu_1 = \left(-\frac{a_{12}+a_{21}}{2a_{11}}x_2 + \frac{b_1-c}{a_{11}}\right) $, $\mu_2 =\left(\frac{a_{12}+a_{21}}{2a_{11}}x_2 - \frac{b_1+c}{a_{11}}\right) $, $\sigma^2 = 1/a_{11}$,\\ $k =  Z^{-1}\exp\left(-0.5a_{22}x_2^2 + b_2x_2 - c|x_2|\right)$
 
 
 \section{Local-Global Algorithm}
 \subsection{Univariate local global algorithm}
-Continuing from \autoref{eq:MarLike}, it is evident to observe that $p(\beta_j|\mathcal{D}) \propto p(\beta_j,\mathcal{D}) \sim Lasso(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}  }}) $.
-
+Continuing from \autoref{eq:MarLike}, it is evident to observe that\\ $p(\beta_j|\mathcal{D}) \propto p(\beta_j,\mathcal{D}) \sim Lasso\left(\frac{\tilde{a}}{\tilde{b}}(y - X_{-j}s), \frac{\tilde{a}}{2\tilde{b}}(X_j^TX_j+X_j^TX_{-j}t) , \frac{\lambda \Gamma(\tilde{a}+1/2)}{\Gamma(\tilde{a})\sqrt{\tilde{b}  }}\right) $.
 The local approximation of mean $\mu_j^*$ and variance $\Sigma_{jj}^*$ can be obtained by the expression \autoref{eq:LassoMoment} with given Lasso parameter $a,b,c$. A marginal normal approximation to the conditional distribution $p(\theta_j|\mathcal{D})$: $q^*(\theta_j) \approx N(\mu_j^*,\Sigma_{jj}^*)$. 
 The optimal distribution can be updated via \autoref{eq:updateQ}
 \begin{equation}

@@ -47,7 +47,7 @@ One drawback of the ordinary lasso is that it cannot properly capture the variat
 \end{equation}
 \begin{equation}
 	\label{eq:LassoPrior}
-	f(\beta_j) = (\frac{\tau}{2}) \exp(-\tau|\beta_j|),
+	f(\beta_j) = \left(\frac{\tau}{2}\right) \exp(-\tau|\beta_j|),
 \end{equation}
 \begin{equation}
 	\label{eq:lassolikelihood}
@@ -74,22 +74,19 @@ Three-step Gibbs sampler belongs to the class of MCMC algorithms, which produces
 As mentioned before, due to the limitations of stochastic algorithms, alternative methods such as deterministic Variational Inference (VI) have become popular due to their fast speed and simple computation.
 Numerous algorithms have been designed and utilized widely such as VB, Expectation Propagation algorithms, etc. A common variation is the Coordinate Ascent Variational Inference approach produced by \cite{Blei2003LDA}, which assumes that the approximation originates from an analytically tractable class of distribution $Q$. Afterward, it attempts to search for the distribution from this family that is closest to the target posterior distribution with some discrepancy metric, such as the Kullback-Leibler divergence. An optimization-based system in Equation (\ref{eq:VI1}) is established by iteratively updating variational parameters with an appropriate optimization algorithm. A traditional optimization algorithm can be Coordinate Ascent which could obtain approximated posterior distribution in the family of $Q$, while the most common choice is the Normal Distribution due to its simple form and adaptability to other distributions.
 To further illustrate the intuition, Figure \ref{fig:VIoptimization} provides further explanation of the aforementioned intuition, goal, and procedure of Variational Inference.
-
 \begin{figure}[H]
 	\center
 	\includegraphics[scale = 0.2]{VIoptimization}
 	\caption{Variational Inference intuition, where $X$ is data $\mathcal{D}$, $\mathcal{D}$ is equivalent to $Q$ defined above}
 	\label{fig:VIoptimization}
 \end{figure}
-
 \begin{equation}
 	\label{eq:VI1}
-	q^{*}(\theta) = \underset{q_{\theta} \in Q}{\operatorname{argmin}} \textnormal{KL}(q(\theta)||p(\theta|\mathcal{D})) \coloneqq \int q(\theta)\log(\frac{q(\theta)}{p(\theta|\mathcal{D})})d\theta
+	q^{*}(\theta) = \underset{q_{\theta} \in Q}{\operatorname{argmin}} \textnormal{KL}(q(\theta)||p(\theta|\mathcal{D})) \coloneqq \int q(\theta)\log\left(\frac{q(\theta)}{p(\theta|\mathcal{D})}\right)d\theta
 \end{equation}
-
 \begin{equation}
 	\label{eq:KL2}
-	\textnormal{KL}(q||p(.|\mathcal{D})) = - \int q(\theta)log(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}) d\theta + \log p(\mathcal{D}).
+	\textnormal{KL}(q||p(.|\mathcal{D})) = - \int q(\theta)\log\left(\frac{p(\theta)p(\mathcal{D}|\theta)}{q(\theta)}\right) d\theta + \log p(\mathcal{D}).
 \end{equation}
 In addition, the exact form of $\textnormal{KL}$ divergence can be found in Equation (\ref{eq:KL2})
 In practice, minimizing the KL divergence from \autoref{eq:VI1} is difficult due to its complexity, and therefore it is often converted into an equivalent formulation in \autoref{eq:KL} that maximizes the lower bound of $\log(p(y))$. This lower bound is known as the Evidence Lower Bound (ELBO) and can be defined by \autoref{eq:KL}).

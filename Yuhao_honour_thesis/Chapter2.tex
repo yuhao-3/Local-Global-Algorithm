@@ -55,7 +55,7 @@ For a given variance, the mode of posterior form in \autoref{eq:fullCondLasso} i
 In addition, if a variance is unknown, the posterior will be a multimodal distribution, the derivation has been provided by the appendix from \cite{park_casella_2008}.
 \begin{equation}
 	\label{eq:fullCondLasso}
-	\pi(\beta,\sigma^2|\tilde{y}) \propto \pi(\sigma^2)(\sigma^2)^{-(n-1)/2}\textnormal{exp}(\frac{1}{2\sigma^2}(\tilde{y}-X\beta)^T(\tilde{y}-X\beta)-\lambda\sum_{j=1}^p|\beta_j|)
+	\pi(\beta,\sigma^2|\tilde{y}) \propto \pi(\sigma^2)(\sigma^2)^{-(n-1)/2}\textnormal{exp}\left(\frac{1}{2\sigma^2}(\tilde{y}-X\beta)^T(\tilde{y}-X\beta)-\lambda\sum_{j=1}^p|\beta_j|\right)
 \end{equation}
 \begin{equation}
 	\label{eq:lassocondprior}
@@ -143,7 +143,6 @@ So we can sample $\beta$ from a multivariate normal distribution with its corres
 \end{equation}
 
 \textbf{Full conditional distribution of $\tau_j^2$}:
-
 \begin{equation}
 	\begin{multlined}
 		p(\tau_j^2|\tilde{y},\beta,\sigma^2) \propto  	p(\tilde{y},\beta,\tau^2,\sigma^2)  
@@ -154,7 +153,7 @@ So we can sample $\beta$ from a multivariate normal distribution with its corres
 \end{equation}
 
 \textbf{Summary}
-The Gibbs sampler can be established by the following algorithm.
+The Gibbs sampler can be established by the following algorithm \autoref{alg:algorithm1}.
 \begin{algorithm}
 	\caption{Gibbs Sampler for the Bayesian Lasso}
 	\begin{algorithmic}[1]
@@ -173,6 +172,7 @@ The Gibbs sampler can be established by the following algorithm.
 		
 		
 	\end{algorithmic}
+	\label{alg:algorithm1}
 \end{algorithm}
 
 % \section{Bayesian Paradigm}
@@ -253,15 +253,14 @@ given $\theta_1 = (\beta,\sigma^2)$ as a set of observed variables, $\theta_2 = 
 
 \begin{equation}
 	\label{eq:nextloglL}
-	E_{\theta_2|\tilde{y},\theta_1^{(t)}}[\textnormal{log}p(y,\theta_1,\theta_2)] = -\frac{n}{2} \textnormal{log}(\sigma^{2(t)}) - \frac{||y-X\beta^{(t)}||_2^2}{2\sigma^{2(t)}} - E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\sum_{j=1}^p \frac{\lambda^2\beta_j^2}{2\sigma^2\tau_j^2}] -(a+1)\textnormal{log}(\sigma^{2(t)})) - \frac{b}{\sigma^{2(t)}}.
+	E_{\theta_2|\tilde{y},\theta_1^{(t)}}[\textnormal{log } p(y,\theta_1,\theta_2)] = -\frac{n}{2} \textnormal{log}(\sigma^{2(t)}) - \frac{||y-X\beta^{(t)}||_2^2}{2\sigma^{2(t)}} - E_{\theta_2 |\tilde{y},\theta_1^{(t)}}\left[\sum_{j=1}^p \frac{\lambda^2\beta_j^2}{2\sigma^2\tau_j^2}\right] -(a+1)\textnormal{log}(\sigma^{2(t)})) - \frac{b}{\sigma^{2(t)}}.
 \end{equation}
 Next, we need to take the expectation of hidden variables: $E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\sum_{j=1}^p \frac{\lambda^2\beta_j^2}{2\sigma^2\tau_j^2}]$. After extracting constant with respect to $\theta_2$, required formulation is $E_{\theta_2 |\tilde{y},\theta_1^{(t)}}[\frac{1}{\tau_j}]$. Given the fact that $\tau_j^2|\sigma^2,\tilde{y},\beta \sim GIG(1,\frac{\beta_j^2\lambda^2}{\sigma^2},\frac{1}{2})$ and the special property of Generalized Inverse Gaussian distribution that if $X \sim GIG(a,b,p)$, then $\frac{1}{X} \sim GIG(b, a,-p)$, the distribution of $\frac{1}{\tau_j^2}$ can be rearranged to  $\frac{1}{\tau_j^2}|\sigma^2,\tilde{y},\beta \sim GIG(\frac{\beta_j^2\lambda^2}{\sigma^2},1,-\frac{1}{2})$.
 However, taking expectations with respect to Generalized Gaussian Distribution is still complicated and requires advanced mathematical operation and functional properties such as modified Bessel function. Thus, we can continue converting the distribution into an Inverse Gaussian distribution family, which renders $\frac{1}{\tau_j^2}|\sigma^2,\theta_1,\tilde{y} \sim \text{InverseGaussian}(b^{-\frac{1}{2}},1)$. Rewriting \autoref{eq:nextloglL} can lead to the final conditional expectation form can be written as:
 \begin{equation}
-	Q(\theta,\theta^{(t)}) = -(\frac{n}{2}+\frac{p}{2}+a+1)log(\sigma^2)-\frac{b}{\sigma^2}-\frac{||y-X\beta||_2^2}{2\sigma^2}-\frac{\lambda^2}{2\sigma^2}\sum_{j=1}^{p}(\beta_j^2 E[\frac{1}{\tau_j^2}]),\
-	E[\frac{1}{\tau_j^2}] = \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda}
+	Q(\theta,\theta^{(t)}) = -\left(\frac{n}{2}+\frac{p}{2}+a+1\right)\log(\sigma^2)-\frac{b}{\sigma^2}-\frac{||y-X\beta||_2^2}{2\sigma^2}-\frac{\lambda^2}{2\sigma^2}\sum_{j=1}^{p}\left(\beta_j^2 E\left[\frac{1}{\tau_j^2}\right]\right),
 \end{equation}
-During the iteration, the $E[\frac{1}{\tau_j^2}]$ will be iteratively updated according to the updated $\beta^{(t)}$ and $\sigma^{2(t)}$.
+where $	E\left[\frac{1}{\tau_j^2}\right] = \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda}$. During the iteration, the $E\left[\frac{1}{\tau_j^2}\right]$ will be iteratively updated according to the updated $\beta^{(t)}$ and $\sigma^{2(t)}$.
 \subsubsection{M-step}
 In order to maximize the expectation of complete log-likelihood, taking derivative with respect to each target variable and setting them to 0 respectively provides a closed-form solution for updating observed parameters repeatedly:
 \begin{equation}
@@ -285,19 +284,17 @@ Rearranging the \autoref{eq:sigma2}, the updated formula for $\sigma^{2(t)}$ can
 
 \begin{algorithm}
 	\caption{Bayesian Expectation Maximization algorithm for the Bayesian Lasso}
-	\begin{algorithmic}[1]
+	\begin{algorithmic}[2]
 		
 		\State Given initial value $\theta_1^{(0)} =(\beta^{(0)}.\sigma^{2(0)})$, $\theta_2^0 = \mathbf{1}_p$, $t=1$
 		\While{$||\theta_1^{(t)}-\theta_1^{(t-1)}||_2^2 < \epsilon}$
-		\State $\beta^{(t)} = (X^TX + \lambda^2 A)^{-1}X^Ty,\text{where } A = \textnormal{diag}(\frac{\sigma^{(t-1)}}{|\beta^{(t-1)}|\lambda})$ \Comment{Update $\beta$}
+		\State $\beta^{(t)} = (X^TX + \lambda^2 A)^{-1}X^Ty,\text{where } A = \textnormal{diag}\left(\frac{\sigma^{(t-1)}}{|\beta^{(t-1)}|\lambda}\right)$ \Comment{Update $\beta$}
 		\State 	$\sigma^{2(t)} = \frac{||y-X\beta^{(t)}||_2^2 + \lambda^2 (\beta^{T(t)}A\beta^{(t)}) + 2b}{n+p+2a+2}$ \Comment{Update $\sigma^2$}
-		\State $A = diag( \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda})$\Comment{Estimate expectation of hidden variable $E[\frac{1}{\tau_j^2}]$}
+		\State $A = diag\left( \frac{\sigma^{(t)}}{|\beta_j^{(t)}|\lambda}\right)$\Comment{Estimate expectation of hidden variable $E[\frac{1}{\tau_j^2}]$}
 		\State $t \leftarrow t + 1$
 		\EndWhile  
 		\State	return $\theta_1^{(t)}$
-		
-		
-		
+			
 	\end{algorithmic}
 \end{algorithm}
 After completing the iteration process of Bayesian Lasso, the posterior mode of Bayesian Lasso posterior distribution can be extracted from $\beta$ generated by the Bayesian Lasso algorithm, as a posterior model retaining variable selection nature.
@@ -386,7 +383,7 @@ The algorithm then iteratively replaces $q_j(\theta_j)$ using the current estima
 Similar to MFVB, CAVI has a similar updating rule, while the only modification is that it converts the stopping criterion from using the consecutive difference of ELBO into variation in the parameter $\theta$ during two consecutive.
 
 \subsection{MFVB for Bayesian Lasso}
-We now propose the MFVB algorithm for the Bayesian Lasso problem. Our goal is to attain Bayesian Lasso posterior approximation in a faster and more efficient manner than that of the Gibbs sampler under the framework of VI. Note in this section, slight modification has been imposed to the definition of $\tau_j$. $a_j \sim \text{Gamma}(1,1/2)\text{ for }1\leq j \leq p$, abandoning the dependence of $\lambda$ to $\tau$ to simplify the derivation and algorithm. The assumption of tractable distribution family $Q$ can be written as based on MFVB:
+We now propose the MFVB algorithm for the Bayesian Lasso problem. Our goal is to attain Bayesian Lasso posterior approximation in a faster and more efficient manner than that of the Gibbs sampler under the framework of VI. Note in this section, slight modification has been imposed to the definition of $a_j$. $a_j \sim \text{Gamma}(1,1/2)\text{ for }1\leq j \leq p$, abandoning the dependence of $\lambda$ to $\tau$ to simplify the derivation and algorithm. The assumption of tractable distribution family $Q$ can be written as based on MFVB:
 \begin{equation}
 	q(\theta) = q(\beta)q(\sigma^2)\prod_{i=1}^p q(a_j).
 \end{equation}
