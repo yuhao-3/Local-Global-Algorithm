@@ -9,8 +9,8 @@
 Bayesian inference approaches offer numerous advantages in the statistical community and application areas, especially in situations where data is scarce. In cases where effective data is extremely rare and insufficient, an appropriate prior choice can provide significant benefits, particularly in medical problems. Unlike frequentist inference approaches that treat parameter estimates as fixed values, Bayesian inference approaches regard parameter estimates as random variables that have probability distributions. This unique feature allows for interval estimates and error variances to be generated, providing a more comprehensive understanding of uncertainty and increasing confidence in interpreting parameter estimates. By incorporating prior knowledge and probability distributions, Bayesian Inference approaches offer a more flexible and intuitive framework for statistical analysis.
 
 \textbf{Bayesian Inference Intuition}
-The Bayesian inference approach stems from the Bayes rule, which is defined as Equation (\ref{eq:Bayesrule}) based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as a prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the likelihood conditioning on the data $\mathcal{D}$.
-Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to Equation (\ref{eq:simBayesrule}), as the value of $p(\mathcal{D})$ is constant and insignificant for determining the overall posterior distribution. 
+The Bayesian inference approach stems from the Bayes rule, which is defined as \autoref{eq:Bayesrule} based on theory developed by \cite{Beech1959}. Suppose $\theta$ is our model parameter of interest, $\mathcal{D}$ is data, then $p(\theta)$ is known as a prior distribution, which offers pre-existing knowledge or information about $\theta$. Posterior distribution $p(\theta|\mathcal{D})$ refers to the likelihood conditioning on the data $\mathcal{D}$.
+Incorporating information from current data and prior knowledge, posterior distribution can be then inferred and simplified to \autoref{eq:simBayesrule}, as the value of $p(\mathcal{D})$ is constant and insignificant for determining the overall posterior distribution. 
 \begin{equation}
 	p(\theta|\mathcal{D}) = \frac{p(\mathcal{D}|\theta)p(\theta)}{p(\mathcal{D})},
 	\label{eq:Bayesrule}
@@ -21,7 +21,7 @@ Incorporating information from current data and prior knowledge, posterior distr
 \end{equation}
 \section{Least Absolute Shrinkage and Selection Operator (LASSO) penalized regression}
 \subsection{Lasso penalty formulation}
-The constraint form of lasso can be shown by Equation \ref{eq:lasso2}, where $t \geq 0$ is denoted as a tuning term, the regression coefficient is $\beta$, $||\beta||_1$ is the $l_1$ norm of beta, $||y-X\beta||_2$ is the $l_2$ norm: of residual value, the data matrix is $X$, the response variable is $y$. The estimation for lasso estimate $\hat{\beta}_{lasso}$ is defined by \autoref{eq:lasso2}. 
+The constraint form of lasso can be shown by \autoref{eq:lasso2}, where $t \geq 0$ is denoted as a tuning term, the regression coefficient is $\beta$, $||\beta||_1$ is the $l_1$ norm of beta, $||y-X\beta||_2$ is the $l_2$ norm: of residual value, the data matrix is $X$, the response variable is $y$. The estimation for lasso estimate $\hat{\beta}_{lasso}$ is defined by \autoref{eq:lasso2}. 
 
 \begin{equation}
 	\label{eq:lasso2}
@@ -32,10 +32,10 @@ In order to transform the constraint form of the lasso to penalty form, the Lagr
 	\label{eq:lagrangelasso}
 	\mathcal{L}(\beta,\lambda) =  ||y-X\beta||_2 + \lambda||\beta||_1 - \lambda t, \lambda \geq 0
 \end{equation}
-Since the objective function contains a quadratic term $||y-X\beta||_2$ with a linear term $\lambda||\beta||_1 - \lambda t)$, leading to a convex optimization problem. Due to the strong duality theorem in convex optimization system, therefore the penalty formulation of lasso regression can be deduced as Equation \autoref{eq:lasso1}, is equivalent to constraint form \autoref{eq:lasso2} after ignoring the unaffected constant $-\lambda t$.
+Since the objective function contains a quadratic term $||y-X\beta||_2$ with a linear term $\lambda||\beta||_1 - \lambda t)$, leading to a convex optimization problem. Due to the strong duality theorem in convex optimization system, therefore the penalty formulation of lasso regression can be deduced as \autoref{eq:lasso1}, is equivalent to constraint form \autoref{eq:lasso2} after ignoring the unaffected constant $-\lambda t$.
 
 
-Graphical demonstration of the lasso for Equation \ref{eq:lasso2} and Equation \ref{eq:lasso1} can also be found on the left-hand side of Figure \ref{fig:lassodemo}, where the squared constraint set is drawn, in addition to the contour line of the regression coefficient. The penalty term $\lambda$ controls the strength of the penalization in Lasso regression. When the value of $\lambda$ is set higher, a more sparse solution is facilitated. This forces the estimated coefficients to lie closer to the axis of each parameter, as shown in \ref{fig:lassodemo}. As a result, Lasso regression coefficients are more likely to intersect with the corners of the squared constraint set, leading to the occurrence of sparse estimated regression coefficients. By encouraging sparsity, Lasso regression provides a useful tool for variable selection and reducing model complexity, leading to more interpretable and generalizable models. On the other hand, ridge regression uses a $l_2$ penalty to estimate the regression coefficients, but it tends to gain a non-sparse solution due to the circled constraint set for $\beta$.
+Graphical demonstration of the lasso for \autoref{eq:lasso2} and \autoref{eq:lasso1} can also be found on the left-hand side of Figure \ref{fig:lassodemo}, where the squared constraint set is drawn, in addition to the contour line of the regression coefficient. The penalty term $\lambda$ controls the strength of the penalization in Lasso regression. When the value of $\lambda$ is set higher, a more sparse solution is facilitated. This forces the estimated coefficients to lie closer to the axis of each parameter, as shown in \ref{fig:lassodemo}. As a result, Lasso regression coefficients are more likely to intersect with the corners of the squared constraint set, leading to the occurrence of sparse estimated regression coefficients. By encouraging sparsity, Lasso regression provides a useful tool for variable selection and reducing model complexity, leading to more interpretable and generalizable models. On the other hand, ridge regression uses a $l_2$ penalty to estimate the regression coefficients, but it tends to gain a non-sparse solution due to the circled constraint set for $\beta$.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{lassodemo}
@@ -61,19 +61,19 @@ In addition, if a variance is unknown, the posterior will be a multimodal distri
 	\label{eq:lassocondprior}
 	\pi(\beta |\sigma^2) = \prod_{j=1}^p \frac{\lambda}{2\sqrt{\sigma^2}} e^{-\lambda|\beta_j|/\sqrt{\sigma^2}}
 \end{equation}
-To remedy this issue, a conditional Laplacian prior from \ref{eq:lassocondprior} with respect to Equation(\ref{eq:expandLasso}) has been designed, ensuring the unimodality of the posterior for $\beta$, and the current prior with respect to $\beta$, $\sigma^2$  can be written as
+To remedy this issue, a conditional Laplacian prior from \autoref{eq:lassocondprior} with respect to \autoref{eq:expandLasso} has been designed, ensuring the unimodality of the posterior for $\beta$, and the current prior with respect to $\beta$, $\sigma^2$  can be written as
 \begin{equation}
 	\label{eq:lassoprior}
 	\pi(\beta,\sigma^2) \propto \pi(\sigma^2) \prod_{j=1}^p \frac{\lambda}{2\sqrt{\sigma^2}} e^{-\lambda|\beta_j|/\sqrt{\sigma^2}},
 \end{equation}
-which can result in the unimodal joint posterior distribution $\pi(\beta,\sigma^2|\tilde{y})$ of $\beta$ and $\sigma^2 > 0$ under the new prior \ref{eq:lassoprior}, given an improper prior selection for $\pi(\sigma^2) = \frac{1}{\sigma^2}$ and $\lambda \geq 0$.
-Additionally, an additional latent variable $\tau$ is introduced as a scale mixture of Gaussians for reformulation of conditional prior \ref{eq:lassocondprior} as \ref{eq:MofN}, which can be regarded as corresponding weight assigned to each regression coefficient. If $\tau_j$ goes to 0 then the corresponding regression coefficient will be shrunk towards zero accordingly.
+which can result in the unimodal joint posterior distribution $\pi(\beta,\sigma^2|\tilde{y})$ of $\beta$ and $\sigma^2 > 0$ under the new prior \autoref{eq:lassoprior}, given an improper prior selection for $\pi(\sigma^2) = \frac{1}{\sigma^2}$ and $\lambda \geq 0$.
+Additionally, an additional latent variable $\tau$ is introduced as a scale mixture of Gaussians for reformulation of conditional prior \autoref{eq:lassocondprior} as \autoref{eq:MofN}, which can be regarded as corresponding weight assigned to each regression coefficient. If $\tau_j$ goes to 0 then the corresponding regression coefficient will be shrunk towards zero accordingly.
 \begin{equation}
 	\label{eq:MofN}
 	\frac{\alpha}{2}e^{-\alpha|z|} = \int_{0}^{\infty} \frac{1}{\sqrt{2\pi s}}e^{-z^2/(2s)} \frac{\alpha^2}{2}e^{-\alpha^2s/2}ds, \alpha > 0
 \end{equation}
 
-Finally, the hierarchical Bayesian Lasso model functional form can be written as Equation (\ref{eq:blassocond}).
+Finally, the hierarchical Bayesian Lasso model functional form can be written as \autoref{eq:blassocond}.
 \begin{equation}
 	\label{eq:blassocond}
 	\begin{multlined}
@@ -96,7 +96,6 @@ $$
 \end{multlined}
 $$
 After getting the functional form and ignoring the normalizing constant, we can infer the category of the probability distribution for each expression, and we can sample from the corresponding distribution.
-
 \textbf{Initial Setting}:
 In the initial setting we consider that: $\lambda$ is fixed, and $\sigma^2$ has a a Gamma distribution with parameter $a$ and $b$: $\pi(\sigma^2) = \frac{b^a}{\Gamma(a)} (\sigma^2)^{-a-1}e^{-b^2/\sigma^2},\sigma^2>0,a>0,b>0$ \\
 Our first step is to write the joint distribution: $p(\mathbf{\beta},\mathbf{\tau}^2,\sigma^{2},\mathcal{D})$
@@ -178,7 +177,7 @@ The Gibbs sampler can be established by the following algorithm \autoref{alg:alg
 % \section{Bayesian Paradigm}
 \textbf{Automatic selection of the penalty parameter $\lambda$:}
 A common choice of penalty parameter $\lambda$ in the non-bayesian paradigm involves a cross-validation approach, which is time-consuming and computationally challenging, especially for large datasets.
-\cite{park_casella_2008} set a hyperprior to $\lambda^2$ as \ref{eq:hyperprior}, instaed of $\lambda$ to facilitate conjugacy.
+\cite{park_casella_2008} set a hyperprior to $\lambda^2$ as \autoref{eq:hyperprior}, instaed of $\lambda$ to facilitate conjugacy.
 According to \cite{park_casella_2008}, there is some additional notification of choosing prior, which involves: firstly, to avoid mixing issue, the prior distribution for $\lambda^2$ should reach zero asymptotically with a descent speed as $\lambda^2 $ goes to infinity, Secondly, the density at maximum likelihood estimate should be assigned with enough probability density with an overall flat distribution.
 \begin{equation}
 	\label{eq:hyperprior}
@@ -196,7 +195,7 @@ To obtain the posterior form of $\lambda$, we need to incorpoate a proper hyperp
 		= (\lambda^2)^{p+\gamma-1}e^{-\lambda^2(\frac{1}{2}\sum_{j=1}^p \tau_j^2+\delta)}
 	\end{multlined}
 \end{equation} 
-Thus, the posterior distribution of $\lambda^2$ is still following a Gamma distribution, with a shape parameter $p+\gamma-1$ and rate parameter $\sum_{j=1}^p \tau_j^2+\delta$. The $\lambda^2$ can be sampled by \ref{eq:hyperpriorGamma}, based on using an augmented Gibbs sampler.
+Thus, the posterior distribution of $\lambda^2$ is still following a Gamma distribution, with a shape parameter $p+\gamma-1$ and rate parameter $\sum_{j=1}^p \tau_j^2+\delta$. The $\lambda^2$ can be sampled by \autoref{eq:hyperpriorGamma}, based on using an augmented Gibbs sampler.
 
 \section{Expectation Maximization}
 Even though the posterior distribution can be sampled by the Gibbs sampler in the last subsection, the sparsity nature of the Bayesian lasso is not captured by the posterior mean given by Gibbs Sampler. The posterior mode calculated by Bayesian Expectation Maximization, however, could capture the posterior mode and preserve the sparsity feature of the basic lasso.
@@ -322,7 +321,7 @@ Apart from the equivalence of the optimization system, the explanation of why it
 	\label{eq:ELBOevidence}
 	\textnormal{log}(p(\mathcal{D})) = \text{KL}(q(\theta)||p(\theta|\mathcal{D})) + \text{ELBO}(q(\theta)),
 \end{equation}
-Given the fact that KL$(.|.)$ is greater than 0, this explains log evidence is bounded below by $ELBO$, i.e: $\textnormal{log}(p(\mathcal{D})) \geq ELBO(q(\theta))$.
+Given the fact that KL$(.|.)$ is greater than 0, this explains log evidence is bounded below by ELBO, i.e: $\textnormal{log}(p(\mathcal{D})) \geq \text{ELBO}(q(\theta))$.
 
 \subsection{Mean-Field Variational Family} 
 \cite{parisi1988statistical} proposed statistical mean-field theory. The mean-field variational family is the most common choice that is easier to optimize with a tractable solution form.
@@ -351,7 +350,7 @@ Substituting the family of factorized target distribution $\prod_i q_i$, the ELB
 	\end{aligned}
 \end{equation}
 where $\log[\tilde{p}(\mathcal{D},\theta_j)] = \mathbb{E}_{i \neq j}[\log[p(\mathcal{D},\theta)]] + const$,\\ $\mathbb{E}_{i\neq j}[\log[p(\mathcal{D},\theta)]] = \int \log[p(\mathcal{D},\theta)]\prod_{i\neq j}q_j(\theta_j)d\theta_j$ assuming optimizing the $j$th posterior parameter $\theta_j$.
-Identifying the \ref{eq:ELBOderive} is negative KL-divergence between $q_j(\theta_j) $ and $\tilde{p}(\mathcal{D},\theta_j)$, the KL-divergence can be minimized proposed distribution is close enough to the target distribution. As a consequence, the optimal $q^{*}(\theta_i)$ incidence of local maximum is achieved when $q_j(\theta_j) = \tilde{p}(\mathcal{D},\theta_j)$. Thus, the general optimum distribution can be written in the following equation,
+Identifying the \autoref{eq:ELBOderive} is negative KL-divergence between $q_j(\theta_j) $ and $\tilde{p}(\mathcal{D},\theta_j)$, the KL-divergence can be minimized proposed distribution is close enough to the target distribution. As a consequence, the optimal $q^{*}(\theta_i)$ incidence of local maximum is achieved when $q_j(\theta_j) = \tilde{p}(\mathcal{D},\theta_j)$. Thus, the general optimum distribution can be written in the following equation,
 \begin{equation}
 	\label{eq:logoptimumQ}
 	\log[q_j^*(\theta_j)] = \mathbb{E}_{i\neq j}[\log p(\mathcal{D},\theta)] + const
