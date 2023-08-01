@@ -12,7 +12,7 @@
 \vspace{2.5cm}
 \LARGE{Yuhao Li}\\
 \vspace{1cm}
-\large{Supervisor: A/Prof. John Ormerod and \\ Dr. Mohammad Javad Davouddabadi}\\
+\large{Supervisor: A/Prof. John Ormerod and \\ Dr. Mohammad Javad Davoudabadi}\\
 \large{A thesis submitted in partial fulfillment of \\ the requirements for the degree of \\  Bachelor of Science(Honour)(Data Science)} \\
 \vspace{1cm}
 \large{School of Mathematics and Statistics}\\
@@ -51,27 +51,25 @@ Yuhao Li
     \textbf{\large Abstract }\\
     \vspace{0.5cm}
 \end{center}
-Least Absolute Shrinkage and Selection Operator penalized regression, with an abbreviation of Lasso penalized regression, is regarded as a core statistical technique for simultaneous coefficient estimation and model selection. The idea of Lasso is to add the additional $l_1$ norm penalty function to the objective function that have sum of squared residual only for ordinary regression, generating and eliminating sparse coefficient to achieve efficient and interpretable model selection.
+Least Absolute Shrinkage and Selection Operator penalized regression, with an abbreviation of Lasso penalized regression, is regarded as a core statistical technique for simultaneous coefficient estimation and model selection. The idea of Lasso is to add the additional $l_1$ norm penalty function to the objective function that has sum of squared residual only for ordinary regression, generating and eliminating sparse coefficient estimates to achieve efficient and interpretable model selection.
 
-By considering the Lasso problem from a Bayesian perspective, the Bayesian Lasso model uses a double-exponential prior to model the variation of inferential quantity and to obtain interval estimates of coefficients. Moreover, the Bayesian framework offers an automatic tuning process for the tuning parameter $\lambda$, which controls the strength of penalization. This process replaces the time-consuming n-fold cross-validation technique used in the ordinary Lasso.
+By considering the Lasso problem from a Bayesian perspective, the Bayesian Lasso model uses a double-exponential prior to model the variation of inferential quantity and to obtain interval estimates of coefficients. Moreover, the Bayesian framework offers an automatic tuning process for the tuning parameter $\lambda$, which controls the strength of penalization. This process replaces the time-consuming $n$-fold cross-validation technique used in the ordinary Lasso.
 
-On the other hand, obtaining the posterior of the Bayesian Lasso model involves using Monte Carlo Markov Chain methods, such as Gibbs sampler for exact posterior distribution. Even though MCMC is famous for its oracle property such as generating exact target samples if Markov Chain is run for enough iterations, it is slow and has a high computational cost. 
+On the other hand, obtaining the posterior of the Bayesian Lasso model involves using Monte Carlo Markov Chain methods, such as Gibbs sampler for exact posterior distribution. Even though MCMC is famous for being able to generate 
+samples from the posterior distribution if the Markov Chain is run for enough iterations, it is slow and has a high computational cost. 
 
-Meanwhile, variational approximation, as a deterministic approximation algorithm for intractable posterior distribution, has been applied prevalently for fast Approximate Bayesian Inference(ABI) among the Bayesian Statistical community. It is also a faster alternative to Monte Carlo methods such as MCMC.
+Meanwhile, variational approximations, as a deterministic class of approximation algorithms for intractable posterior distributions, have been applied prevalently for fast Approximate Bayesian Inference (ABI) in the Bayesian Statistical community. It is also a faster alternative to Monte Carlo methods such as MCMC.
 
-The concept of variational approximation involves proposing a set of known densities, and subsequently identifying the density within that set that best approximates the target. The level of approximation is evaluated using Kullback-Leibler (KL) divergence.
+The concept of variational approximation involves proposing a set of known distributional forms, and subsequently identifying the density within that set that best approximates the target. The level of approximation is determined  via the Kullback-Leibler (KL) divergence.
 
-Nevertheless, variational approximation unlike the MCMC methods does not guarantee to approximate the exact target density. It can only find a density close to the target which means the approximation accuracy might  be a pivotal concern and it fails to provide reliable estimates of posterior variances
+Nevertheless, variational approximation unlike the MCMC methods is  not guaranteed to be exact. It can only find a density close to the target which means the approximation accuracy might be a concern when it fails to provide reliable estimates of posterior variances.\\
+In order to address the slow speed of obtaining the posterior distribution for the Bayesian Lasso model, new alternative ABI methods need to be explored, especially for deterministic algorithms such as for variational Bayes and their variants.
 
-In order to address the slow speed issue of obtaining posterior distribution of the Bayesian Lasso problem, new alternative ABI methods would be explored, especially for deterministic algorithm such as variational Bayes.
+This thesis presents two novel distributions, the univariate and bivariate Lasso distributions. These distributions can be used to assist in approximating marginal posterior distributions. In addition, this thesis introduces two highly efficient and precise variational approximation-based algorithms that we apply to solve the Bayesian Lasso regression problem.
 
-This thesis presents two recently discovered distributions, the univariate and bivariate lasso distributions. These distributions can be used to assist in approximating marginal distributions. Additionally, the thesis introduces two highly efficient and precise variational approximation algorithms and their application in solving the Bayesian Lasso regression problem.
+The first method involves matching with a marginal univariate lasso distribution by updating a global parameter for each variable per iteration. In addition, we propose another algorithm that matches a local bivariate Lasso distribution to update the global parameter for each pair of variables per iteration. This algorithm successfully addresses the issue that arises when an initial diagonal covariance matrix is assigned.
 
-
-The first method involves matching with a marginal univariate lasso distribution by updating the global parameter for each variable per iteration. Additionally, we propose another algorithm that matches a local bivariate lasso distribution to update the global parameter for each pair of variables per iteration. This algorithm successfully addresses the issue that arise when an initial diagonal covariance matrix is assigned.
-
-To verify the efficiency and accuracy of our algorithm, we conducted numerous experiments using real-world datasets such as the Hitters Dataset and evaluated it using several metrics such as $l_1$ accuracy and running speed.
-
+To verify the efficiency and accuracy of our algorithm, we conducted numerous experiments using benchmark datasets and evaluated it using several metrics such as $l_1$ accuracy and running speed.
 
 \newpage
 
@@ -80,7 +78,7 @@ To verify the efficiency and accuracy of our algorithm, we conducted numerous ex
     \vspace{0.5cm}
 \end{center}
 	Firstly, I would like to express my deep thanks to my supervisor: A/Prof: John Ormerod and Co-supervisor Dr. Mohammad Javad Davoudabadi, for their constant guidance and patience throughout this year. I would not make it so far without them.
-   	Secondly, I would like to thank my friends, my family, my mother, father. The entire honour year has been full of challenges not only in the researching a novel area, but also the heavy coursework workload. I could not have overcome them without your support behind the scenes.
+   Secondly, I would like to thank my friends, my family, my mother, father. The entire honor year has been full of challenges not only in researching a novel area but also in the heavy coursework workload. I could not have overcome them without your support behind the scenes.
     Finally, I would like to thank the University of Sydney, for providing me a chance to study and research in this school. It is an unforgettable experience.
 \vfill
 \hspace{0pt}

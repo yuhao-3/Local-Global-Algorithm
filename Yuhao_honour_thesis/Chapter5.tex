@@ -1,21 +1,16 @@
 \chapter{Discussion and Conclusion}
 
 \section{Discussion}
-From the experiment result such as approximation accuracy and approximation density plot in the last chapter. The following five bullet points mention the noticeable phenomenon in the experiment.
+The experiment results presented in the previous chapter provide insights into the performance of different algorithms in terms of approximation accuracy and density plots. The following six bullet points highlight notable observations from the experiments:
 \begin{itemize}
-	\item MFVB tends to produce a density with less variance, making it more concentrated at the center.
-	\item The marginal posterior distribution from the Local-Global Algorithm distribution is the most accurate one that can be adapted to various predictor distributions other than the normal distribution
-	\item The global posterior distribution from Local-Global Algorithm distribution is more accurate compared with MFVB.
-	\item The running time for MFVB is slower than Local-Global algorithms for both local approximation and global approximation
-	\item Local-Global Algorithm is highly accurate even when there is a high correlation between predictors according to the result from the Hitters dataset.
-	\item Local-Global Algorithm is highly accurate even when there are more predictors than a number of samples according to the result from the Eyedata dataset.
+    \item MFVB tends to generate densities with less variance, resulting in higher concentration at the center.
+    \item The marginal posterior distribution obtained from the Local-Global algorithm demonstrates high accuracy and versatility in accommodating various predictor distributions beyond the normal distribution.
+    \item The global posterior distribution obtained from the Local-Global algorithm exhibits greater accuracy compared to MFVB.
+    \item The running time of MFVB is slower than that of the Local-Global algorithms, both for local and global approximation.
+    \item The Local-Global algorithm maintains high accuracy even when there is a high correlation between predictors, as observed in the results from the Hitters dataset.
+    \item The Local-Global algorithm achieves high accuracy even when the number of predictors is higher than the sample size, as evidenced by the results from the Eyedata dataset.
 \end{itemize}
-Firstly,
-
-Secondly, this phenomenon is mainly due to the adaptability of the function form of univariate lasso distribution that can capture the sharp point in the curve.
-Thirdly, this is mainly due to the addition of the local adjustment by capturing the correlation between $\beta_j$ and $\beta_{-j}$. Therefore, the global approximation can be more exact than MFVB.
-Thirdly, due to an extra procedure for the local approximation process and calculation of moment for Lasso distribution, the Local-Global algorithm is slightly slower than MFVB, but with a moderate amount, and both algorithms are faster than MCMC.
-Lastly, the fourth and fifth bullet points mention the performance of the Hitters dataset and Eyedata dataset. They can contribute to the adjustment and adaptability of Local-Global algorithms, leading to better approximation results.
+These bullet points effectively summarize the notable phenomena observed in the study. Further explanations reveal that the variance of the density produced by MFVB tends to be less because of the adaptability of the function form of the univariate Lasso distribution. The addition of local adjustment by capturing the correlation between $\beta_j$ and $\beta_{-j}$ makes the global approximation from the Local-Global algorithm more accurate than MFVB. Although the Local-Global algorithm is slightly slower than MFVB due to an extra procedure for the local approximation process and calculation of moments for Lasso distribution, both algorithms are faster than MCMC. Additionally, the Local-Global algorithm's high accuracy in the presence of a high correlation between predictors and more predictors than samples demonstrates the algorithm's adaptability and adjustment, leading to better approximation results.
 
 
 
@@ -35,31 +30,30 @@ Lastly, the fourth and fifth bullet points mention the performance of the Hitter
 
 
 \label{Chapter5}
-\section{Limitation}
-There are still some improvements in our work.
-
+\section{Limitations}
+The two bullet points effectively summarize the limitations:
 
 \begin{itemize}
-	\item Automatic choice of $\lambda$ is still obtained by Gibbs Sampling.
-	\item The Univariate Local-Global algorithm can't deal with the case when initial covariance is a diagonal matrix. 
+    \item The automatic choice of $\lambda$ is still obtained by Gibbs Sampling.
+    \item The Univariate Local-Global algorithm cannot handle the case when the initial covariance is a diagonal matrix.
 \end{itemize}
-The first limitation is that the current choice for $\lambda$ is from the three-step Gibbs Sampler from \cite{park_casella_2008}. By \cite{park_casella_2008}, if the $\lambda^2$ instead of $\lambda$ is treated as a random variable assigning a diffuse hyper prior distribution such as the gamma prior distribution, then an optimal $\lambda$ posterior distribution can be derived due to conjugacy. The fully conditional posterior distributions of $\lambda^2$ can be with a rate parameter and shape parameter. Gibbs sampler can use the full conditional posterior form to seek the $\lambda$ samples. The posterior median for $\lambda$ can be a reliable estimation for optimal $\lambda$ used afterward. Although the optimal lambda behavior is desired, the execution time for obtaining posterior estimates is as long as sampling other posterior estimates for $\beta$ and $\sigma^2$.
-%Under the basis of the Local-Global algorithm, $\lambda$ can be treated to match the marginal lasso distribution from the local perspective, followed by propagation to the global to corre
+The first limitation is explained further, discussing the current choice of $\lambda$ from the three-step Gibbs sampler. It suggests that using the fully conditional posterior distributions of $\lambda^2$ with a gamma prior distribution could lead to an optimal $\lambda$ posterior distribution due to conjugacy. However, obtaining these posterior estimates for $\lambda$ takes a significant amount of execution time, similar to sampling other posterior estimates.
 
-Finally, if the initial covariance $\tilde{\Sigma}$ is diagonal, by our update formula, it will remain as a diagonal matrix until the last iteration, which enables the univariate local-global algorithm non-generalizable.
-For instance, considering the update formula for $\tilde{Sigma}$ if the initial $\tilde{\Sigma}$ is a diagonal covariance matrix, then 
-due to the manner of Local-Global algorithm that update $\tilde{\beta}$ and $\tilde{\Sigma}$ one variable at a time by \autoref{eq:LG_sigma}. The dimension for $\Sigma_{jj}^{*}$ is a scalar value greater than 0 since it is obtained by the lasso variance function, the $\Sigma_{-j,-j}$ will remain a diagonal matrix with dimension $p-1$, $\Sigma_{-j,j} = \Sigma_{j,-j}^T$ can be $\mathbf{0}$ since $\tilde{\Sigma}$ is diagonal. Therefore, the resulting update formula by \autoref{eq:LG_sigma} will be diagonal at the end. This can directly lead to issues if the actual $\Sigma$ is a non-diagonal matrix, causing the discrepancy.
+The second limitation is explained by discussing the behavior of the update formula for $\tilde{\Sigma}$ in the univariate Local-Global algorithm. It highlights that if the initial covariance $\tilde{\Sigma}$ is diagonal, it remains a diagonal matrix throughout the iterations, which restricts the algorithm's generalizability. The explanation provides an example of how the update formula results in a diagonal matrix, causing a discrepancy when the actual $\Sigma$ is non-diagonal.
 
 \section{Future Work}
-To better resolve the limitation mentioned before, several improvements can be explored and completed in the future.
+Several improvements can be explored as a future study to address the aforementioned limitations.
 \begin{itemize}
-	\item Propose a Bivariate-Local-Global Algorithm to address the problem when the initial covariance is a diagonal matrix
-	\item Derive the update formula of $\sigma^2$
+	\item Propose a Bivariate-Local-Global Algorithm to address the problem when the initial covariance is a diagonal matrix.
+	\item Derive the updated formula of $\sigma^2$.
 \end{itemize}
-Firstly, since the update for each iteration is via a pair of variables, the covariance matrix of each variable will be updated several times for each pair.
-Secondly, our Local-Global algorithm can only obtain the posterior distribution for the regression coefficient $\beta$ only, while the temporary assumption of the independence between the $\sigma^2$ and $\beta$ is limited. As a matter of fact, an alternative update formula to derive $\Sigma$ should be derived and explored in the future.
+
+Firstly, since the update for each iteration is done via a pair of variables, the covariance matrix of each variable will be updated multiple times for each pair.
+Secondly, our Local-Global algorithm can only obtain the posterior distribution for the regression coefficient $\beta$, while the temporary assumption of independence between $\sigma^2$ and $\beta$ is limiting. In fact, it is necessary to derive and explore an alternative update formula to calculate $\Sigma$ in the future.
 
 \section{Conclusion}
-In conclusion, we have proposed a novel algorithm for the Bayesian Lasso: a local approximation correction approach that could capture the correlation between the distribution of the target variable and the distribution of other variables. In addition, due to the matching with the invented lasso distribution, the local approximation is more precise, causing significant improvement over the MFVB approximation. The main goal of the future work will be the successful implementation of the Bivariatei-Local-Global algorithm, as well as a valid derivation formula for the update of covariance distribution $q(\sigma^2)$
 
+In conclusion, we have proposed a novel algorithm for the Bayesian Lasso, which utilizes a local approximation correction approach to capture the correlation between the distribution of the target variable and other variables. The introduction of the Lasso distribution enhances the precision of the local approximation, leading to significant improvements over the MFVB approximation.
+
+Looking ahead, our future work will primarily focus on successfully implementing the Bivariate-Local-Global algorithm as mentioned in the last paragraph in Chapter 3. Furthermore, a valid derivation formula for updating the covariance distribution $q(\sigma^2)$ will be a key area of exploration. These efforts will contribute to advancing the accuracy and efficiency of Bayesian variable selection and approximation methods.
 

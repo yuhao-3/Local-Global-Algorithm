@@ -111,26 +111,9 @@ $$
 
 
 
-### Question 1.24
-
-1 Q4: Product of one multivariate normal and an univariate normal, not sure its posterior
-
-​	Problem: CURRENT RESULT ADDING ONLY WORK when dimension of theta1 and theta2 are equal!
-
-2 Log trick meet negative value
 
 
 
-### Question 1.31
 
-1. Posterior density plot remark
-2. Code check
-3. Multivariate Lasso: Standardization
-4. Next step
-
-
-
-Figure out the issue of why a is negative
-
-
+## Question
 
