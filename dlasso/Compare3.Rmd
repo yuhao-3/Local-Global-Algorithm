@@ -1,0 +1,505 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-02-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+set.seed(123)
+
+# Calling package EBglmnet 
+#library(EBglmnet)
+
+# Calling some required packages
+library(invgamma)
+library(mvtnorm)
+#library(LassoDistribution)
+
+source("lasso_distribution.R")
+
+library(armspp)
+library(psych)  # For getting the trace of matrix
+library(posterior)
+
+# Calling package lars to load dataset
+library(lars)
+# Calling this package for getting ESS
+# library(mcmcse)
+library(here)
+library(dplyr)
+```
+
+```{r, eval=TRUE}
+library(flare)
+data(eyedata)
+dataset_name <- "eyedata"
+```
+
+```{r}
+#library(ppls)
+```
+
+
+```{r, eval=FALSE}
+library(hdi)
+data(riboflavin)
+dataset_name <- "riboflavin"
+
+y <- riboflavin$y
+x <- riboflavin$x
+```
+
+```{r, eval=FALSE}
+response <- read.table("phe_simulat.csv", header = FALSE, sep = ",")
+covariates <- read.table("gen_simulat.csv", header = FALSE, sep = ",")
+
+dataset_name <- "big"
+
+n <- nrow(response)
+p <- ncol(covariates)
+p
+vbeta <- c()
+X <- matrix(0, n, 7381)
+count <- 1
+for (i in 1:p) {
+    for (j in i:p) {
+        if (i == j) {
+            X[, count] <- covariates[, i]
+        } else {
+            X[, count] <- covariates[, i] * covariates[, j]
+        }
+        
+        vbeta[count] <- 0
+        
+        if ((i == 1) & (j == 1))     { vbeta[count] <- 4.47; }
+        if ((i == 21) & (j == 21))   { vbeta[count] <- 3.16; }
+        if ((i == 31) & (j == 31))   { vbeta[count] <- 2.24; }
+        if ((i == 51) & (j == 51))   { vbeta[count] <- 1.58; }
+        if ((i == 71) & (j == 71))   { vbeta[count] <- 1.58; }
+        if ((i == 91) & (j == 91))   { vbeta[count] <- 1.10; }
+        if ((i == 101) & (j == 101)) { vbeta[count] <- 1.10; }
+        if ((i == 111) & (j == 111)) { vbeta[count] <- 0.77; }
+        if ((i == 121) & (j == 121)) { vbeta[count] <- 0.77; }
+        if ((i == 1) & (j == 11))    { vbeta[count] <- 1.00; }
+        if ((i == 2) & (j == 119))   { vbeta[count] <- 3.87; }
+        if ((i == 10) & (j == 91))   { vbeta[count] <- 1.30; }
+        if ((i == 15) & (j == 75))   { vbeta[count] <- 1.73; }
+        if ((i == 20) & (j == 46))   { vbeta[count] <- 1.00; }
+        if ((i == 21) & (j == 22))   { vbeta[count] <- 1.00; }
+        if ((i == 26) & (j == 91))   { vbeta[count] <- 1.00; }
+        if ((i == 41) & (j == 61))   { vbeta[count] <- 0.71; }
+        if ((i == 56) & (j == 91))   { vbeta[count] <- 3.16; }
+        if ((i == 65) & (j == 85))   { vbeta[count] <- 2.24; }
+        if ((i == 86) & (j == 96))   { vbeta[count] <- 0.89; }
+        if ((i == 101) & (j == 105)) { vbeta[count] <- 1.00; }
+        if ((i == 111) & (j == 121)) { vbeta[count] <- 2.24; }
+        
+        count <- count + 1
+    }
+}
+
+p <- ncol(X)
+p
+
+sigma2.true <- 20
+beta_true <- vbeta
+tag_true <- 1 * (beta_true != 0)
+nzc <- sum(tag_true)
+cat('model size is : ', nzc, '\n')
+
+
+y_mu <- X %*% matrix(vbeta)
+beta_c <- c(0, beta_true)
+X_std <- scale(X, center = T, scale = T)
+# X_center <- scale(X, center = T, scale = F)
+
+
+y <- y_mu + rnorm(nrow(X), 0, sqrt(sigma2.true))
+x <- X_std
+
+y <- as.vector(y)
+
+n <- length(y)
+
+```
+
+
+```{r}
+######------- Normalizing variables ------
+source("normalize.R")
+
+norm = normalize(y,x)
+y <- norm$vy
+x <- norm$mX
+
+vy <- y
+mX <- x
+
+norm <- NULL
+x <- NULL
+y <- NULL
+
+p <- ncol(mX)
+n <- nrow(mX)
+```
+
+
+
+
+```{r}
+res <- svd(mX)
+vd <- res$d
+vlambda <- vd*vd
+
+valpha <- seq(0,10000,length=500)
+vdof <- c()
+for (i in 1:length(valpha)) {
+  vdof[i] <- sum( vlambda/(vlambda + valpha[i]) )
+}
+
+target <- 2*sqrt(n)
+alpha <- valpha[which.min(abs(vdof - target))]
+```
+
+```{r}
+vbeta_ml <- solve(t(mX)%*%mX + alpha*diag(p),t(mX)%*%vy)
+sigma2_ml <- sum( (vy - mX%*%vbeta_ml)^2 )/n
+
+lambda0 <- sqrt(alpha*sigma2_ml)
+```
+
+```{r}
+u <- 1.0E-4
+v <- 1.0E-4
+a <- 1.0E-4
+b <- 1.0E-4
+lambda0 <- 200
+lambda_prior <- list(lambda_start=lambda0, prior="gamma",u=u,v=v)
+```
+
+
+```{r, eval=FALSE}
+source(here("code","bayesian_lasso_mfvb.R")) 
+ti_mfvb <- system.time({
+  res_mfvb <- bayesian_lasso_mfvb(vy, mX, lambda_prior, sigma2_hat=sigma2_ml, a, b, maxiter = 1000, tol = 1.0E-7)
+})[3]
+```
+
+```{r, warning=FALSE}
+library(Rcpp)
+sourceCpp("bayesian_lasso_mfvb.cpp")
+```
+
+```{r, eval=TRUE}
+file_name = paste(dataset_name,"mfvb_results.Rdata")
+if (file.exists(file_name)) {
+  load(file_name)
+} else {
+  ti_mfvb <- system.time({
+    res_mfvb <- bayesian_lasso_mfvb_tune_pgtn_c(
+      mX, vy, lambda0, sigma2_hat=sigma2_ml, a, b, u, v,
+      maxiter = 1000, tol = 1.0E-5, TRUE)
+  })[3]
+  save(ti_mfvb, res_mfvb, file=file_name)
+}
+```
+ 
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+nburn <- 1000
+nkeep <- 10000
+nsamples <- nburn + nkeep
+res_gibbs1 <- NULL
+lambda_prior <- list(lambda_start=res_mfvb$lambda2_til, prior="gamma",u=u,v=v)
+```
+
+```{r}
+library(RcppClock)
+library(statmod)
+```
+
+```{r, warning=FALSE}
+library(Rcpp)
+sourceCpp("bayesian_lasso_gibbs.cpp")
+```
+
+```{r}
+file_name = paste(dataset_name,"gibbs_results.Rdata")
+if (file.exists(file_name)) {
+  load(file_name)
+} else {
+  ti_c3 <- system.time({
+    res_gibbs_c3 <- bayesian_lasso_gibbs_tune_pgtn_c(
+      mX,
+      vy,
+      lambda = sqrt(res_mfvb$lambda2_til),
+      sigma2_hat = 1 / res_mfvb$sigma2inv_til,
+      nburn = nburn,
+      nsamples = nsamples,
+      a = a,
+      b = b,
+      u = u,
+      v = v,
+      verbose = 100,
+      trunc = 0
+    )
+  })[3]
+  save(ti_c3, res_gibbs_c3, file=file_name)
+}
+```
+```{r}
+ESS_c3 <- c()
+for(j in 1:ncol(mX)){
+  ESS_c3[j] = ess_bulk(res_gibbs_c3$mBeta[-(1:nburn),j])
+}
+Ef_c3 = summary(ESS_c3)/as.numeric(ti_c3)
+```
+
+
+```{r}
+library(Rcpp)
+sourceCpp("lasso_gibbs_2A.cpp")
+```
+
+```{r}
+ti_Ac <- system.time({
+res_Ac <- lasso_gibbs_A_c(mX, vy, a=a, b=b, u=u, v=v, 
+                       nsamples=nsamples, 
+                       vbeta_init=res_mfvb$vmu_til, 
+                       lambda_init=sqrt(res_mfvb$lambda2_til),
+                       sigma2_init=1/res_mfvb$sigma2inv_til)
+})[3]
+```
+
+```{r}
+ESS_Ac <- c()
+for(j in 1:p){
+  ESS_Ac[j] <- ess_basic(res_Ac$mBeta[-(1:nburn),j])
+}
+Ef_Ac = summary(ESS_Ac)/as.numeric(ti_Ac)
+
+res_Ac = NULL
+```
+
+
+
+```{r, eval=FALSE}
+source("lasso_gibbs_2B.R")
+source("lasso_distribution.R")
+
+ti_B  <- system.time({
+  output_B = lasso_gibbs_2B(mX,vy,a,b,u,v,nsamples, 
+                            vbeta_init=res_mfvb$vmu_til, 
+                            lambda2_init=sqrt(res_mfvb$lambda2_til), 
+                            sigma2_init=1/res_mfvb$sigma2inv_til )
+})[3]
+```
+
+
+```{r, eval=FALSE}
+ESS_B <- c()
+for(j in 1:p){
+  ESS_B[j] <- ess_bulk(output_B$mBeta_mcmc[-(1:nburn),j])
+}
+Ef_B = summary(ESS_B)/as.numeric(ti_B)
+
+#save(output_B,file = "output_B.Rdata")
+output_B = NULL
+```
+
+```{r}
+library(Rcpp)
+sourceCpp("lasso_distribution.cpp")
+```
+
+```{r}
+library(Rcpp)
+sourceCpp("lasso_gibbs_B.cpp")
+```
+
+```{r}
+source("lasso_gibbs_2B.R")
+source("lasso_distribution.R")
+
+ti_Bc  <- system.time({
+  res_Bc = lasso_gibbs_Bc(mX,vy,a,b,u,v,nsamples, 
+                            vbeta_init=res_mfvb$vmu_til, 
+                            lambda_init=sqrt(res_mfvb$lambda2_til), 
+                            sigma2_init=1/res_mfvb$sigma2inv_til,
+                            verbose = 1000)
+})[3]
+```
+
+```{r}
+ESS_Bc <- c()
+for(j in 1:p){
+  ESS_Bc[j] <- ess_bulk(res_Bc$mBeta[-(1:nburn),j])
+}
+Ef_Bc = summary(ESS_Bc)/as.numeric(ti_Bc)
+
+#save(output_B,file = "output_B.Rdata")
+output_B = NULL
+```
+
+```{r}
+source("code/bayesian_em_lasso.R")
+
+lambda2 = mean(res_gibbs_c3$vlambda2)
+sigma2 = mean(res_gibbs_c3$vsigma2)
+vbeta_init <- res_mfvb$vmu_til
+
+res_bem <- bayesian_lasso_em(
+    vy,
+    mX,
+    lambda=sqrt(lambda2),
+    a=a,
+    b=b,
+    vbeta_init=vbeta_init,
+    sigma2_init=sigma2,
+    trunc = 0,
+    VERBOSE = 0,
+    CALC_SE = FALSE
+  )
+```
+
+
+
+```{r}
+ord <- order(abs(res_bem$vbeta), decreasing = TRUE)
+s <- round(sqrt(n))
+val <- abs(res_bem$vbeta)[s]
+sI <- which(abs(res_bem$vbeta)>val)
+sJ <- (1:p)[-sI]
+```
+
+
+```{r}
+source("lasso_gibbs_C.R")
+ti_C  <- system.time({
+  output_C = lasso_gibbs_C(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+```
+
+
+```{r}
+ESS_C <- c()
+for(j in 1:p){
+  ESS_C[j] <- ess_bulk(output_C$mBeta_mcmc[-(1:nburn),j])
+}
+Ef_C = summary(ESS_C)/as.numeric(ti_C)
+
+#save(output_C,file = "output_C.Rdata")
+output_C = NULL
+```
+
+```{r}
+library(Rcpp)
+sourceCpp("lasso_gibbs_C.cpp")
+```
+
+```{r}
+ti_Cc  <- system.time({
+  res_Cc = lasso_gibbs_Cc(mX,vy,a,b,u,v,nsamples, 
+                            vbeta_init=res_mfvb$vmu_til, 
+                            lambda_init=sqrt(res_mfvb$lambda2_til), 
+                            sigma2_init=1/res_mfvb$sigma2inv_til,
+                            sI = as.numeric(res_bem$vbeta!=0), 
+                            verbose = 1000)
+})[3]
+```
+
+```{r}
+ESS_Cc <- c()
+for(j in 1:p){
+  ESS_Cc[j] <- ess_bulk(res_Cc$mBeta[-(1:nburn),j])
+}
+Ef_Cc = summary(ESS_Cc)/as.numeric(ti_Cc)
+
+res_Cc = NULL
+```
+
+
+```{r}
+source("lasso_gibbs_D.R")
+
+ti_D  <- system.time({
+  output_D = lasso_gibbs_D(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+```
+
+
+```{r}
+ESS_D <- c()
+for(j in 1:p){
+  ESS_D[j] <- ess_bulk(output_D$mBeta_mcmc[-(1:nburn),j])
+}
+Ef_D = summary(ESS_D)/as.numeric(ti_D)
+
+#save(output_D,file = "output_D.Rdata")
+output_D = NULL
+```
+
+
+```{r}
+library(Rcpp)
+sourceCpp("lasso_gibbs_D.cpp")
+```
+
+```{r}
+ti_Dc  <- system.time({
+  res_Dc = lasso_gibbs_Dc(mX,vy,a,b,u,v,nsamples, 
+                            vbeta_init=res_mfvb$vmu_til, 
+                            lambda_init=sqrt(res_mfvb$lambda2_til), 
+                            sigma2_init=1/res_mfvb$sigma2inv_til,
+                            sI = as.numeric(res_bem$vbeta!=0), 
+                            verbose = 1000)
+})[3]
+```
+
+
+```{r}
+ESS_Dc <- c()
+for(j in 1:p){
+  ESS_Dc[j] <- ess_bulk(res_Dc$mBeta[-(1:nburn),j])
+}
+Ef_Dc = summary(ESS_Dc)/as.numeric(ti_Dc)
+
+#save(output_D,file = "output_D.Rdata")
+#output_D = NULL
+```
+
+```{r}
+library(Rcpp)
+sourceCpp("rao_blackwell.cpp")
+```
+
+
+```{r}
+mMode = bayesian_lasso_rw_mode_c(mX, vy, a, b, u, v, 
+                                 res_Dc$mBeta, res_Dc$vsigma2, res_Dc$vlambda2)
+
+```
+
+```{r}
+source("lasso_gibbs_E.R")
+ti_E  <- system.time({
+  output_E = lasso_gibbs_E(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+```
+
+```{r}
+ESS_E <- c()
+for(j in 1:p){
+  ESS_E[j] <- ess_bulk(output_E$mBeta[-(1:nburn),j])
+}
+Ef_E = summary(ESS_E)/as.numeric(ti_E)
+
+#save(output_E,file = "output_E.Rdata")
+output_E = NULL
+```
+

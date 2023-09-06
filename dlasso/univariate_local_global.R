@@ -6,7 +6,7 @@ univariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til
 {
   ## Initialization
   MAXITER = 500
-  TOL = 1.0E-8
+  TOL = 1.0E-6
   n = nrow(mX)
   p = ncol(mX)
   

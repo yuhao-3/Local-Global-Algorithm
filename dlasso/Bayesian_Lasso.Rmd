@@ -121,12 +121,13 @@ str(Hitters)
 
 x = model.matrix(Salary~., Hitters)[,-1] # trim off the first column
                                          # leaving only the predictors
-y = Hitters %>%
-  select(Salary) %>%
-  unlist() %>%
-  as.numeric()
+y = as.numeric(unlist(Hitters[,"Salary"]))
+  
+  # Hitters %>%select(Salary) %>%
+  # unlist() %>%
+  # as.numeric()
 
-summary(Hitters)
+# summary(Hitters)
 
 dataset_name <- "Hitters"
 ```
@@ -159,10 +160,13 @@ p <- ncol(mX)
 ### Use a short MCMC run with a prior to choose lambda
 
 ```{r}
-source(here("code","bayesian_lasso_gibbs.R")) 
-
+source(here("code","bayesian_lasso_gibbs (2).R")) 
+u <- 1.0E-4
+v <- 1.0E-4
+a <- 1.0E-4
+b <- 1.0E-4
 nburn <- 5000
-nkeep <- 5000
+nkeep <- 50000
 nsamples <- nburn + nkeep
 
 lambda_prior <- list(lambda_start=1, prior="gamma",u=1,v=1)
@@ -190,12 +194,12 @@ source(here("code","bayesian_em_lasso.R"))
 
 time_bem <- system.time({
   res_bem <-
-    bayesian_lasso_em(vy,
+    bayesian_lasso_em_truncate(vy,
                       mX,
-                      lambda = lambda,
+                      lambda = lambda, a, b,
                       vbeta_init = rep(0,p),
                       sigma2_init = 1,
-                      VERBOSE=FALSE)
+                      VERBOSE=FALSE, CALC_SE=FALSE)
 })
 ```
 
@@ -224,7 +228,7 @@ lasso_mod = glmnet(mX,
 ### Longer MCMC run with lambda fixed
 
 ```{r}
-source(here("code","bayesian_lasso_gibbs.R")) 
+source(here("code","bayesian_lasso_gibbs (2).R")) 
 
 nburn <- 5000
 nkeep <- 50000
@@ -378,6 +382,14 @@ res_mfvb <- bayesian_lasso_mfvb(vy, mX, lambda, 1)
 ```
 
 ```{r}
+source(here("code","bayesian_lasso_mfvb.R")) 
+
+nsamples <- 150000  
+res_mfvb <- bayesian_lasso_mfvb(vy, mX, lambda_prior, 1, a, b, maxiter=nsamples,                                                               tol=1.0E-99) 
+```
+
+
+```{r}
 source("univariate_local_global.R")
 
 res <- univariate_local_global(vy, mX, lambda, 
@@ -396,18 +408,21 @@ res_bv <- bivariate_local_global(vy, mX, lambda,
                               mSigma_init=res$mSigma_til, 
                               a_til=res_mfvb$a_til, 
                               b_til=res_mfvb$b_til, 
-                              damp=0.5)
+                              damp=0.005)
 ```
 
 ```{r}
 
 source("bivariate_lasso_distribution.R")
 
-ind <- 8
+ind <- 19
  
  
 dens <- density(res_gibbs$mBeta[-c(1:nburn),ind])
 x <- dens$x
+
+
+y1 <- dlasso(x,res$a[ind],res$b[ind],res$c_val)
 
 inds <- which(res_bv$mPairs==ind, arr.ind = TRUE)
 
@@ -431,6 +446,7 @@ for (i in 1:nrow(inds))
   plot(NA,xlim=xlim,ylim=ylim)
   lines(dens,lwd=2,col="black")
   lines(x,y,lwd=2,col="blue")
+  lines(x,y1,lwd=2,col="red")
 }
 
 

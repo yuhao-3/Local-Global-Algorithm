@@ -1,12 +1,10 @@
 
 
-library(sn)
-
 expit <- function(x) { return( 1/(1+ exp(-x))); }
 
 logSumExp <- function(vec) {
   M <- max(vec)
-  val <- M + log(sum(exp(vec-M)))
+  val <- M + log(sum(exp(vec - M)))
   return(val)
 }
 
@@ -33,8 +31,10 @@ calculate_lasso_dist_stats <- function(a,b,c)
   z_plus  <- zeta(1, r_plus)
   z_minus <- zeta(1,-r_minus)
   
-  w <- expit(   pnorm(-r_minus,log=TRUE) - dnorm(-r_minus,log=TRUE) 
-                - pnorm( r_plus,log=TRUE)  + dnorm(r_plus,log=TRUE) )
+  log_pm <- pnorm(-(b + c)*sigma, log=TRUE)
+  log_pp <- pnorm( (b - c)*sigma, log=TRUE)
+  w <- expit(log_pm - log_pp + 2*b*c*sigma2)
+  
   
   return(list(
     mu_plus=mu_plus,
@@ -83,7 +83,7 @@ plasso <- function(x,a,b,c)
 {
   res <- calculate_lasso_dist_stats(a,b,c)
   
-  val <- 0*u
+  val <- 0*x
   
   inds_minus <- which(x<=0)
   inds_plus  <- which(x >0)
@@ -125,21 +125,55 @@ qnorm_safe <- function( log_p )
 
 qlasso_fast <- function(u,a,b,c) 
 {
-  mu_plus  <-  (b - c)/a
-  mu_minus <-  (b + c)/a
   sigma2 <- 1/a
   sigma <- sqrt(sigma2)
   
-  r_plus  <- mu_plus/sigma
-  r_minus <- mu_minus/sigma
-  w <- expit(   pnorm(-r_minus,log=TRUE) - dnorm(-r_minus,log=TRUE) 
-                - pnorm( r_plus,log=TRUE)  + dnorm(r_plus,log=TRUE) )
+  log_pm <- pnorm(-(b + c)*sigma, log=TRUE)
+  log_pp <- pnorm( (b - c)*sigma, log=TRUE)
+  
+  w <- expit(log_pm - log_pp + 2*b*c*sigma2)
+  
   if (u<=w) {
-    p1 <- pnorm(-r_minus)*u/w
-    x <- mu_minus + sigma*qnorm( p1 )
+    x <-  (b + c)*sigma2 + sigma*qnorm(exp(log_pm)*u/w)
   } else {
-    p2 <- pnorm(r_plus)*(1 - u)/(1-w)
-    x <- mu_plus - sigma*qnorm( p2 )
+    x <- (b - c)*sigma2 - sigma*qnorm(exp(log_pp)*(1 - u)/(1-w))
+  }
+  return(x)
+}
+
+
+qlasso_fast4 <- function(u,a,b,c)
+  
+{
+  sigma2 <- 1/a
+  sigma <- sqrt(sigma2)
+  
+  r_plus  <- (b - c) * sigma
+  r_minus <- (b + c) * sigma
+  
+  if ( (-4 < r_plus) && (r_plus < 4) && (-4 < r_minus) && (r_minus < 4) ) {
+    w <- pnorm(-r_minus) * exp(2 * b * c * sigma2) / pnorm(r_plus)
+  } else {
+    w <- exp( pnorm(-r_minus, log=TRUE) 
+              - pnorm(r_plus, log=TRUE)
+              + 2 * b * c * sigma2 )
+  }
+  
+  cat("r_plus=",r_plus,"\n")
+  cat("r_minus=",r_minus,"\n")
+  cat("w=",w,"\n")
+  cat("b=",b,"\n")
+  cat("c=",c,"\n")
+  cat("sigma2=",sigma2,"\n")
+  
+  if (u<=w) {
+    p1 <- pnorm(-r_minus) * u/w
+    mu_minus <-  (b + c) * sigma2
+    x <- mu_minus + sigma * qnorm( p1 )
+  } else {
+    p2 <- pnorm(r_plus) * (1 - u)/(1-w)
+    mu_plus  <-  (b - c) * sigma2
+    x <- mu_plus - sigma * qnorm( p2 )
   }
   return(x)
 }
@@ -182,11 +216,13 @@ qlasso <- function(u,a,b,c)
 rlasso <- function(n,a,b,c) {
   u <- runif(n)
   x <- qlasso(u,a,b,c)
+  return(x)
 }
 
 rlasso_fast <- function(a,b,c) {
   u <- runif(1)
   x <- qlasso_fast(u,a,b,c)
+  return(x)
 }
 
 ################################################################################

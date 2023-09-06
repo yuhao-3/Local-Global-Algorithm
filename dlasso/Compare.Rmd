@@ -35,6 +35,16 @@ library(here)
 library(dplyr)
 ```
 
+```{r}
+library(hdi)
+data(riboflavin)
+dataset_name <- "riboflavin"
+
+y <- riboflavin$y
+x <- riboflavin$x
+```
+
+
 ```{r, eval=FALSE}
 library(flare)
 data(eyedata)
@@ -43,13 +53,89 @@ dataset_name <- "eyedata"
 ```
 
 
+
+
+```{r, eval=FALSE}
+response <- read.table("phe_simulat.csv", header = FALSE, sep = ",")
+covariates <- read.table("gen_simulat.csv", header = FALSE, sep = ",")
+
+n <- nrow(response)
+p <- ncol(covariates)
+p
+vbeta <- c()
+X <- matrix(0, n, 7381)
+count <- 1
+for (i in 1:p) {
+    for (j in i:p) {
+        if (i == j) {
+            X[, count] <- covariates[, i]
+        } else {
+            X[, count] <- covariates[, i] * covariates[, j]
+        }
+        
+        vbeta[count] <- 0
+        
+        if ((i == 1) & (j == 1))     { vbeta[count] <- 4.47; }
+        if ((i == 21) & (j == 21))   { vbeta[count] <- 3.16; }
+        if ((i == 31) & (j == 31))   { vbeta[count] <- 2.24; }
+        if ((i == 51) & (j == 51))   { vbeta[count] <- 1.58; }
+        if ((i == 71) & (j == 71))   { vbeta[count] <- 1.58; }
+        if ((i == 91) & (j == 91))   { vbeta[count] <- 1.10; }
+        if ((i == 101) & (j == 101)) { vbeta[count] <- 1.10; }
+        if ((i == 111) & (j == 111)) { vbeta[count] <- 0.77; }
+        if ((i == 121) & (j == 121)) { vbeta[count] <- 0.77; }
+        if ((i == 1) & (j == 11))    { vbeta[count] <- 1.00; }
+        if ((i == 2) & (j == 119))   { vbeta[count] <- 3.87; }
+        if ((i == 10) & (j == 91))   { vbeta[count] <- 1.30; }
+        if ((i == 15) & (j == 75))   { vbeta[count] <- 1.73; }
+        if ((i == 20) & (j == 46))   { vbeta[count] <- 1.00; }
+        if ((i == 21) & (j == 22))   { vbeta[count] <- 1.00; }
+        if ((i == 26) & (j == 91))   { vbeta[count] <- 1.00; }
+        if ((i == 41) & (j == 61))   { vbeta[count] <- 0.71; }
+        if ((i == 56) & (j == 91))   { vbeta[count] <- 3.16; }
+        if ((i == 65) & (j == 85))   { vbeta[count] <- 2.24; }
+        if ((i == 86) & (j == 96))   { vbeta[count] <- 0.89; }
+        if ((i == 101) & (j == 105)) { vbeta[count] <- 1.00; }
+        if ((i == 111) & (j == 121)) { vbeta[count] <- 2.24; }
+        
+        count <- count + 1
+    }
+}
+
+p <- ncol(X)
+p
+
+sigma2.true <- 20
+beta_true <- vbeta
+tag_true <- 1 * (beta_true != 0)
+nzc <- sum(tag_true)
+cat('model size is : ', nzc, '\n')
+
+
+y_mu <- X %*% matrix(vbeta)
+beta_c <- c(0, beta_true)
+X_std <- scale(X, center = T, scale = T)
+# X_center <- scale(X, center = T, scale = F)
+
+
+y <- y_mu + rnorm(nrow(X), 0, sqrt(sigma2.true))
+x <- X_std
+
+y <- as.vector(y)
+
+n <- length(y)
+
+```
+
+
+
 ```{r, eval=FALSE}
 # Calling Diabetes dataset 
 data(diabetes)
 attach(diabetes)
 ```
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 load("comData.Rdata")
 
 mX <- t(t(X) %>% na.omit())  
@@ -64,7 +150,6 @@ dataset_name <- "comData"
 ```
 
 ```{r}
-
 ######------- Normalizing variables ------
 normalize <- function(y, X) {
   n <- length(y)
@@ -96,31 +181,212 @@ vy <- y
 mX <- x
 
 p <- ncol(mX)
+n <- nrow(mX)
+```
+
+
+```{r}
+u <- 1.0E-8
+v <- 1.0E-8
+a <- 1.0E-8
+b <- 1.0E-8
+
+vbeta_ml <- solve(t(mX)%*%mX + 1.0E-4*diag(p),t(mX)%*%vy)
+sigma2_ml <- 1 # sum( (vy - mX%*%vbeta_ml)^2 )/n
+  
+lambda_0 <- 1.0E-8 #p*sqrt(sigma2_ml)/sum(abs(vbeta_ml))
+
+lambda_prior <- list(lambda_start=lambda_0, prior="gamma",u=u,v=v)
+
+
+
+lambda_prior <- list(lambda_start=1, prior="gamma",u=u,v=v)
+```
+
+```{r, eval=TRUE}
+source(here("code","bayesian_lasso_mfvb.R")) 
+
+ti_mfvb <- system.time({
+  res_mfvb <- bayesian_lasso_mfvb(vy, mX, lambda_prior, sigma2_hat=1, a, b) 
+})[3]
+```
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+nburn <- 1000
+nkeep <- 20000
+nsamples <- nburn + nkeep
+
+ti_0 <- system.time({
+  res_gibbs1 <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples, a=a, b=b, trunc=0)
+})[3]
+```
+
+
+
+```{r}
+ESS_0 <- c()
+for(j in 1:ncol(mX)){
+  ESS_0[j] = ess_bulk(res_gibbs1$mBeta[,j])
+}
+Ef_0 = summary(ESS_0)/as.numeric(ti_0)
+
 ```
 
 
 ```{r}
 source(here("code","bayesian_lasso_gibbs.R")) 
 
-nburn <- 1000
-nkeep <- 9000
-nsamples <- nburn + nkeep
 
-lambda_prior <- list(lambda_start=1, prior="gamma",u=0.01,v=0.01)
+lambda_prior <- list(lambda_start=1, prior="gamma",u=u,v=v)
 
-ti_0 <- system.time({
-  res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
+ti_1 <- system.time({
+  res_gibbs2 <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples, a=a, b=b,trunc=0.0001)
 })[3]
 ```
-```{r}
-mBeta_mcmc = res_gibbs$mBeta[-(1:nburn),]
 
-ESS_0 <- c()
-for(j in 1:p){
-  ESS_0[j] = ess_basic(mBeta_mcmc[,j])
+
+```{r}
+ESS_1 <- c()
+for(j in 1:ncol(mX)){
+  ESS_1[j] = ess_bulk(res_gibbs2$mBeta[,j])
 }
-Ef_0 = summary(ESS_0)/as.numeric(ti_0)
+Ef_1 = summary(ESS_1)/as.numeric(ti_1)
+
 ```
+
+
+```{r, eval=TRUE}
+source(here("code","bayesian_em_lasso.R")) 
+
+lambda2 <- quantile(res_gibbs1$vlambda2, 0.5)
+sigma2_init <- quantile(res_gibbs1$vsigma2, 0.5)
+
+#lambda2 <- 10000
+
+#lambda2 <- res_mfvb$Eq_lambda2
+#sigma2_init  <- res_mfvb$b_til/res_mfvb$a_til
+vbeta_init   <- res_mfvb$vmu_til
+
+time_bem <- system.time({
+  res_bem <-
+    bayesian_lasso_em(vy,
+                      mX,
+                      a=a,
+                      b=b,
+                      lambda = sqrt(lambda2),
+                      vbeta_init = vbeta_init,
+                      sigma2_init = sigma2_init,
+                      VERBOSE=FALSE)
+})
+```
+
+
+
+
+```{r, eval=TRUE}
+#install.packages("bayeslm")
+library(bayeslm)
+
+time_bayeslm <- system.time({
+  fit = bayeslm(
+    Y = vy,
+    X = mX,
+    prior = 'laplace',
+    icept = FALSE,
+    block_vec =  rep(1, ncol(mX)),
+    N = nkeep,
+    singular = TRUE,
+    burnin = nburn,
+    sampling_vglobal = TRUE
+  )
+})[3]
+
+```
+
+
+```{r}
+ESS_bayeslm <- c()
+for(j in 1:ncol(mX)){
+  ESS_bayeslm[j] = ess_bulk(fit$beta[,j])
+}
+Ef_bayeslm = summary(ESS_bayeslm)/as.numeric(time_bayeslm)
+
+```
+
+```{r}
+dens1_sigma2 <- density(res_gibbs1$vsigma2[-(1:nburn)])
+dens2_sigma2 <- density_rw_sigma2(dens1_sigma2$x, res_gibbs1$va_til[-(1:nburn)], res_gibbs1$vb_til[-(1:nburn)])
+
+dens_sigma2_mfvb <- list(x=dens1_sigma2$x,
+                         y=dinvgamma(dens1_sigma2$x,res_mfvb$a_til, res_mfvb$b_til))
+
+dens3_sigma2 <- density(res_gibbs2$vsigma2[-(1:nburn)])
+dens4_sigma2 <- density_rw_sigma2(dens1_sigma2$x, res_gibbs2$va_til[-(1:nburn)], res_gibbs2$vb_til[-(1:nburn)])
+
+xlim <- range(c(dens1_sigma2$x, dens2_sigma2$x, dens3_sigma2$x, dens4_sigma2$x))
+ylim <- range(c(dens1_sigma2$y, dens2_sigma2$y, dens3_sigma2$y, dens4_sigma2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="sigma2")
+lines(dens1_sigma2, lwd=2, col="blue")
+lines(dens2_sigma2, lwd=2, col="red")
+lines(dens3_sigma2, lwd=2, col="green")
+lines(dens4_sigma2, lwd=2, col="purple")
+lines(dens_sigma2_mfvb, lwd=2, col="black")
+```
+
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+dens1_lambda2 <- density(res_gibbs1$vlambda2[-(1:nburn)])
+dens2_lambda2 <- density_rw_lambda2(dens1_lambda2$x, res_gibbs1$vu_til[-(1:nburn)], res_gibbs1$vv_til[-(1:nburn)])
+
+dens3_lambda2 <- density(res_gibbs2$vlambda2[-(1:nburn)])
+dens4_lambda2 <- density_rw_lambda2(dens1_lambda2$x, res_gibbs2$vu_til[-(1:nburn)], res_gibbs2$vv_til[-(1:nburn)])
+
+
+dens_lambda2_mfvb <- list(x=dens1_lambda2$x,
+                         y=dgamma(dens1_lambda2$x,res_mfvb$u_til, res_mfvb$v_til))
+
+
+xlim <- range(c(dens1_lambda2$x, dens2_lambda2$x, dens3_lambda2$x, dens4_lambda2$x))
+ylim <- range(c(dens1_lambda2$y, dens2_lambda2$y, dens3_lambda2$y, dens4_lambda2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="lambda2")
+lines(dens1_lambda2, lwd=2, col="blue")
+lines(dens2_lambda2, lwd=2, col="red")
+lines(dens3_lambda2, lwd=2, col="green")
+lines(dens4_lambda2, lwd=2, col="purple")
+lines(dens_lambda2_mfvb, lwd=2, col="black")
+```
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+sI <- which(res_bem$vbeta!=0)
+sJ <- (1:p)[-sI]
+
+for (j in sI) {
+  dens1_beta <- density(res_gibbs1$mBeta[-(1:nburn),j])
+  dens2_beta <- density_rw_beta(dens1_beta$x, res_gibbs1$mM[-(1:nburn),], res_gibbs1$mV[-(1:nburn),],j)
+  dens3_beta <- density(res_gibbs2$mBeta[-(1:nburn),j])
+  dens4_beta <- density_rw_beta(dens1_beta$x, res_gibbs2$mM[-(1:nburn),], res_gibbs2$mV[-(1:nburn),],j)
+  
+  dens_beta_mfvb <- list(x=dens1_beta$x,
+                         y=dnorm(dens1_beta$x, res_mfvb$vmu_til[j], sqrt(res_mfvb$mSigma_til[j,j])))
+  
+  xlim <- range(c(dens1_beta$x, dens2_beta$x, dens3_beta$x, dens4_beta$x))
+  ylim <- range(c(dens1_beta$y, dens2_beta$y, dens3_beta$y, dens4_beta$y))
+  
+  plot(NA,type="n",xlim=xlim,ylim=ylim, main=j)
+  lines(dens1_beta, lwd=2, col="blue")
+  lines(dens2_beta, lwd=2, col="red")
+  lines(dens3_beta, lwd=2, col="green")
+  lines(dens4_beta, lwd=2, col="purple")
+  lines(dens_beta_mfvb, lwd=2, col="black")
+}
+```
+
 
 
 ```{r}
@@ -130,10 +396,9 @@ source("lasso_gibbs_2A.R")
 
 mX <- x
 vy <- y
-u <- 0.01
-v <- 0.01
-a <- 0.01
-b <- 0.01
+sigma2 <- 1
+lambda2 <- 1
+vbeta <- rep(0,p) #res_bem$vbeta
 
 library(profvis)
 
@@ -142,295 +407,299 @@ library(profvis)
 #})
 
 ti_A <- system.time({
-  output_A = lasso_gibbs_2A(mX,vy,a,b,u,v,nsamples)
+  output_A = lasso_gibbs_2A(mX,vy,a,b,u,v,nsamples, vbeta=vbeta, lambda2=lambda2, sigma2=sigma2)
 })[3]
 
-mBeta_mcmc = output_A$mBeta_mcmc[-(1:nkeep),]
+mBeta_mcmc = output_A$mBeta[-(1:nburn),]
  
 ESS_A <- c()
 for(j in 1:p){
-  ESS_A[j] = ess_basic(mBeta_mcmc[,j])
+  ESS_A[j] = ess_bulk(mBeta_mcmc[,j])
 }
 Ef_A = summary(ESS_A)/as.numeric(ti_A)
-
- 
-
-for (j in 1:p) {
-#  plot(density(output_A$mBeta_mcmc[-(1:1000),j]), main=paste(j))
-}
-
 ```
 
 
 ```{r}
+dens1_sigma2 <- density(res_gibbs1$vsigma2[-(1:nburn)])
+dens2_sigma2 <- density_rw_sigma2(dens1_sigma2$x, res_gibbs1$va_til[-(1:nburn)], res_gibbs1$vb_til[-(1:nburn)])
+dens3_sigma2 <- density_rw_sigma2(dens1_sigma2$x, output_A$va_til[-(1:nburn)], output_A$vb_til[-(1:nburn)])
+dens4_sigma2 <- density(output_A$vsigma2[-(1:nburn)])
 
+xlim <- range(c(dens1_sigma2$x, dens2_sigma2$x, dens3_sigma2$x, dens4_sigma2$x))
+ylim <- range(c(dens1_sigma2$y, dens2_sigma2$y, dens3_sigma2$y, dens4_sigma2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="sigma2")
+lines(dens1_sigma2, lwd=2, col="blue")
+lines(dens2_sigma2, lwd=2, col="red")
+lines(dens3_sigma2, lwd=2, col="green")
+lines(dens4_sigma2, lwd=2, col="purple")
+```
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+dens1_lambda2 <- density(res_gibbs1$vlambda2[-(1:nburn)])
+dens2_lambda2 <- density_rw_lambda2(dens1_lambda2$x, res_gibbs1$vu_til[-(1:nburn)], res_gibbs1$vv_til[-(1:nburn)])
+dens3_lambda2 <- density_rw_lambda2(dens1_lambda2$x, output_A$vu_til[-(1:nburn)], output_A$vv_til[-(1:nburn)])
+dens4_lambda2 <- density(output_A$vlambda2[-(1:nburn)])
+
+xlim <- range(c(dens1_lambda2$x, dens2_lambda2$x, dens3_lambda2$x, dens4_lambda2$x))
+ylim <- range(c(dens1_lambda2$y, dens2_lambda2$y, dens3_lambda2$y, dens4_lambda2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="lambda2")
+lines(dens1_lambda2, lwd=2, col="blue")
+lines(dens2_lambda2, lwd=2, col="red")
+lines(dens3_lambda2, lwd=2, col="green")
+lines(dens4_lambda2, lwd=2, col="purple")
+```
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+for (j in sI) {
+  dens1_beta <- density(res_gibbs1$mBeta[-(1:nburn),j])
+  dens2_beta <- density_rw_beta(dens1_beta$x, res_gibbs1$mM[-(1:nburn),], res_gibbs1$mV[-(1:nburn),],j)
+  dens3_beta <- density_rw_beta(dens1_beta$x, output_A$mM[-(1:nburn),], output_A$mV[-(1:nburn),],j)
+  
+  xlim <- range(c(dens1_beta$x, dens2_beta$x, dens3_beta$x))
+  ylim <- range(c(dens1_beta$y, dens2_beta$y, dens3_beta$y))
+  
+  plot(NA,type="n",xlim=xlim,ylim=ylim, main=j)
+  lines(dens1_beta, lwd=2, col="blue")
+  lines(dens2_beta, lwd=2, col="red")
+  lines(dens3_beta, lwd=2, col="green")
+}
+```
+
+
+
+```{r}
 ###### Gibbs sampling form "B" ########
 source("lasso_gibbs_2B.R")
-
+source("lasso_distribution.R")
 profvis({ 
-   output_B = lasso_gibbs_2B(mX,vy,a,b,u,v,nsamples)
+   output_B = lasso_gibbs_2B(mX,vy,a,b,u,v,nsamples, res_bem$vbeta, lambda2, sigma2)
 })
+```
+
+
+```{r}
+source("lasso_gibbs_2B.R")
+source("lasso_distribution.R")
 
 ti_B  <- system.time({
-  output_B = lasso_gibbs_2B(mX,vy,a,b,u,v,nsamples)
+  output_B = lasso_gibbs_2B(mX,vy,a,b,u,v,nsamples, res_mfvb$vmu_til, lambda2, sigma2 )
 })[3]
 
-mBeta_mcmc = output_B$mBeta_mcmc[-(1:nkeep),]
+mBeta_mcmc = output_B$mBeta_mcmc[-(1:nburn),]
 
 ESS_B <- c()
 for(j in 1:p){
-  ESS_B[j] <- ess_basic(mBeta_mcmc[,j])
+  ESS_B[j] <- ess_bulk(mBeta_mcmc[,j])
 }
 Ef_B = summary(ESS_B)/as.numeric(ti_B)
 ```
-```{r}
-plot(density(output_B$sigma2_mcmc[-(1:nburn)]), main="sigma2")
-lines(density(output_A$sigma2_mcmc[-(1:nburn)]),col="red")
-lines(density(res_gibbs$vsigma2[-(1:nburn)]),col="blue")
-```
-
-```{r}
-plot(density(output_B$lambda2_mcmc[-(1:nburn)]), main="lambda2")
-lines(density(output_A$lambda2_mcmc[-(1:nburn)]),col="red")
-lines(density(res_gibbs$vlambda2[-(1:nburn)]),col="blue")
-```
 
 
 ```{r}
-for (j in 1:p) {
-  plot(density(output_B$mBeta_mcmc[-(1:nburn),j]), main=paste(j))
-  lines(density(output_A$mBeta_mcmc[-(1:nburn),j]),col="red")
-  lines(density(res_gibbs$mBeta[-(1:nburn),j]),col="blue")
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+for (j in sI) {
+  dens1_beta <- density(res_gibbs1$mBeta[-(1:nburn),j])
+  dens2_beta <- density_rw_beta(dens1_beta$x, res_gibbs1$mM[-(1:nburn),], res_gibbs1$mV[-(1:nburn),],j)
+  dens3_beta <- density_rw_beta(dens1_beta$x, output_A$mM[-(1:nburn),], output_A$mV[-(1:nburn),],j)
+  dens4_beta <- density_rw_beta2(dens1_beta$x, output_B$mA_rw[-(1:nburn),], output_B$mB_rw[-(1:nburn),], output_B$mC_rw[-(1:nburn),],j)
+  
+  xlim <- range(c(dens1_beta$x, dens2_beta$x, dens3_beta$x, dens4_beta$x))
+  ylim <- range(c(dens1_beta$y, dens2_beta$y, dens3_beta$y, dens4_beta$y))
+  
+  plot(NA,type="n",xlim=xlim,ylim=ylim, main=j)
+  lines(dens1_beta, lwd=2, col="blue")
+  lines(dens2_beta, lwd=2, col="red")
+  lines(dens3_beta, lwd=2, col="green")
+  lines(dens4_beta, lwd=2, col="purple")
 }
 ```
 
 
-
 ```{r}
-plot(ESS_B,apply( output_B$mMode_mcmc==0, 2, mean))
+dens1_sigma2 <- density(res_gibbs1$vsigma2[-(1:nburn)])
+dens2_sigma2 <- density_rw_sigma2(dens1_sigma2$x, res_gibbs1$va_til[-(1:nburn)], res_gibbs1$vb_til[-(1:nburn)])
+dens3_sigma2 <- density(output_B$sigma2_mcmc[-(1:nburn)])
+
+xlim <- range(c(dens1_sigma2$x, dens2_sigma2$x, dens3_sigma2$x))
+ylim <- range(c(dens1_sigma2$y, dens2_sigma2$y, dens3_sigma2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="sigma2")
+lines(dens1_sigma2, lwd=2, col="blue")
+lines(dens2_sigma2, lwd=2, col="red")
+lines(dens3_sigma2, lwd=2, col="green")
 ```
 
+
 ```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+dens1_lambda2 <- density(res_gibbs1$vlambda2[-(1:nburn)])
+dens2_lambda2 <- density(output_B$lambda2_mcmc[-(1:nburn)])
 
-###### Gibbs sampling form "C" ########
-setwd("C:/Users/mdav3376/OneDrive - The University of Sydney (Staff)/Postdoc/Code/MCMC Gibbs sampler")
+dens3_lambda2 <- density_rw_lambda2(dens1_lambda2$x, output_A$vu_til[-(1:nburn)], output_A$vv_til[-(1:nburn)])
+
+xlim <- range(c(dens1_lambda2$x, dens2_lambda2$x, dens3_lambda2$x))
+ylim <- range(c(dens1_lambda2$y, dens2_lambda2$y, dens3_lambda2$y))
+
+plot(NA,type="n",xlim=xlim,ylim=ylim, main="lambda2")
+lines(dens1_lambda2, lwd=2, col="blue")
+lines(dens2_lambda2, lwd=2, col="red")
+lines(dens3_lambda2, lwd=2, col="green")
+```
 
 
-lambda <- list(u=0.1,v=0.2,prior="gamma",lambda_start=0.1)
+```{r}
+###### Gibbs sampling form "B" ########
+source("lasso_gibbs_C.R")
 
-source("lambda2_estimation_Gibbs.R")
+profvis({ 
+   output_C = lasso_gibbs_C(mX,vy,a,b,u,v,nsamples, sI, res_mfvb$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})
+```
 
-lambda2 <- lambda2_estimation_Gibbs(x,y,0.1,0.2,a_sig = 1, b_sig = 1.2,t = 100000)
-lam2 <- mean(lambda2$lam_2)
 
-Gibbs_Sampling_C <- function(x, y, lam2, u, v, a_sig, b_sig, t){
-  TOL <- 1.0E-4
-  MAXITER <- 10000
+```{r}
+source("lasso_gibbs_C.R")
+sI <- which(abs(res_bem$vbeta)!=0)
+sJ <- (1:p)[-sI]
+
+ti_C  <- system.time({
+  output_C = lasso_gibbs_C(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+
+mBeta_mcmc = output_C$mBeta_mcmc[-(1:nburn),]
+
+ESS_C <- c()
+for(j in 1:p){
+  ESS_C[j] <- ess_bulk(mBeta_mcmc[,j])
+}
+Ef_C = summary(ESS_C)/as.numeric(ti_C)
+```
+
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+for (j in sI) {
+  dens1_beta <- density(res_gibbs1$mBeta[-(1:nburn),j])
+  dens2_beta <- density_rw_beta(dens1_beta$x, res_gibbs1$mM[-(1:nburn),], res_gibbs1$mV[-(1:nburn),],j)
+  dens3_beta <- density_rw_beta(dens1_beta$x, output_A$mM[-(1:nburn),], output_A$mV[-(1:nburn),],j)
+  dens4_beta <- density_rw_beta2(dens1_beta$x, output_B$mA_rw[-(1:nburn),], output_B$mB_rw[-(1:nburn),], output_B$mC_rw[-(1:nburn),],j)
   
-  
-  n <- nrow(x)
-  p <- ncol(x)
-  print(p)
-  A <- matrix(NA,p,p)
-  beta <- matrix(0,t,p)
-  sig_2 <- rep(0, t)
-  
-  
-  y <- as.matrix(y)
-  lam_2 <- rep(1,t)
-
-  a <- rep(1,p)
-  sigma_2 <- 0.001
-  
-  A <- diag(a)
-
-  
-  XTX <- t(x)%*%x 
-  XTy <- t(x)%*%y
-  yTX <- t(y)%*%x
-
-  
-  vbeta <- rep(1,p)
-  vtheta <- c(vbeta,sigma_2)
-  
-  # Running EM algorithm to find index set "I", which is the index of non-zero coefficients
-  for (i in 1:MAXITER) 
-  {
-    # M-step
-    vbeta <- solve(XTX + lam2*diag(a^(-1)),tol=1.0E-99)%*%XTy
-    sigma2 <- (b_sig + 0.5*sum((y - x%*%vbeta)^2) + 0.5*lam2*sum(a^(-1)*vbeta*vbeta))/(a_sig + 0.5*(n + p) - 1)
-    
-    # E-step
-    a <- sqrt((sigma2/(vbeta*vbeta))/lam2)
-    a <- as.vector(a)
-    
-    
-    vtheta_old <- vtheta
-    vtheta <- c(vbeta,sigma2)
-    err <- max(abs(vtheta - vtheta_old))
-    cat("i=",i,"err=",err,"sigma2=",sigma2,"\n") 
-    if (err < TOL) {
-      break;
-    }
+  if (j%in%sI) {
+    J <- which(sI==j)
+    dens5_beta <- density_rw_beta(dens1_beta$x, output_C$mM[-(1:nburn),], output_C$mV[-(1:nburn),],J)
+  } else {
+    dens5_beta <- density_rw_beta2(dens1_beta$x, output_C$mA_rw[-(1:nburn),], output_C$mB_rw[-(1:nburn),], output_B$mC_rw[-(1:nburn),],j)
   }
+  
+  
+  xlim <- range(c(dens1_beta$x, dens2_beta$x, dens3_beta$x, dens4_beta$x))
+  ylim <- range(c(dens1_beta$y, dens2_beta$y, dens3_beta$y, dens4_beta$y))
+  
+  plot(NA,type="n",xlim=xlim,ylim=ylim, main=j)
+  lines(dens1_beta, lwd=2, col="blue")
+  lines(dens2_beta, lwd=2, col="red")
+  lines(dens3_beta, lwd=2, col="green")
+  lines(dens4_beta, lwd=2, col="purple")
+  lines(dens5_beta, lwd=2, col="cyan")
+}
+```
+
+
+```{r}
+source("lasso_gibbs_D.R")
+sI <- which(abs(res_bem$vbeta)!=0)
+sJ <- (1:p)[-sI]
+
+
+profvis({ 
+  output_D = lasso_gibbs_D(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})
+```
+
+
+```{r}
+source("lasso_gibbs_D.R")
+sI <- which(abs(res_bem$vbeta)!=0)
+sJ <- (1:p)[-sI]
+
+
+ti_D  <- system.time({
+  output_D = lasso_gibbs_D(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+
+mBeta_mcmc = output_D$mBeta_mcmc[-(1:nburn),]
+
+ESS_D <- c()
+for(j in 1:p){
+  ESS_D[j] <- ess_bulk(mBeta_mcmc[,j])
+}
+Ef_D = summary(ESS_D)/as.numeric(ti_D)
+```
+
+
+
+
+```{r}
+source(here("code","bayesian_lasso_gibbs.R")) 
+
+for (j in sI) {
+  dens1_beta <- density(res_gibbs1$mBeta[-(1:nburn),j])
  
-  #   # M-step
-  #   c <- lam2*(as.vector(R/S) * mu^2 + diag(Q))
-  #   
-  #   a <- (-1+sqrt(1+4*abs(c)))/2
-  #   
-  #   # E-step
-  #   Q <- solve(XTX + lam2*diag(a^(-1)),tol=1.0E-99)
-  #   mu <- Q%*%XTy
-  #   beta_EM  <- mu
-  #   
-  #   R <- a_sig + 0.5*n
-  #   S <- b_sig + 0.5*(sum(y^2) - yTX%*%Q%*%XTy)
-  #   R <- as.vector(R);  S <- as.vector(S)
-  #   sigma_2 <- S/(R-1)
-  #   
-  #   
-  #   theta_old <- theta_1
-  #   theta_1 <- a 
-  #   
-  #   err <- max(abs(theta_1 - theta_old))
-  #   # cat("ITER=",ITER,"err=",err,"va=",va,"\n") #vbeta=",vbeta,"\n")
-  #   if (err < TOL) {
-  #     break;
-  #   }
-  # }
-  
-  # Finding the indexes of the parameters which are greater than zero
-  I <- which(abs(vbeta)>1.0E-2)
-
-
-  
-  NumParam <- 1:p
-  
-
-  if(length(I) < p){
-    # Running Gibbs sampler to draw sample of beta_{-I} and beta_{I}
-    for(i in 1:t) {
-      # Draw from non-zero values beta, which is beta_{I}
-      Q_I <- solve(XTX[I,I] + lam2*1/A[I,I],tol=1.0E-9)
-      beta[i,-I] <- as.matrix(beta[i,-I])
-      
-      YXbet_minsI <- y - as.matrix(x[,-I])%*%as.matrix(beta[i,-I])
-
-      mu_I1 <- Q_I%*%t(x[,I])%*%(YXbet_minsI)
-
-      
-      beta[i,I] <- rmvnorm(1,as.vector(mu_I1),sigma_2*Q_I)
-      
-      # Draw from zero values beta, which is beta_{-I}
-      D_I <- solve(A[I,I],tol=1.0E-99)
-      XXD_Inv <- solve(XTX[I,I] + lam2*D_I,tol=1.0E-99)
-      H_I <- x[,I]%*%XXD_Inv%*%t(x[,I])
-      
-      
-      
-      mu_I2 <- XXD_Inv%*%t(x[,I])%*%(YXbet_minsI)
-      
-      a_part <- diag(nrow=nrow(H_I),ncol=ncol(H_I)) - H_I
-      b_part <- x[,I]%*%mu_I2
-      
-      for(j in NumParam[-I]){
-        a_lasso <- (t(x[,j])%*%a_part%*%x[,j])/sigma_2
-        b_lasso <- (t(x[,j])%*%(y - as.matrix(x[,-c(I,j)])%*%as.matrix(beta[i,-c(I,j)]) - b_part))/sigma_2
-        c_lasso <- sqrt(lam2/sigma_2)
-         
-        beta[i,j] <- rlasso(1,a_lasso,b_lasso,c_lasso)
-      
-      }
-      
-      # Draw from sig_2
-      
-      
-      R <- a_sig + 0.5*(n+p- length(I)) + 1 
-      
-      S <- b_sig + 0.5*(t(YXbet_minsI)%*%a_part%*%YXbet_minsI)
-      
-      R <- as.vector(R);  S <- as.vector(S)
-      
-      
-      
-      log_pdf <- function(xx){
-        sigma_2 <- -R*log(xx) - (S/xx) - sqrt(lam2/xx)*sum(abs(beta[i,-I]))
-      }
-      
-      sigma_2 <- arms(1,log_pdf, lower = 0, upper = 100, metropolis = TRUE)
-      sig_2[i] <- sigma_2
-      
-      # Draw from Lambda^2
-      log_lam2pdf <- function(xx){
-        part1 <- (u + 0.5*p -1)*log(xx) - sqrt(xx/sigma_2)*sum(abs(beta[i,-I]))
-        
-        # The following line is for the case when p(lambda^2 | data,beta,sigma^2,d_I) is considered
-        # part2 <- (v + (t(beta[i,I])%*%solve(A[I,I],tol=1.0E-99)%*%beta[i,I]/(2*sigma_2)))*xx
-        
-        # The following line is for the case when p(lambda^2 | data,beta_{-I},sigma^2,d_I) is considered
-        part2 <- (v + (tr(D_I%*%(sigma_2*XXD_Inv)) + t(mu_I2)%*%D_I%*%mu_I2)/(2*sigma_2))*xx
-        logPdf <- part1 - part2
-      }
-      lam2 <- arms(1,log_lam2pdf, lower = 0, upper = 1000, metropolis = TRUE)
-      lam_2[i] <- lam2
-      if(i%in%seq(0,t,by=100)) print(i)
-    }
-    
-  }
-  else{
-    beta_Gibbs <- matrix(0,p,1)
-    for(i in 1:t) {
-      # Draw from non-zero values beta, which is beta_{I}
-      Q <- solve(XTX + lam2*solve(A,tol=1.0E-99),tol=1.0E-99)
-
-      
-      mu <- Q%*%XTy
-      R <- a_sig + 0.5*n
-      S <- b_sig + 0.5*(sum(y^2) - yTX%*%Q%*%XTy) + (0.5*lam2*t(beta_Gibbs)%*%solve(A,tol=1.0E-99)%*%beta_Gibbs)
-      R <- as.vector(R);  S <- as.vector(S)
-      
-      beta_Gibbs<- t(rmvnorm(1,mu,sigma_2*Q))
-      beta[i,] <- as.vector(beta_Gibbs)
-      
-      sigma_2 <- rinvgamma(1,R,S)
-      sig_2[i] <- sigma_2
-      
-      shapePar <- u + (p/2)
-      ratePar <- v + (t(beta[i,])%*%solve(A)%*%beta[i,]/(2*sigma_2))
-      lam2 <- rgamma(1,shape = shapePar,rate = ratePar)
-      lam_2[i] <- lam2
-      if(i%in%seq(0,t,by=100)) print(i)
-      
-    }
+  if (j%in%sI) {
+    J <- which(sI==j)
+    dens2_beta <- density_rw_beta(dens1_beta$x, output_D$mM[-(1:nburn),J], output_D$mV[-(1:nburn),J])
+  } else {
+    dens2_beta <- density_rw_beta2(dens1_beta$x, 
+                                   output_D$mA_rw[-(1:nburn),], output_D$mB_rw[-(1:nburn),], output_B$mC_rw[-(1:nburn)])
   }
   
-  output <- list()
-  output$beta = beta
-  output$sig_2 = sig_2
-  output$I = I
-  return(output)
+  
+  xlim <- range(c(dens1_beta$x, dens2_beta$x))
+  ylim <- range(c(dens1_beta$y, dens2_beta$y))
+  
+  plot(NA,type="n",xlim=xlim,ylim=ylim, main=j)
+  lines(dens1_beta, lwd=2, col="blue")
+  lines(dens2_beta, lwd=2, col="red")
 }
-
-start_time <- Sys.time()
-
-output_C = Gibbs_Sampling_C(x,y, lam2,0.1,.2,1,1.2,10000)
-
-end_time <- Sys.time()
-end_time - start_time
-
-bC = output_C$beta[-(1:1000),]
+```
 
 
-ti = end_time - start_time 
-Ef_C = rep(0,ncol(bC))
 
-for(i in 1:length(Ef_C)){
-  Ef_C[i] = ess(bC[,i])/as.numeric(ti)
+```{r}
+###### Gibbs sampling form "B" ########
+source("lasso_gibbs_E.R")
+
+profvis({ 
+   output_E = lasso_gibbs_E(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})
+```
+
+
+```{r}
+source("lasso_gibbs_E.R")
+sI <- which(abs(res_bem$vbeta)!=0)
+sJ <- (1:p)[-sI]
+
+
+ti_E  <- system.time({
+  output_E = lasso_gibbs_E(mX,vy,a,b,u,v,nsamples, sI, res_bem$vbeta + 0.001*rnorm(p), lambda2, sigma2 )
+})[3]
+```
+
+```{r}
+mBeta_mcmc = output_E$mBeta[-(1:nburn),]
+
+ESS_E <- c()
+for(j in 1:p){
+  ESS_E[j] <- ess_bulk(mBeta_mcmc[,j])
 }
-Ef_C = mean(Ef_C)
-
-
-
-
+Ef_E = summary(ESS_E)/as.numeric(ti_E)
 ```

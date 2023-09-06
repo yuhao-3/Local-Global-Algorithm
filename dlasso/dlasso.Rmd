@@ -517,6 +517,7 @@ test_moments(a,b,c)
 
 
 ```{r}
+source("lasso_distribution.R")
 a <- 1
 b <- -6
 c <- 4
@@ -551,10 +552,9 @@ den4 <- iodensity(z, bwadap(z), kernel="Trap")
 den5 <- density(z,bw = "ucv")
 den6 <- density(z,bw = "bcv")
 
-library(np)
-bw <- npudensbw(~z, bwethpd="cv.ml")
-    
-den7 <- density(z,bw = bw$bw)
+#library(np)
+#bw <- npudensbw(~z, bwethpd="cv.ml")
+#den7 <- density(z,bw = bw$bw)
 
 
 
@@ -567,7 +567,7 @@ lines(den3,col="green")
 lines(den4,col="orange")
 lines(den5,col="cyan")
 lines(den6,col="purple")
-lines(den7,col="gray")
+#lines(den7,col="gray")
 
 
 x_star <- mlasso(a,b,c)

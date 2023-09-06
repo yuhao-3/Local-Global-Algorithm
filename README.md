@@ -1,5 +1,5 @@
 # Local-Global-Algorithm for Bayesian Lasso Problem
-**Author: Yuhao Li**
+**Supervisor: A/Prof. John Ormerod , Dr. Mohammad Javad Davoudabadia\\ Author: Yuhao Li**
 
 Developing an fast and efficient variational approximation correction algorithm to improve posterior parameter distribution obtained by mean field variational bayes for fast and accurate approximate bayesian inference. We've also applied it to several real dataset and achieve excellent approximation result.
 

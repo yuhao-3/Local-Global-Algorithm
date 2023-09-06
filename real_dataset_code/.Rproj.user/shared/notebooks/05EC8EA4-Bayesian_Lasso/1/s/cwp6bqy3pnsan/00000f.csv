@@ -1,5 +1,0 @@
-"0","vy <- (y - mean(y))/sd(y)"
-"0","mX <- scale(x, center = TRUE, scale = TRUE)"
-"0",""
-"0","n <- nrow(mX)"
-"0","p <- ncol(mX)"

@@ -1,0 +1,132 @@
+---
+title: "Slice sampler"
+output: html_document
+date: "2023-04-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+a_val <- 2078
+b_val <- 7.34 
+c_val <-  2199 
+x <- 0.286
+
+f_fun <- function(x, a_val, b_val, c_val) {
+   val <- a_val*log(x) - b_val*x - c_val*sqrt(x);
+   return(val);
+}
+
+g_fun <- function(x, a_val, b_val, c_val) {
+   val <- a_val/x - b_val - 0.5*c_val/sqrt(x);
+   return(val);
+}
+
+h_fun <- function(x, a_val, b_val, c_val) {
+   val <- -a_val/(x*x)  + 0.25*c_val/(sqrt(x)*x)
+   return(val);
+}
+
+
+
+z_star <- (-0.5*c_val + sqrt(0.25*c_val*c_val + 4*a_val*b_val))/(2*b_val)
+x_star <- z_star*z_star
+f_star <- f_fun(x_star, a_val, b_val, c_val)
+p_star <- 0
+
+
+
+h_star <- h_fun(x_star, a_val, b_val, c_val) 
+sigma2 <- -1/h_star
+sigma  <- sqrt(sigma2)
+vn <- exp( -((vx - x_star)^2)/(2*sigma2))
+
+xL <- max(c(0,x_star - 5*sigma))
+xR <- x_star + 5*sigma
+
+vx <- seq(xL,xR,length=300)
+vf <- f_fun(vx, a_val, b_val, c_val)
+vf <- vf - max(vf)
+vp <- exp(vf)
+plot(vx, vp, type="l")
+points(x_star, 1)
+lines(rep(x_star,2), c(0, p_star), col="red")
+lines(vx,vn, col="blue")
+
+x0 <- x
+f0 <- f_fun(x0, a_val, b_val, c_val) - f_star
+p0 <- exp(f0)
+u <- runif(1,0,p0)
+log_u <- log(u)
+lines(rep(x0,2), c(0, p0), col="red")
+points(x0, u)
+
+xL <- x_star - sqrt(2*sigma2*(-log_u))
+xR <- x_star + sqrt(2*sigma2*(-log_u))
+
+lines(c(xL, xR), rep(u,2),col="green")
+
+if (xL<0) {
+  xL <- 1.0E-12
+}
+
+TOL <- 1.0E-8
+MAXITER <- 100
+for (ITER in 1:MAXITER) {
+  fL <- f_fun(xL, a_val, b_val, c_val) - f_star
+  gL <- g_fun(xL, a_val, b_val, c_val)
+  xL <- xL - (fL - log_u)/gL
+  if (abs(gL)<TOL) { break; }
+}
+
+TOL <- 1.0E-8
+MAXITER <- 100
+for (ITER in 1:MAXITER) {
+  fR <- f_fun(xR, a_val, b_val, c_val) - f_star
+  gR <- g_fun(xR, a_val, b_val, c_val)
+  xR <- xR - (fR - log_u)/gR
+  if (abs(gR)<TOL) { break; }
+}
+
+lines(c(xL, xR), rep(u,2),col="purple")
+
+
+```
+
+
+
+
+```{r}
+library(Rcpp)
+sourceCpp("slice_sampler.cpp", verbose = FALSE, showOutput = FALSE, cleanupCacheDir=TRUE, echo=FALSE)
+```
+
+
+```{r}
+source("sample_sigma2_and_lambda2.R")
+
+library(microbenchmark)
+
+TIMES <- 10000
+vx1 <- c()
+vx2 <- c()
+
+system.time({
+  for (time in 1:TIMES) {
+    x=slice_sampler(x, a_val, b_val, c_val);
+    vx1[time] <- x;
+  }
+});
+
+system.time({
+  for (time in 1:TIMES) {
+    x=slice_sampler_precision_c(x, a_val, b_val, c_val);
+    vx2[time] <- x;
+  }
+});
+```
+
+
+

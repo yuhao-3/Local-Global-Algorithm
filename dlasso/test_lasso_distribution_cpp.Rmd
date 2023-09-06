@@ -1,0 +1,117 @@
+---
+title: "Test lasso_distribution_cpp"
+output: html_document
+date: "2023-04-22"
+---
+
+```{r, warning=FALSE}
+library(Rcpp)
+sourceCpp("zeta.cpp", verbose = FALSE, showOutput = FALSE, echo=FALSE)
+```
+
+
+```{r, warning=FALSE}
+library(Rcpp)
+sourceCpp("lasso_distribution.cpp", verbose = FALSE, showOutput = FALSE, echo=FALSE)
+```
+
+
+```{r, warning=FALSE}
+library(Rcpp)
+sourceCpp("rinvgaussian.cpp", verbose = FALSE, showOutput = FALSE, echo=FALSE)
+```
+
+```{r}
+a_val <- 1
+b_val <- -1
+c_val <- 0.5
+```
+
+
+```{r}
+library(sn)
+x = -12
+zetaOneLentz_c(x, tol=1.0E-8, maxiter=10000)
+zeta(1, x)
+zetaOne_c(x)
+zeta_c(1, x)
+```
+
+```{r}
+zeta(2,x)
+zeta_c(2,x)
+```
+
+```{r}
+expit_c(x)
+1/(1 + exp(-x))
+```
+
+```{r}
+unlist(calculate_lasso_dist_stats_c(a_val, b_val, c_val))
+unlist(calculate_lasso_dist_stats(a_val, b_val, c_val))
+```
+
+```{r}
+vx <- c(1,2,3,4,5)
+logSumExp_c(vx)
+logSumExp(vx)
+```
+
+
+```{r}
+zlasso_c(a_val, b_val, c_val, TRUE)
+zlasso(a_val, b_val, c_val, TRUE)
+
+zlasso_c(a_val, b_val, c_val, FALSE)
+zlasso(a_val, b_val, c_val, FALSE)
+```
+
+
+```{r}
+x <- 2
+
+dlasso_c(x, a_val, b_val, c_val, TRUE)
+dlasso(x, a_val, b_val, c_val, TRUE)
+
+dlasso_c(x, a_val, b_val, c_val, FALSE)
+dlasso(x, a_val, b_val, c_val, FALSE)
+```
+
+```{r}
+x <- -0.0001
+plasso_c(x, a_val, b_val, c_val)
+plasso(x, a_val, b_val, c_val)
+```
+
+
+
+```{r}
+u <- runif(1)
+qlasso_fast_c( u,  a_val,  b_val,  c_val) 
+qlasso_fast( u,  a_val,  b_val,  c_val) 
+```
+
+
+```{r} 
+rlasso_fast_c(a_val, b_val, c_val) 
+rlasso_fast(a_val, b_val, c_val) 
+```
+
+
+```{r}
+elasso_c( a_val,  b_val,  c_val) 
+elasso( a_val,  b_val,  c_val) 
+```
+
+
+```{r}
+vlasso_c( a_val,  b_val,  c_val) 
+vlasso( a_val,  b_val,  c_val) 
+```
+
+
+```{r}
+mlasso_c( a_val,  b_val,  c_val) 
+mlasso( a_val,  b_val,  c_val) 
+```

@@ -30,8 +30,9 @@ check_posdef <- function(mA) {
 bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til, b_til, damp)
 {
   ## Initialization
-  MAXITER = 500
-  TOL = 1.0E-8
+  MAXITER = 5000
+  TOL = 1.0E-6
+  
   n = nrow(mX)
   p = ncol(mX)
   
@@ -144,17 +145,17 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
         if (VERBOSE) {
           
           
-          cat("pair=",pair,"\n")
-          cat("mA_val=",mA_val,"\n")
-          cat("vb_val=",vb_val,"\n")
-          cat("c_val=",c_val,"\n")
-          cat("mSigma_star=",mSigma_star,"\n")
-          
-          print(sbvlasso(mA_val,vb_val,c_val))
-          
-          print(ebvlasso(mA_val,vb_val,c_val,verbose=TRUE))
-          print(vbvlasso(mA_val,vb_val,c_val,verbose=TRUE))
-          
+          # cat("pair=",pair,"\n")
+          # cat("mA_val=",mA_val,"\n")
+          # cat("vb_val=",vb_val,"\n")
+          # cat("c_val=",c_val,"\n")
+          # cat("mSigma_star=",mSigma_star,"\n")
+          # 
+          # print(sbvlasso(mA_val,vb_val,c_val))
+          # 
+          # print(ebvlasso(mA_val,vb_val,c_val,verbose=TRUE))
+          # print(vbvlasso(mA_val,vb_val,c_val,verbose=TRUE))
+          # 
           
         }
         
