@@ -51,16 +51,20 @@ pbvnorm_quadrant <- function(vz,mSigma,quadrant="mm")
 {
   vz <- as.vector(vz)
   if (quadrant=="pp") {
-    return(pmvnorm(mean=vz, sigma=mSigma, lower=0, upper=Inf))
+    return(pmvnorm(mean=vz, sigma=mSigma, lower=0, upper=Inf,
+                   algorithm = GenzBretz(maxpts = 25000, abseps = 0.001, releps = 0)))
   }
   if (quadrant=="mm") {
-    return(pmvnorm(mean=vz, sigma=mSigma, lower=-Inf, upper=0))
+    return(pmvnorm(mean=vz, sigma=mSigma, lower=-Inf, upper=0,
+                   algorithm = Miwa(steps = 1280)))
   }
   if (quadrant=="pm") {
-    return(pmvnorm(mean=vz, sigma=mSigma, lower=c(0,-Inf), upper=c(Inf,0)))
+    return(pmvnorm(mean=vz, sigma=mSigma, lower=c(0,-Inf), upper=c(Inf,0),
+                   algorithm = Miwa(steps = 1280)))
   }
   if (quadrant=="mp") {
-    return(pmvnorm(mean=vz, sigma=mSigma, lower=c(-Inf,0), upper=c(0,Inf)))
+    return(pmvnorm(mean=vz, sigma=mSigma, lower=c(-Inf,0), upper=c(0,Inf),
+                   algorithm = Miwa(steps = 1280)))
   }
 }
 
@@ -131,13 +135,19 @@ sbvlasso <- function(mA_val,vb_val,c_val)
   attributes(log_det_mA) <- NULL
   const <-  -0.5*log_det_mA + log(2*pi)
   
-  eta_pp <- log(pbvnorm_quadrant(vmu_pp,mSigma,quadrant="pp")) + 0.5*t(vmu_pp)%*%mA_val%*%vmu_pp + const
-  eta_pm <- log(pbvnorm_quadrant(vmu_pm,mSigma,quadrant="pm")) + 0.5*t(vmu_pm)%*%mA_val%*%vmu_pm + const
-  eta_mp <- log(pbvnorm_quadrant(vmu_mp,mSigma,quadrant="mp")) + 0.5*t(vmu_mp)%*%mA_val%*%vmu_mp + const
-  eta_mm <- log(pbvnorm_quadrant(vmu_mm,mSigma,quadrant="mm")) + 0.5*t(vmu_mm)%*%mA_val%*%vmu_mm + const
-  veta <- c(eta_pp,eta_pm,eta_mp,eta_mm)
+  Numer_correction_pp <- pmax(-pbvnorm_quadrant(vmu_pp,mSigma,quadrant="pp"),pbvnorm_quadrant(vmu_pp,mSigma,quadrant="pp"))
+  Numer_correction_pm <- pmax(-pbvnorm_quadrant(vmu_pm,mSigma,quadrant="pm"),pbvnorm_quadrant(vmu_pm,mSigma,quadrant="pm"))
+  Numer_correction_mp <- pmax(-pbvnorm_quadrant(vmu_mp,mSigma,quadrant="mp"),pbvnorm_quadrant(vmu_mp,mSigma,quadrant="mp"))
+  Numer_correction_mm <- pmax(-pbvnorm_quadrant(vmu_mm,mSigma,quadrant="mm"),pbvnorm_quadrant(vmu_mm,mSigma,quadrant="mm"))
   
+  eta_pp <- log(Numer_correction_pp) + 0.5*t(vmu_pp)%*%mA_val%*%vmu_pp + const
+  eta_pm <- log(Numer_correction_pm) + 0.5*t(vmu_pm)%*%mA_val%*%vmu_pm + const
+  eta_mp <- log(Numer_correction_mp) + 0.5*t(vmu_mp)%*%mA_val%*%vmu_mp + const
+  eta_mm <- log(Numer_correction_mm) + 0.5*t(vmu_mm)%*%mA_val%*%vmu_mm + const
+  veta <- c(eta_pp,eta_pm,eta_mp,eta_mm)
+
   veta_til <- veta - max(veta) 
+  
   vw <- exp(veta_til)/sum(exp(veta_til))
   
   return(list(

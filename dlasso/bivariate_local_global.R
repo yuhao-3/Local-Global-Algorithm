@@ -31,7 +31,7 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
 {
   ## Initialization
   MAXITER = 5000
-  TOL = 1.0E-6
+  TOL = 1.0E-5
   
   n = nrow(mX)
   p = ncol(mX)
@@ -69,6 +69,7 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
   
   for (ITER in 1:MAXITER)
   {
+    print(ITER)
     ## Local Update
     for (j in 1:nrow(mPairs))
     {
@@ -209,7 +210,7 @@ bivariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til,
     
     ## Check stopping criterion    
     err <- max(abs(vtheta - vtheta_old))
-    cat("ITER=",ITER,"err=",err,"\n")
+    # cat("ITER=",ITER,"err=",err,"\n")
     if (err < TOL) {
       break;
     }

@@ -6,7 +6,7 @@ univariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til
 {
   ## Initialization
   MAXITER = 500
-  TOL = 1.0E-6
+  TOL = 1.0E-7
   n = nrow(mX)
   p = ncol(mX)
   
@@ -16,7 +16,12 @@ univariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til
  
   ## Initial global mean and covariance
   vmu_glob = vmu_init
-  mSigma_glob = mSigma_init
+  if(p<n){
+    mSigma_glob = mSigma_init
+  }else{
+    mSigma_glob = diag(mSigma_init)
+  }
+  
   
   # Later will be changed
   c_val = lambda * (exp(lgamma(a_til+0.5) - lgamma(a_til) - 0.5*log(b_til)))
@@ -88,7 +93,7 @@ univariate_local_global <- function(vy, mX, lambda, vmu_init, mSigma_init, a_til
     
     ## Check stopping criterion    
     err <- max(abs(vtheta - vtheta_old))
-    cat("ITER=",ITER,"err=",err,"\n")
+    #cat("ITER=",ITER,"err=",err,"\n")
     if (err < TOL) {
       break;
     }

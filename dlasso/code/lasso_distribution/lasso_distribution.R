@@ -1,4 +1,3 @@
-
 ################################################################################
 
 # Note: a>0, c>0
@@ -8,9 +7,10 @@ dlasso <- function(x,a,b,c,logarithm=FALSE)
 	log_pdf <-  -0.5*a*x*x + b*x - c*abs(x) - log_Z
 	
 	if (logarithm) {
-		return(log_pdf) {
+		return(log_pdf) 
 	}  
 	return(exp(log_pdf))
+	
 }
 
 ################################################################################

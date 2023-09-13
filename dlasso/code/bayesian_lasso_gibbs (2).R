@@ -70,6 +70,11 @@ bayesian_lasso_gibbs <- function(vy, mX, lambda, nsamples=10000)
       # Upper triangular Cholesky factorization
       mU <- chol(mX%*%diag(vd_inv)%*%t(mX) + mI_n)
       
+      mM3 <- backsolve(t(mU), mX, upper.tri=FALSE)
+      vv1 <- t(mM3*mM3)%*%matrix(1,n,1) 
+      vsigma_chol <- sigma2*(vd_inv - vd_inv*vd_inv*as.vector(vv1))
+      
+      
       vw <- backsolve(mU, backsolve(t(mU), -vv, upper.tri=FALSE))
       vmu <- t(mX)%*%backsolve(mU, backsolve(t(mU), vy, upper.tri = FALSE))
       vmu <- vd*vmu
