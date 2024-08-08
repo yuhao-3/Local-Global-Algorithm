@@ -85,13 +85,14 @@ dataset_name <- "prostate"
 
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 data("Credit")
 
 library(janitor)
 dat <- clean_names(Credit)
 y <- dat$income
 x <- model.matrix(income~.-1-id, dat )[,-7]
+dataset_name <- "credit"
 ```
 
  
@@ -239,8 +240,7 @@ time_bem <- system.time({
 
 ### Fit standard Lasso regression
 
-```{r}
-
+```{r, eval = TRUE}
 set.seed(323)
 # mX = mX[,-8]   # Use it just for body fat
 # p=p-1         # Use it just for body fat
@@ -260,9 +260,6 @@ sigma2_lm <- sum((vy - mX%*%lasso_mod$beta)^2)/n
 ```
 
 
-
-
-
 ### Longer MCMC run with lambda fixed
 
 ```{r}
@@ -277,9 +274,10 @@ lambda_prior <- lambda
 library(profvis)
 
 #profvis({
-#time_gibbs2 <- system.time({
+time_gibbs2 <- system.time({
   res_gibbs <- bayesian_lasso_gibbs(vy, mX, lambda=lambda_prior, nsamples=nsamples)
-#})
+})[3]
+time_gibbs2
 
 ```
 
@@ -295,26 +293,6 @@ for (j in 1:ncol(res_gibbs$mBeta)) {
 }
 ess1[j+1] <- ess_basic(res_gibbs$vsigma2[-c(1:nburn)])
 cbind(ess1)
-```
-
-```{r}
-#plot(res_gibbs$mBeta[,1],type="l")
-```
-```{r}
-#source(here("code","bayesian_lasso_twoblockgibbs.R"))
-#res_2bg <- bayesian_lasso_twoblockgibbs(vy, mX, lambda, nsamples=nsamples)
-```
-
-```{r}
-# library(posterior)
-# ess2 <- c()
-# 
-#  
-# for (j in 1:ncol(res_2bg$mBeta)) {
-#   ess2[j] <- ess_basic(res_2bg$mBeta[-c(1:nburn),j])
-# }
-# ess2[j+1] <- ess_basic(res_2bg$vsigma2[-c(1:nburn)])
-# cbind(c(res_bem$vbeta,res_bem$sigma2), ess1, ess2)
 ```
 
 ```{r, eval=FALSE}
@@ -345,8 +323,6 @@ time_bl_fast <- system.time({
 })
     
 ```
-
-
 
 
 ### Generate Bootstrap distribution
@@ -588,24 +564,26 @@ save.image(here("../results",paste("results",dataset_name,".Rdata",sep="")))
 
 
 # Old Density Code
-
-```{r}
+```{r, eval = TRUE}
 plot_densities <- function(ldens, cols, exclude, gold, threshold = 0.2) {
   vacc <- c()
   
   xlim <- c()
   ylim <- c()
-  for (k in 1:length(ldens)) {
-    if (!(k %in% exclude)) {
-      # Consider only the x and y values where y > threshold
-      subset_ldens <- subset(ldens[[k]], y > threshold)
-      xlim <- range(c(xlim, subset_ldens$x), finite = TRUE)
-      ylim <- range(c(ylim, subset_ldens$y), finite = TRUE)
-    }
-  }
   
-  # xlim =  c(-0.2,0.2)
-  # ylim = c(0,5)
+  ## Limit the xlim and ylim of the density plot, if prostate then comment below 
+  
+ # for (k in 1:length(ldens)) {
+  #  if (!(k %in% exclude)) {
+   #   # Consider only the x and y values where y > threshold
+    #  subset_ldens <- subset(ldens[[k]], y > threshold)
+     # xlim <- range(c(xlim, subset_ldens$x), finite = TRUE)
+    #  ylim <- range(c(ylim, subset_ldens$y), finite = TRUE)
+    #}
+  #}
+  
+ # xlim =  c(-0.2,0.2)
+ # ylim = c(0,5)
   
   plot(NA, type = "n", xlim = xlim, ylim = ylim, xlab = "x", ylab = "density")
   for (k in 1:length(ldens)) {
@@ -720,7 +698,7 @@ for(ldens in all_ldens) {
   p <- ggplot(df, aes(x = x, y = y, color = Method)) +
          geom_line(size = 1) + 
          labs(title = "Density Plots for Multiple Methods", x = "X", y = "Density", color = "Method") +
-         theme_minimal()
+         theme(plot.title = element_text(hjust = 0.5))
   print(p)  # This will plot each ggplot in the loop
 }
 
@@ -734,4 +712,14 @@ save.image(paste("results",dataset_name,".Rdata",sep=""))
 #load(paste("results",dataset_name,".Rdata",sep=""))
 ```
 
- 
+
+
+
+```{r}
+print(ti_MCMC)
+print(ti_mfvb) 
+print(ti_LGU)
+print(ti_LGB)
+```
+
+
